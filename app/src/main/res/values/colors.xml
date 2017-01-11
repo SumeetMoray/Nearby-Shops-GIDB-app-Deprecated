@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--<color name="colorPrimary">#3F51B5</color>-->
+    <!--<color name="colorPrimaryDark">#303F9F</color>-->
+    <!--<color name="colorAccent">#FF4081</color>-->
+
+
+
+    <color name="colorPrimary">#607D8B</color>
+    <color name="colorPrimaryDark">#455A64</color>
+    <color name="colorAccent">#FF9800</color>
+
+
+    <color name="white">#FFFFFF</color>
+    <color name="buttonColor">#037BA3</color>
+    <color name="buttonColorDark">#036a8c</color>
+
+    <color name="orange">#ff6600</color>
+    <color name="itemAvailable">#00897B</color>
+
+
+    <color name="listItemGrey">#22000000</color>
+
+    <color name="teal">#00796B</color>
+    <color name="darkGreen">#2E7D32</color>
+    <color name="orangeDark">#EF6C00</color>
+    <color name="deepOrange900">#BF360C</color>
+    <color name="deepOrange800">#D84315</color>
+    <color name="grey800">#424242</color>
+    <color name="blueGrey800">#37474F</color>
+    <color name="cyan900">#006064</color>
+
+
+    <color name="blueGrey800Selected">#3337474F</color>
+
+    <color name="phonographyBlue">#006373</color>
+
+
+    <integer-array name="gplus_colors">
+        <item>@color/gplus_color_1</item>
+        <item>@color/gplus_color_2</item>
+        <item>@color/gplus_color_3</item>
+        <item>@color/gplus_color_4</item>
+    </integer-array>
+
+
+    <color name="gplus_color_2Dark">#d29b00</color>
+
+    <color name="gplus_color_1">#3e802f</color>
+    <color name="gplus_color_2">#f4b400</color>
+    <color name="gplus_color_3">#427fed</color>
+    <color name="gplus_color_4">#b23424</color>
+    <color name="light_grey">#22000000</color>
+
+</resources>
