@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_marginTop="5dp"
+    android:background="@color/white"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <android.support.constraint.Guideline
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.35"
+        android:id="@+id/guide"
+        android:layout_width="0dp"
+        android:layout_height="0dp" />
+
+    <TextView
+        android:id="@+id/staff_id"
+        android:layout_marginTop="0dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/guide"
+        app:layout_constraintTop_toTopOf="parent"
+        android:text="Staff ID : 3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content" />
+
+
+    <TextView
+        android:layout_marginTop="3dp"
+        android:textSize="17sp"
+        android:textColor="@color/black"
+        android:id="@+id/staff_name"
+        app:layout_constraintTop_toBottomOf="@id/staff_id"
+        app:layout_constraintRight_toRightOf="@id/staff_id"
+        app:layout_constraintLeft_toLeftOf="@id/staff_id"
+        android:text="Staff Name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content" />
+
+
+    <TextView
+        android:layout_marginTop="3dp"
+        android:id="@+id/phone_number"
+        android:text="9490523891"
+        app:layout_constraintTop_toBottomOf="@id/staff_name"
+        app:layout_constraintRight_toRightOf="@id/staff_id"
+        app:layout_constraintLeft_toLeftOf="@id/staff_id"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content" />
+
+
+    <TextView
+        android:layout_marginTop="3dp"
+        app:layout_constraintRight_toRightOf="@id/staff_id"
+        app:layout_constraintLeft_toLeftOf="@id/staff_id"
+        app:layout_constraintTop_toBottomOf="@id/phone_number"
+        android:id="@+id/designation"
+        android:text="Designation"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content" />
+
+
+    <TextView
+        android:layout_marginTop="5dp"
+        android:background="@color/black"
+        android:id="@+id/border_one"
+        app:layout_constraintLeft_toLeftOf="@id/staff_id"
+        app:layout_constraintRight_toRightOf="@id/staff_id"
+        app:layout_constraintTop_toBottomOf="@id/designation"
+        android:layout_width="0dp"
+        android:layout_height="1dp" />
+
+
+    <ImageView
+        android:id="@+id/edit_icon"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:paddingRight="10dp"
+        android:paddingEnd="10dp"
+        app:layout_constraintLeft_toLeftOf="@id/staff_id"
+        app:layout_constraintTop_toBottomOf="@id/border_one"
+        app:srcCompat="@drawable/ic_edit_black_48px"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+
+    <TextView
+        android:paddingBottom="5dp"
+        android:id="@+id/edit_text"
+        android:text="Edit"
+        android:gravity="bottom"
+        app:layout_constraintBottom_toBottomOf="@id/edit_icon"
+        app:layout_constraintTop_toTopOf="@id/edit_icon"
+        app:layout_constraintLeft_toRightOf="@id/edit_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp" />
+
+
+
+
+    <ImageView
+        android:scaleType="centerCrop"
+        android:id="@+id/profile_picture"
+        android:background="@color/buttonColor"
+        app:layout_constraintTop_toTopOf="@id/staff_id"
+        app:layout_constraintBottom_toBottomOf="@id/edit_icon"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/guide"
+        android:layout_width="0dp"
+        android:layout_height="0dp" />
+
+
+
+</android.support.constraint.ConstraintLayout>

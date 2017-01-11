@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:animateLayoutChanges="true"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#22000000">
+
+
+    <!--app:layout_behavior="@string/appbar_scrolling_view_behavior"-->
+
+<!--
+
+    <RelativeLayout
+        android:layout_alignParentBottom="true"
+        android:id="@+id/options"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/row_one"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:gravity="right|bottom"
+                android:padding="10dp"
+                android:background="@color/blueGrey800"
+                android:textColor="@color/white"
+                android:layout_margin="2dp"
+                android:layout_marginRight="2dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginBottom="2dp"
+                android:layout_marginTop="2dp"
+                android:text="Detach selected"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent" />
+
+            <TextView
+                android:id="@+id/changeParentBulk"
+                android:gravity="right|bottom"
+                android:padding="10dp"
+                android:textColor="@color/white"
+                android:layout_margin="2dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="2dp"
+                android:layout_marginRight="2dp"
+                android:text="Change \nParent for Selected"
+                android:background="@color/blueGrey800"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_below="@id/row_one"
+            android:id="@+id/addItem"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/addItemCategory"
+                android:gravity="bottom|right"
+                android:padding="10dp"
+
+                android:textColor="@color/white"
+                android:layout_margin="2dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                android:layout_marginBottom="2dp"
+                android:text="Add Item"
+                android:background="@color/phonographyBlue"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent" />
+
+            <TextView
+                android:gravity="bottom|right"
+                android:padding="10dp"
+                android:textColor="@color/white"
+                android:layout_margin="2dp"
+                android:layout_marginBottom="2dp"
+                android:layout_marginRight="2dp"
+                android:text="Add Item\nfrom Global Database"
+                android:background="@color/gplus_color_2Dark"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+    </RelativeLayout>
+-->
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipeContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerViewItemCategories"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="2dp"/>
+    </android.support.v4.widget.SwipeRefreshLayout>
+</RelativeLayout>

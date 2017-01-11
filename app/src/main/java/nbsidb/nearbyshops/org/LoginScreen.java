@@ -28,6 +28,7 @@ import nbsidb.nearbyshops.org.ModelRoles.Staff;
 import nbsidb.nearbyshops.org.RetrofitRESTContract.AdminService;
 import nbsidb.nearbyshops.org.RetrofitRESTContract.AdminServiceSimple;
 import nbsidb.nearbyshops.org.RetrofitRESTContract.StaffService;
+import nbsidb.nearbyshops.org.StaffHome.StaffHome;
 import nbsidb.nearbyshops.org.Utility.UtilityGeneral;
 import nbsidb.nearbyshops.org.Utility.UtilityLogin;
 import retrofit2.Call;
@@ -181,7 +182,7 @@ public class LoginScreen extends AppCompatActivity implements View.OnClickListen
                 {
 
                     UtilityLogin.saveStaff(staff,LoginScreen.this);
-//                    startActivity(new Intent(LoginScreen.this,StaffHome.class));
+                    startActivity(new Intent(LoginScreen.this,StaffHome.class));
                     showSnackBar("Launching Staff Home !");
 
                 }

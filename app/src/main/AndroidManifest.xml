@@ -49,6 +49,17 @@
                 android:value=".Home" />
         </activity>
 
+
+        <activity
+            android:name=".SelectParent.ItemCategoriesParent"
+            android:label="Change Parent"
+            android:parentActivityName=".Home"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Home" />
+        </activity>
+
         <activity
             android:name=".ItemsByCategorySimple.EditItem.EditItem"
             android:label="Edit Item"
@@ -67,6 +78,73 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Home" />
         </activity>
+
+        <activity
+            android:name=".StaffAccounts.EditStaff.EditStaff"
+            android:label="Edit Staff"
+            android:parentActivityName=".StaffAccounts.StaffAccounts"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".StaffAccounts.StaffAccounts" />
+        </activity>
+
+
+        <activity
+            android:name=".StaffAccounts.StaffAccounts"
+            android:label="Edit Staff"
+            android:parentActivityName=".Home"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Home" />
+        </activity>
+
+
+        <activity
+            android:name=".DetachedTabs.DetachedTabs"
+            android:label="Detached Items"
+            android:parentActivityName=".Home"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Home" />
+        </activity>
+
+
+
+
+        <activity
+            android:name=".StaffHome.EditStaffSelf.EditStaffSelf"
+            android:label="Edit Staff"
+            android:parentActivityName=".StaffHome.StaffHome"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".StaffHome.StaffHome" />
+        </activity>
+
+        <activity
+            android:name=".StaffHome.StaffDashboard"
+            android:label="Edit Staff"
+            android:parentActivityName=".StaffHome.StaffDashboard"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".StaffHome.StaffDashboard" />
+        </activity>
+
+
+        <activity
+            android:name=".StaffHome.StaffHome"
+            android:label="Edit Staff"
+            android:parentActivityName=".StaffHome.StaffHome"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".StaffHome.StaffHome" />
+        </activity>
+
 
     </application>
 

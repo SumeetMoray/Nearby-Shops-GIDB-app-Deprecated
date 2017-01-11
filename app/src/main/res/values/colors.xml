@@ -52,5 +52,6 @@
     <color name="gplus_color_3">#427fed</color>
     <color name="gplus_color_4">#b23424</color>
     <color name="light_grey">#22000000</color>
+    <color name="black">#000000</color>
 
 </resources>
