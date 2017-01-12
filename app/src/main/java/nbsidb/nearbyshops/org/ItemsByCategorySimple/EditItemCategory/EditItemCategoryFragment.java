@@ -96,6 +96,9 @@ public class EditItemCategoryFragment extends Fragment {
     @Bind(R.id.isAbstractNode) CheckBox isAbstractNode;
     @Bind(R.id.isLeafNode) CheckBox isLeafNode;
 
+    @Bind(R.id.category_order) EditText itemCategoryOrder;
+
+
 //    @Bind(R.id.itemID) EditText itemID;
 //    @Bind(R.id.itemName) EditText itemName;
 //    @Bind(R.id.itemDescription) EditText itemDescription;
@@ -346,7 +349,7 @@ public class EditItemCategoryFragment extends Fragment {
             isLeafNode.setChecked(itemCategory.getIsLeafNode());
             isAbstractNode.setChecked(itemCategory.getAbstractNode());
             descriptionShort.setText(itemCategory.getDescriptionShort());
-
+            itemCategoryOrder.setText(String.valueOf(itemCategory.getCategoryOrder()));
 
 //            itemID.setText(String.valueOf(item.getItemID()));
 //            itemName.setText(item.getItemName());
@@ -386,7 +389,8 @@ public class EditItemCategoryFragment extends Fragment {
         itemCategory.setCategoryDescription(itemCategoryDescription.getText().toString());
         itemCategory.setDescriptionShort(descriptionShort.getText().toString());
         itemCategory.setIsLeafNode(isLeafNode.isChecked());
-        itemCategory.setAbstractNode(isAbstractNode.isChecked());
+        itemCategory.setisAbstractNode(isAbstractNode.isChecked());
+        itemCategory.setCategoryOrder(Integer.parseInt(itemCategoryOrder.getText().toString()));
 
 //        item.setItemName(itemName.getText().toString());
 //        item.setItemDescription(itemDescription.getText().toString());

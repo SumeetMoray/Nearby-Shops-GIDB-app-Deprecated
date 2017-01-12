@@ -729,7 +729,7 @@ public class FragmentAddFromGlobal extends Fragment implements SwipeRefreshLayou
         {
             if(parent!=null)
             {
-                entry.getValue().setItemCategoryID(parent.getItemCategoryID());
+                entry.getValue().setParentCategoryID(parent.getItemCategoryID());
             }
             entry.getValue().setRt_gidb_service_url(UtilityGeneral.getServiceURL_GIDB(getActivity()));
             tempList.add(entry.getValue());

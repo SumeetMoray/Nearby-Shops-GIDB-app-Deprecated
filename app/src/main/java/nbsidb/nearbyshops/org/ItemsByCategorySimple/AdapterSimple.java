@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -26,10 +27,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.inject.Inject;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnLongClick;
+import nbsidb.nearbyshops.org.DaggerComponentBuilder;
 import nbsidb.nearbyshops.org.ItemsByCategorySimple.EditItem.EditItem;
 import nbsidb.nearbyshops.org.ItemsByCategorySimple.EditItem.EditItemFragment;
 import nbsidb.nearbyshops.org.ItemsByCategorySimple.EditItem.UtilityItem;
@@ -41,6 +45,7 @@ import nbsidb.nearbyshops.org.Model.Item;
 import nbsidb.nearbyshops.org.Model.ItemCategory;
 import nbsidb.nearbyshops.org.ModelStats.ItemStats;
 import nbsidb.nearbyshops.org.R;
+import nbsidb.nearbyshops.org.RetrofitRESTContract.ItemCategoryService;
 import nbsidb.nearbyshops.org.Utility.UtilityGeneral;
 
 /**
@@ -52,6 +57,9 @@ public class AdapterSimple extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     Map<Integer,ItemCategory> selectedItemCategories = new HashMap<>();
     Map<Integer,Item> selectedItems = new HashMap<>();
+
+
+    @Inject ItemCategoryService itemCategoryService;
 
 
     private List<Object> dataset;
@@ -66,8 +74,8 @@ public class AdapterSimple extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     public AdapterSimple(List<Object> dataset, Context context, NotificationsFromAdapter notificationReceiver) {
 
-//        DaggerComponentBuilder.getInstance()
-//                .getNetComponent().Inject(this);
+        DaggerComponentBuilder.getInstance()
+                .getNetComponent().Inject(this);
 
         this.notificationReceiver = notificationReceiver;
         this.dataset = dataset;
@@ -297,12 +305,21 @@ public class AdapterSimple extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
                     builder.setTitle("Confirm Delete Item Category !")
-                            .setMessage("Do you want to delete this Item Category ?")
+                            .setMessage("Are you sure you want to delete this Item Category ?")
                             .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
 
 //                                    deleteItemCategory();
+
+                                    if(dataset.get(getLayoutPosition()) instanceof ItemCategory)
+                                    {
+                                        notificationReceiver
+                                                .notifyDeleteItemCat(
+                                                        (ItemCategory) dataset.get(getLayoutPosition()),
+                                                        getLayoutPosition()
+                                                );
+                                    }
                                 }
                             })
                             .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -310,7 +327,7 @@ public class AdapterSimple extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                                 public void onClick(DialogInterface dialog, int which) {
 
 
-//                                    showToastMessage("Cancelled !");
+                                    showToastMessage("Cancelled !");
                                 }
                             })
                             .show();
@@ -489,21 +506,30 @@ public class AdapterSimple extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
-                    builder.setTitle("Confirm Delete Item Category !")
-                            .setMessage("Do you want to delete this Item Category ?")
+                    builder.setTitle("Confirm Delete Item !")
+                            .setMessage("Are you sure you want to delete this Item ?")
                             .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
 
 //                                    deleteItemCategory();
+
+                                    if(dataset.get(getLayoutPosition())instanceof Item)
+                                    {
+                                        notificationReceiver
+                                                .notifyDeleteItem(
+                                                        (Item) dataset.get(getLayoutPosition()),
+                                                        getLayoutPosition()
+                                                );
+                                    }
+
                                 }
                             })
                             .setNegativeButton("No", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
 
-
-//                                    showToastMessage("Cancelled !");
+                                    showToastMessage("Cancelled !");
                                 }
                             })
                             .show();
@@ -552,6 +578,12 @@ public class AdapterSimple extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
 
 
+    private void showToastMessage(String message)
+    {
+        Toast.makeText(context,message,Toast.LENGTH_SHORT).show();
+    }
+
+
 
     interface NotificationsFromAdapter
     {
@@ -561,12 +593,11 @@ public class AdapterSimple extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         void notifyItemSelected();
 
         void detachItemCat(ItemCategory itemCategory);
-        void notifyDeleteItemCat();
+        void notifyDeleteItemCat(ItemCategory itemCategory, int position);
         void changeParentItemCat(ItemCategory itemCategory);
 
-
-
         void detachItem(Item item);
+        void notifyDeleteItem(Item item, int position);
         void changeParentItem(Item item);
     }
 
