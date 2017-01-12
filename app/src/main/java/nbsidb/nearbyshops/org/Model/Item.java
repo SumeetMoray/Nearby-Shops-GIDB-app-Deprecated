@@ -75,6 +75,8 @@ public class Item implements Parcelable{
 	private Boolean isEnabled;
 	private Boolean isWaitlisted;
 
+	private String rt_gidb_service_url;
+
 
 	// Getter and Setter Statements
 
@@ -131,6 +133,14 @@ public class Item implements Parcelable{
 			return new Item[size];
 		}
 	};
+
+	public String getRt_gidb_service_url() {
+		return rt_gidb_service_url;
+	}
+
+	public void setRt_gidb_service_url(String rt_gidb_service_url) {
+		this.rt_gidb_service_url = rt_gidb_service_url;
+	}
 
 	public Boolean getEnabled() {
 		return isEnabled;

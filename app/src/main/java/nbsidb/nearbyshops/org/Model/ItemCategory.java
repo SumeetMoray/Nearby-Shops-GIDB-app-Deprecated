@@ -24,6 +24,12 @@ public class ItemCategory implements Parcelable{
 
 	ItemCategory parentCategory = null;
 
+	private String rt_gidb_service_url;
+
+
+
+
+
 
 	protected ItemCategory(Parcel in) {
 		parentCategory = in.readParcelable(ItemCategory.class.getClassLoader());
@@ -76,6 +82,14 @@ public class ItemCategory implements Parcelable{
 	*
 	* */
 
+
+	public String getRt_gidb_service_url() {
+		return rt_gidb_service_url;
+	}
+
+	public void setRt_gidb_service_url(String rt_gidb_service_url) {
+		this.rt_gidb_service_url = rt_gidb_service_url;
+	}
 
 	public Boolean getAbstractNode() {
 		return isAbstractNode;

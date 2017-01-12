@@ -5,6 +5,7 @@ package nbsidb.nearbyshops.org.DaggerComponents;
 import javax.inject.Singleton;
 
 import dagger.Component;
+import nbsidb.nearbyshops.org.AddFromGlobalSelection.FragmentAddFromGlobal;
 import nbsidb.nearbyshops.org.DaggerModules.AppModule;
 import nbsidb.nearbyshops.org.DaggerModules.NetModule;
 import nbsidb.nearbyshops.org.DetachedTabs.ItemCategories.DetachedItemCatAdapter;
@@ -57,6 +58,8 @@ public interface NetComponent {
     void Inject(EditStaffSelfFragment editStaffSelfFragment);
 
     void Inject(StaffHome staffHome);
+
+    void Inject(FragmentAddFromGlobal fragmentAddFromGlobal);
 
 
 //    void Inject(LoginDialog loginDialog);

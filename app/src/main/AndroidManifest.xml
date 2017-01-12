@@ -146,6 +146,17 @@
         </activity>
 
 
+        <activity
+            android:name=".AddFromGlobalSelection.AddFromGlobal"
+            android:label="Add from Global"
+            android:parentActivityName=".Home"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Home" />
+        </activity>
+
+
     </application>
 
 </manifest>

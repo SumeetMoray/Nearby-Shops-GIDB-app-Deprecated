@@ -1,8 +1,6 @@
-package nbsidb.nearbyshops.org.ItemsByCategorySimple;
+package nbsidb.nearbyshops.org.AddFromGlobalSelection;
 
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -14,39 +12,46 @@ import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.wunderlist.slidinglayer.SlidingLayer;
 
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import nbsidb.nearbyshops.org.ItemsByCategorySimple.Interfaces.NotifyBackPressed;
-import nbsidb.nearbyshops.org.ItemsByCategorySimple.Interfaces.NotifyFABClick;
 import nbsidb.nearbyshops.org.ItemsByCategorySimple.Interfaces.NotifyHeaderChanged;
 import nbsidb.nearbyshops.org.ItemsByCategorySimple.Interfaces.NotifySort;
 import nbsidb.nearbyshops.org.ItemsByCategorySimple.Interfaces.ToggleFab;
+import nbsidb.nearbyshops.org.ItemsByCategorySimple.SlidingLayerSortItems;
 import nbsidb.nearbyshops.org.R;
 
 
-public class ItemCategoriesSimple extends AppCompatActivity implements NotifyHeaderChanged,NotifySort, ToggleFab {
+public class AddFromGlobal extends AppCompatActivity implements NotifyHeaderChanged,NotifySort,ToggleFab {
 
     public static final String TAG_FRAGMENT = "item_categories_simple";
     public static final String TAG_SLIDING = "sort_items_sliding";
+    public static final String INTENT_KEY_ITEM_CAT_PARENT = "parent_cat";
 
 
     // Fab Variables
-    @Bind(R.id.fab_menu) FloatingActionMenu fab_menu;
-    @Bind(R.id.fab_detach) FloatingActionButton fab_detach;
-    @Bind(R.id.fab_change_parent) FloatingActionButton fab_change_parent;
-    @Bind(R.id.fab_add_item) FloatingActionButton fab_add_item;
-    @Bind(R.id.fab_add) FloatingActionButton fab_add;
-    @Bind(R.id.fab_add_from_global_item) FloatingActionButton fab_add_from_global_item;
-//    @Bind(R.id.fab_add_from_global) FloatingActionButton fab_add_from_global;
+    @Bind(R.id.fab_menu)
+    FloatingActionMenu fab_menu;
+//    @Bind(R.id.fab_detach) FloatingActionButton fab_detach;
+//    @Bind(R.id.fab_change_parent) FloatingActionButton fab_change_parent;
+//    @Bind(R.id.fab_add_item) FloatingActionButton fab_add_item;
+//    @Bind(R.id.fab_add) FloatingActionButton fab_add;
+//    @Bind(R.id.fab_add_from_global_item) FloatingActionButton fab_add_from_global_item;
+    @Bind(R.id.fab_add_from_global)
+FloatingActionButton fab_add_from_global;
+
+
     @Bind(R.id.text_sub) TextView itemHeader;
-    @Bind(R.id.slidingLayer) SlidingLayer slidingLayer;
+    @Bind(R.id.slidingLayer)
+    SlidingLayer slidingLayer;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_item_categories_simple);
+        setContentView(R.layout.activity_add_from_global_two);
         ButterKnife.bind(this);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -68,7 +73,7 @@ public class ItemCategoriesSimple extends AppCompatActivity implements NotifyHea
         {
             getSupportFragmentManager()
                     .beginTransaction()
-                    .add(R.id.fragment_container,new ItemCategoriesFragmentSimple(),TAG_FRAGMENT)
+                    .add(R.id.fragment_container,new FragmentAddFromGlobal(),TAG_FRAGMENT)
                     .commit();
         }
 
@@ -78,20 +83,21 @@ public class ItemCategoriesSimple extends AppCompatActivity implements NotifyHea
     }
 
 
+
     private void setFabBackground() {
         // assign background to the FAB's
-        fab_add.setImageResource(R.drawable.fab_add);
-        Drawable drawable = VectorDrawableCompat.create(getResources(), R.drawable.ic_low_priority_black_24px, getTheme());
-        fab_change_parent.setImageDrawable(drawable);
+//        fab_add.setImageResource(R.drawable.fab_add);
+//        Drawable drawable = VectorDrawableCompat.create(getResources(), R.drawable.ic_low_priority_black_24px, getTheme());
+//        fab_change_parent.setImageDrawable(drawable);
 
 //        Drawable drawable_add = VectorDrawableCompat.create(getResources(), R.drawable.ic_playlist_add_from_global, getTheme());
 //        fab_add_from_global.setImageDrawable(drawable_add);
 
-        Drawable drawable_detach = VectorDrawableCompat.create(getResources(), R.drawable.ic_detach, getTheme());
-        fab_detach.setImageDrawable(drawable_detach);
+//        Drawable drawable_detach = VectorDrawableCompat.create(getResources(), R.drawable.ic_detach, getTheme());
+//        fab_detach.setImageDrawable(drawable_detach);
 
-        fab_add_item.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.ic_add_black_24dp));
-        fab_add_from_global_item.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.ic_playlist_add_from_global));
+//        fab_add_item.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.ic_add_black_24dp));
+        fab_add_from_global.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.ic_playlist_add_from_global));
 
     }
 
@@ -209,68 +215,55 @@ public class ItemCategoriesSimple extends AppCompatActivity implements NotifyHea
 
 
 
-    @OnClick(R.id.fab_detach)
-    void fabDetachClick()
-    {
-        Fragment fragment = getSupportFragmentManager()
-                .findFragmentByTag(TAG_FRAGMENT);
+//    @OnClick(R.id.fab_detach)
+//    void fabDetachClick()
+//    {
+//        Fragment fragment = getSupportFragmentManager()
+//                .findFragmentByTag(TAG_FRAGMENT);
+//
+//        if(fragment instanceof NotifyFABClick)
+//        {
+//            ((NotifyFABClick) fragment).detachSelectedClick();
+//        }
+//    }
+//
+//
+//    @OnClick(R.id.fab_change_parent)
+//    void changeParentClick()
+//    {
+//        Fragment fragment = getSupportFragmentManager()
+//                .findFragmentByTag(TAG_FRAGMENT);
+//
+//        if(fragment instanceof NotifyFABClick)
+//        {
+//            ((NotifyFABClick) fragment).changeParentForSelected();
+//        }
+//    }
+//
+//
+//    @OnClick(R.id.fab_add_item)
+//    void fabAddItemClick()
+//    {
+//        Fragment fragment = getSupportFragmentManager()
+//                .findFragmentByTag(TAG_FRAGMENT);
+//
+//        if(fragment instanceof NotifyFABClick)
+//        {
+//            ((NotifyFABClick) fragment).addItem();
+//        }
+//    }
+//
+//
 
-        if(fragment instanceof NotifyFABClick)
-        {
-            ((NotifyFABClick) fragment).detachSelectedClick();
-        }
-    }
-
-
-    @OnClick(R.id.fab_change_parent)
-    void changeParentClick()
-    {
-        Fragment fragment = getSupportFragmentManager()
-                .findFragmentByTag(TAG_FRAGMENT);
-
-        if(fragment instanceof NotifyFABClick)
-        {
-            ((NotifyFABClick) fragment).changeParentForSelected();
-        }
-    }
-
-
-    @OnClick(R.id.fab_add_item)
-    void fabAddItemClick()
-    {
-        Fragment fragment = getSupportFragmentManager()
-                .findFragmentByTag(TAG_FRAGMENT);
-
-        if(fragment instanceof NotifyFABClick)
-        {
-            ((NotifyFABClick) fragment).addItem();
-        }
-    }
-
-
-
-    @OnClick(R.id.fab_add)
+    @OnClick(R.id.fab_add_from_global)
     void fabAddItemCatClick()
     {
         Fragment fragment = getSupportFragmentManager()
                 .findFragmentByTag(TAG_FRAGMENT);
 
-        if(fragment instanceof NotifyFABClick)
+        if(fragment instanceof NotifyFABClickAddFromGlobal)
         {
-            ((NotifyFABClick) fragment).addItemCategory();
-        }
-    }
-
-
-    @OnClick(R.id.fab_add_from_global_item)
-    void setFab_add_from_global()
-    {
-        Fragment fragment = getSupportFragmentManager()
-                .findFragmentByTag(TAG_FRAGMENT);
-
-        if(fragment instanceof NotifyFABClick)
-        {
-            ((NotifyFABClick) fragment).addfromGlobal();
+            ((NotifyFABClickAddFromGlobal) fragment).copySelected();
         }
     }
 

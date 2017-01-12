@@ -1,9 +1,9 @@
-package nbsidb.nearbyshops.org.RetrofitRESTContract;
+package nbsidb.nearbyshops.org.RetrofitRESTContractGIDB;
+
 
 import java.util.List;
 
 import nbsidb.nearbyshops.org.Model.Image;
-import nbsidb.nearbyshops.org.Model.Item;
 import nbsidb.nearbyshops.org.Model.ItemCategory;
 import nbsidb.nearbyshops.org.ModelEndpoint.ItemCategoryEndPoint;
 import okhttp3.RequestBody;
@@ -23,7 +23,7 @@ import retrofit2.http.Query;
  * Created by sumeet on 2/4/16.
  */
 
-public interface ItemCategoryService {
+public interface ItemCategoryServiceGIDB {
 
 
 
@@ -69,7 +69,7 @@ public interface ItemCategoryService {
     );
 
 
-//
+
 //    @GET("api/v1/ItemCategory")
 //    Call<ItemCategoryEndPoint> getItemCategories(
 //            @Query("ShopID") Integer shopID,
@@ -89,10 +89,6 @@ public interface ItemCategoryService {
 //    Call<ItemCategory> getItemCategory(@Path("id") int ItemCategoryID);
 
 
-    @POST("/api/v1/ItemCategory/AddFromGlobal")
-    Call<ResponseBody> addItemCatFromGlobal(@Header("Authorization") String headers,
-                                         @Body List<ItemCategory> itemCatList);
-
 
     // Image Calls
 
@@ -104,30 +100,6 @@ public interface ItemCategoryService {
     @DELETE("/api/v1/ItemCategory/Image/{name}")
     Call<ResponseBody> deleteImage(@Header("Authorization") String headers,
                                    @Path("name") String fileName);
-
-
-
-
-    // Deprecated Calls
-
-//
-//    @GET("/api/v1/ItemCategory/Deprecated")
-//    Call<List<ItemCategory>> getItemCategories(@Query("ParentID") int parentID, @Query("ShopID") int shopID);
-//
-//    @GET("/api/v1/ItemCategory/Deprecated")
-//    Call<List<ItemCategory>> getItemCategories(@Query("ParentID") int parentID);
-//
-//
-//    @GET("/api/v1/ItemCategory/Deprecated")
-//    Call<List<ItemCategory>> getItemCategories(
-//            @Query("ShopID") Integer shopID,
-//            @Query("ParentID") Integer parentID, @Query("IsDetached") Boolean parentIsNull,
-//            @Query("latCenter") Double latCenter, @Query("lonCenter") Double lonCenter,
-//            @Query("deliveryRangeMax") Double deliveryRangeMax,
-//            @Query("deliveryRangeMin") Double deliveryRangeMin,
-//            @Query("proximity") Double proximity,
-//            @Query("SortBy") String sortBy,
-//            @Query("Limit") Integer limit, @Query("Offset") Integer offset);
 
 
 }

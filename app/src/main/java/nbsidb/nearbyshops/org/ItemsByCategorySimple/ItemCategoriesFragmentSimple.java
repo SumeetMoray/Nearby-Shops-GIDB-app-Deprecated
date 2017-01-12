@@ -26,6 +26,7 @@ import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import nbsidb.nearbyshops.org.AddFromGlobalSelection.AddFromGlobal;
 import nbsidb.nearbyshops.org.DaggerComponentBuilder;
 import nbsidb.nearbyshops.org.ItemsByCategorySimple.EditItem.EditItem;
 import nbsidb.nearbyshops.org.ItemsByCategorySimple.EditItem.EditItemFragment;
@@ -889,9 +890,12 @@ public class ItemCategoriesFragmentSimple extends Fragment implements SwipeRefre
     }
 
     @Override
-    public void addfromGlobalItem() {
-
+    public void addfromGlobal() {
+        Intent intent  = new Intent(getActivity(), AddFromGlobal.class);
+        intent.putExtra(AddFromGlobal.INTENT_KEY_ITEM_CAT_PARENT,currentCategory);
+        startActivity(intent);
     }
+
 
     @Override
     public void addItemCategory() {
@@ -903,10 +907,6 @@ public class ItemCategoriesFragmentSimple extends Fragment implements SwipeRefre
         startActivity(intent);
     }
 
-    @Override
-    public void addfromGlobalItemCat() {
-
-    }
 
 
 
@@ -1322,13 +1322,9 @@ public class ItemCategoriesFragmentSimple extends Fragment implements SwipeRefre
     }
 
 
-
     void clearSelectedItems()
     {
         // clear the selected items
         listAdapter.selectedItems.clear();
     }
-
-
-
 }

@@ -1,4 +1,4 @@
-package nbsidb.nearbyshops.org.RetrofitRESTContract;
+package nbsidb.nearbyshops.org.RetrofitRESTContractGIDB;
 
 
 import java.util.List;
@@ -21,7 +21,7 @@ import retrofit2.http.Query;
 /**
  * Created by sumeet on 3/4/16.
  */
-public interface ItemService
+public interface ItemServiceGIDB
 {
 
     @POST("/api/v1/Item")
@@ -53,9 +53,21 @@ public interface ItemService
 
     @DELETE("/api/v1/Item/{id}")
     Call<ResponseBody> deleteItem(@Header("Authorization") String headers,
-
                                   @Path("id") int id);
 
+
+    @GET("/api/v1/Item")
+    Call<ItemEndPoint> getItems(
+            @Query("ItemCategoryID") Integer itemCategoryID,
+            @Query("ShopID") Integer shopID,
+            @Query("latCenter") Double latCenter, @Query("lonCenter") Double lonCenter,
+            @Query("deliveryRangeMax") Double deliveryRangeMax,
+            @Query("deliveryRangeMin") Double deliveryRangeMin,
+            @Query("proximity") Double proximity,
+            @Query("SortBy") String sortBy,
+            @Query("Limit") Integer limit, @Query("Offset") Integer offset,
+            @Query("metadata_only") Boolean metaonly
+    );
 
 
     @GET("/api/v1/Item/OuterJoin")
@@ -79,10 +91,10 @@ public interface ItemService
 
 
 
+    @GET("/api/v1/Item/{id}")
+    Call<Item> getItem(@Path("id") int ItemID);
 
-    @POST("/api/v1/Item/AddFromGlobal")
-    Call<ResponseBody> addItemFromGlobal(@Header("Authorization") String headers,
-                                         @Body List<Item> itemList);
+
 
     // Image Calls
 
@@ -94,4 +106,8 @@ public interface ItemService
     @DELETE("/api/v1/Item/Image/{name}")
     Call<ResponseBody> deleteImage(@Header("Authorization") String headers,
                                    @Path("name") String fileName);
+
+
+
+
 }

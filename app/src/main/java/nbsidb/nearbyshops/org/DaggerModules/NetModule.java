@@ -20,6 +20,8 @@ import nbsidb.nearbyshops.org.RetrofitRESTContract.AdminServiceSimple;
 import nbsidb.nearbyshops.org.RetrofitRESTContract.ItemCategoryService;
 import nbsidb.nearbyshops.org.RetrofitRESTContract.ItemService;
 import nbsidb.nearbyshops.org.RetrofitRESTContract.StaffService;
+import nbsidb.nearbyshops.org.RetrofitRESTContractGIDB.ItemCategoryServiceGIDB;
+import nbsidb.nearbyshops.org.RetrofitRESTContractGIDB.ItemServiceGIDB;
 import nbsidb.nearbyshops.org.Utility.UtilityGeneral;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
@@ -113,6 +115,25 @@ public class NetModule {
 
 
 
+
+    @Provides @Named("gidb")
+    Retrofit provideRetrofitGIDB(Gson gson, OkHttpClient okHttpClient) {
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .baseUrl(UtilityGeneral.getServiceURL_GIDB(MyApplication.getAppContext()))
+                .build();
+
+        //        .client(okHttpClient)
+
+        Log.d("applog","Retrofit : " + UtilityGeneral.getServiceURL_GIDB(MyApplication.getAppContext()));
+
+
+        return retrofit;
+    }
+
+
+
     @Provides @Named("reactive")
 //    @Singleton
     Retrofit provideRetrofitReactive(Gson gson, OkHttpClient okHttpClient) {
@@ -174,6 +195,22 @@ public class NetModule {
     {
         return retrofit.create(StaffService.class);
     }
+
+
+
+    @Provides
+    ItemCategoryServiceGIDB provideItemCategoryServiceGIDB(@Named("gidb")Retrofit retrofit)
+    {
+        return retrofit.create(ItemCategoryServiceGIDB.class);
+    }
+
+    @Provides
+    ItemServiceGIDB provideItemServiceGIDB(@Named("gidb")Retrofit retrofit)
+    {
+        return retrofit.create(ItemServiceGIDB.class);
+    }
+
+
 
 
 }
