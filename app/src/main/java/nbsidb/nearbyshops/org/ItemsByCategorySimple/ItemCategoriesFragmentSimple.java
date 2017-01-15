@@ -654,14 +654,18 @@ public class ItemCategoriesFragmentSimple extends Fragment implements SwipeRefre
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+
                         itemCategory.setParentCategoryID(-1);
                         makeRequestUpdateItemCat(itemCategory);
+
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+
                         showToastMessage("Cancelled !");
+
                     }
                 })
                 .show();

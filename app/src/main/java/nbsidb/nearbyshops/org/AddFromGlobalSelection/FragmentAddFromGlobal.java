@@ -377,7 +377,7 @@ public class FragmentAddFromGlobal extends Fragment implements SwipeRefreshLayou
 
 
         Call<ItemCategoryEndPoint> endPointCall = itemCategoryService.getItemCategoriesQuerySimple(
-                currentCategory.getItemCategoryID(),null,"id",null,null
+                currentCategory.getItemCategoryID(),null,ItemCategory.CATEGORY_ORDER,null,null
         );
 
         //"id"

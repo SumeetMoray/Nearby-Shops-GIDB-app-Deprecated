@@ -3,6 +3,7 @@ package nbsidb.nearbyshops.org.RetrofitRESTContract;
 
 import java.util.List;
 
+import butterknife.Bind;
 import nbsidb.nearbyshops.org.Model.Image;
 import nbsidb.nearbyshops.org.Model.Item;
 import nbsidb.nearbyshops.org.ModelEndpoint.ItemEndPoint;
@@ -53,9 +54,7 @@ public interface ItemService
 
     @DELETE("/api/v1/Item/{id}")
     Call<ResponseBody> deleteItem(@Header("Authorization") String headers,
-
                                   @Path("id") int id);
-
 
 
     @GET("/api/v1/Item/OuterJoin")

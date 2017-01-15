@@ -105,7 +105,7 @@ public class UtilityGeneral {
         context = MyApplication.getAppContext();
 
         SharedPreferences sharedPref = context.getSharedPreferences(context.getString(R.string.preference_file_name), context.MODE_PRIVATE);
-        String service_url = sharedPref.getString(context.getString(R.string.preference_service_url_gidb_key), "http://192.168.1.34:5000");
+        String service_url = sharedPref.getString(context.getString(R.string.preference_service_url_gidb_key), "http://192.168.1.33:5000");
 
         //service_url = "http://localareademo-env.ap-southeast-1.elasticbeanstalk.com";
 
