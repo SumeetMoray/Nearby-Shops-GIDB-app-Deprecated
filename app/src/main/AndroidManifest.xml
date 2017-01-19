@@ -2,7 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="nbsidb.nearbyshops.org">
 
-
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
@@ -14,7 +13,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <activity
             android:name=".LoginScreen"
             android:label="@string/title_activity_login"
@@ -25,20 +23,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-
         <activity
             android:name=".Home"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
-
-
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-
-
         <activity
             android:name=".ItemsByCategorySimple.ItemCategoriesSimple"
             android:label="Items by Category"
@@ -48,8 +40,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Home" />
         </activity>
-
-
         <activity
             android:name=".SelectParent.ItemCategoriesParent"
             android:label="Change Parent"
@@ -59,7 +49,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Home" />
         </activity>
-
         <activity
             android:name=".ItemsByCategorySimple.EditItem.EditItem"
             android:label="Edit Item"
@@ -78,7 +67,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Home" />
         </activity>
-
         <activity
             android:name=".StaffAccounts.EditStaff.EditStaff"
             android:label="Edit Staff"
@@ -88,8 +76,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".StaffAccounts.StaffAccounts" />
         </activity>
-
-
         <activity
             android:name=".StaffAccounts.StaffAccounts"
             android:label="Edit Staff"
@@ -99,8 +85,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Home" />
         </activity>
-
-
         <activity
             android:name=".DetachedTabs.DetachedTabs"
             android:label="Detached Items"
@@ -110,10 +94,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Home" />
         </activity>
-
-
-
-
         <activity
             android:name=".StaffHome.EditStaffSelf.EditStaffSelf"
             android:label="Edit Staff"
@@ -123,7 +103,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".StaffHome.StaffHome" />
         </activity>
-
         <activity
             android:name=".StaffHome.StaffDashboard"
             android:label="Edit Staff"
@@ -133,8 +112,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".StaffHome.StaffDashboard" />
         </activity>
-
-
         <activity
             android:name=".StaffHome.StaffHome"
             android:label="Edit Staff"
@@ -144,8 +121,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".StaffHome.StaffHome" />
         </activity>
-
-
         <activity
             android:name=".AddFromGlobalSelection.AddFromGlobal"
             android:label="Add from Global"
@@ -155,7 +130,27 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Home" />
         </activity>
+        <activity
+            android:name=".Settings.SettingsActivity"
+            android:label="@string/title_activity_settings"
+            android:parentActivityName=".Home">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="nbsidb.nearbyshops.org.Home" />
+        </activity>
 
+        <activity android:name=".Settings.SettingsCustom"></activity>
+
+
+        <activity
+            android:name=".EditProfileAdmin.EditProfileAdmin"
+            android:label="Edit Admin"
+            android:parentActivityName=".Home"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Home" />
+        </activity>
 
     </application>
 

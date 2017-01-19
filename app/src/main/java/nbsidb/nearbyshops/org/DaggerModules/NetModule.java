@@ -71,10 +71,9 @@ public class NetModule {
     @Provides
     @Singleton
     Gson provideGson() {
+
         GsonBuilder gsonBuilder = new GsonBuilder();
         //gsonBuilder.setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES);
-
-
 
         return gsonBuilder.create();
     }
@@ -97,7 +96,6 @@ public class NetModule {
     //    @Singleton
 
     @Provides @Named("normal")
-//    @Singleton
     Retrofit provideRetrofit(Gson gson, OkHttpClient okHttpClient) {
 
         Retrofit retrofit = new Retrofit.Builder()
@@ -135,7 +133,6 @@ public class NetModule {
 
 
     @Provides @Named("reactive")
-//    @Singleton
     Retrofit provideRetrofitReactive(Gson gson, OkHttpClient okHttpClient) {
 
 
@@ -162,9 +159,8 @@ public class NetModule {
     @Singleton
     ItemCategoryService provideItemCategoryService(@Named("normal")Retrofit retrofit)
     {
-        ItemCategoryService service = retrofit.create(ItemCategoryService.class);
 
-        return service;
+        return retrofit.create(ItemCategoryService.class);
     }
 
 

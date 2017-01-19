@@ -184,34 +184,34 @@
 
 
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+        <!--<android.support.design.widget.TextInputLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content">-->
 
-            <EditText
-                android:textColor="#000000"
-                android:inputType="textMultiLine"
-                android:id="@+id/govt_id_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Government ID Name"/>
+            <!--<EditText-->
+                <!--android:textColor="#000000"-->
+                <!--android:inputType="textMultiLine"-->
+                <!--android:id="@+id/govt_id_name"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:hint="Government ID Name"/>-->
 
-        </android.support.design.widget.TextInputLayout>
+        <!--</android.support.design.widget.TextInputLayout>-->
 
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+        <!--<android.support.design.widget.TextInputLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content">-->
 
-            <EditText
-                android:inputType="textMultiLine"
-                android:textColor="#000000"
-                android:id="@+id/govt_id_number"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Government ID Number"/>
+            <!--<EditText-->
+                <!--android:inputType="textMultiLine"-->
+                <!--android:textColor="#000000"-->
+                <!--android:id="@+id/govt_id_number"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:hint="Government ID Number"/>-->
 
-        </android.support.design.widget.TextInputLayout>
+        <!--</android.support.design.widget.TextInputLayout>-->
 
         <TextView
             android:layout_marginTop="20dp"
@@ -238,128 +238,6 @@
 
 
 
-        <TextView
-            android:layout_marginTop="20dp"
-            android:paddingLeft="5dp"
-            android:paddingStart="5dp"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp"
-            android:background="#33000000"
-            android:text="Permissions"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-
-<!--
-        <TextView
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginStart="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginEnd="5dp"
-            android:background="@color/light_grey"
-            android:layout_width="match_parent"
-            android:layout_height="1dp" />-->
-
-
-        <CheckBox
-            android:layout_marginTop="10dp"
-            android:text="Create Update Item Categories"
-            android:id="@+id/permit_create_update_item_cat"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-<!--
-        <TextView
-            android:layout_marginLeft="5dp"
-            android:layout_marginStart="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginEnd="5dp"
-            android:background="@color/light_grey"
-            android:layout_width="match_parent"
-            android:layout_height="1dp" />
--->
-
-        <CheckBox
-            android:text="Create Update Items"
-            android:id="@+id/permit_create_update_items"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-
-<!--
-        <TextView
-            android:layout_marginLeft="5dp"
-            android:layout_marginStart="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginEnd="5dp"
-            android:background="@color/light_grey"
-            android:layout_width="match_parent"
-            android:layout_height="1dp" />
--->
-
-<!--
-        <TextView
-            android:layout_marginLeft="5dp"
-            android:layout_marginStart="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginEnd="5dp"
-            android:background="@color/light_grey"
-            android:layout_width="match_parent"
-            android:layout_height="1dp" />-->
-
-
-
-
-        <!--<TextView
-            android:layout_marginLeft="5dp"
-            android:layout_marginStart="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginEnd="5dp"
-            android:background="@color/light_grey"
-            android:layout_width="match_parent"
-            android:layout_height="1dp" />-->
-
-
-        <!--<CheckBox
-            android:text="Approve ShopAdmin accounts"
-            android:id="@+id/approve_shop_admin_accounts"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-        -->
-
-        <!--<TextView
-            android:layout_marginLeft="5dp"
-            android:layout_marginStart="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginEnd="5dp"
-            android:background="@color/light_grey"
-            android:layout_width="match_parent"
-            android:layout_height="1dp" />-->
-
-
-        <!--<CheckBox-->
-            <!--android:text="Approve Shops"-->
-            <!--android:id="@+id/approve_shops"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content" />-->
-
-        <!--<TextView
-            android:layout_marginLeft="5dp"
-            android:layout_marginStart="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginEnd="5dp"
-            android:background="@color/light_grey"
-            android:layout_width="match_parent"
-            android:layout_height="1dp" />-->
-
-
-        <!--<CheckBox-->
-            <!--android:text="Approve EndUser accounts"-->
-            <!--android:id="@+id/approve_end_user_accounts"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content" />-->
-<!--
 
         <TextView
             android:layout_marginLeft="5dp"
@@ -372,25 +250,6 @@
 
 
 -->
-
-        <Switch
-            android:layout_marginTop="10dp"
-            android:background="@color/light_grey"
-            android:text="Enable / Disable Account"
-            android:id="@+id/switch_enable"
-            android:textOff="Enable Account"
-            android:textOn="Disable Account"
-            android:paddingStart="5dp"
-            android:paddingLeft="5dp"
-            android:paddingRight="10dp"
-            android:paddingEnd="10dp"
-            android:paddingTop="20dp"
-            android:paddingBottom="20dp"
-            android:textSize="17sp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-
 
 
 

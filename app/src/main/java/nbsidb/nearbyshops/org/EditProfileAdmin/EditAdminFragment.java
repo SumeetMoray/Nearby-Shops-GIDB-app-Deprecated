@@ -1,4 +1,4 @@
-package nbsidb.nearbyshops.org.StaffAccounts.EditStaff;
+package nbsidb.nearbyshops.org.EditProfileAdmin;
 
 
 import android.Manifest;
@@ -41,9 +41,10 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import nbsidb.nearbyshops.org.DaggerComponentBuilder;
 import nbsidb.nearbyshops.org.Model.Image;
+import nbsidb.nearbyshops.org.ModelRoles.Admin;
 import nbsidb.nearbyshops.org.ModelRoles.Staff;
 import nbsidb.nearbyshops.org.R;
-import nbsidb.nearbyshops.org.RetrofitRESTContract.StaffService;
+import nbsidb.nearbyshops.org.RetrofitRESTContract.AdminService;
 import nbsidb.nearbyshops.org.StaffAccounts.UtilityStaff;
 import nbsidb.nearbyshops.org.Utility.UtilityGeneral;
 import nbsidb.nearbyshops.org.Utility.UtilityLogin;
@@ -60,7 +61,7 @@ import rx.functions.Action1;
 import static android.app.Activity.RESULT_OK;
 
 
-public class EditStaffFragment extends Fragment {
+public class EditAdminFragment extends Fragment {
 
     public static int PICK_IMAGE_REQUEST = 21;
     // Upload the image after picked up
@@ -74,7 +75,7 @@ public class EditStaffFragment extends Fragment {
 //    DeliveryGuySelfService deliveryService;
 
     @Inject
-    StaffService staffService;
+    AdminService adminService;
 
 
     // flag for knowing whether the image is changed or not
@@ -95,15 +96,15 @@ public class EditStaffFragment extends Fragment {
 
     @Bind(R.id.phone_number) EditText phone;
     @Bind(R.id.designation) EditText designation;
-    @Bind(R.id.switch_enable) Switch switchEnable;
+//    @Bind(R.id.switch_enable) Switch switchEnable;
 
     @Bind(R.id.make_account_private) CheckBox makeAccountPrivate;
 
-    @Bind(R.id.govt_id_name) EditText govtIDName;
-    @Bind(R.id.govt_id_number) EditText govtIDNumber;
+//    @Bind(R.id.govt_id_name) EditText govtIDName;
+//    @Bind(R.id.govt_id_number) EditText govtIDNumber;
 
-    @Bind(R.id.permit_create_update_item_cat) CheckBox createUpdateItemCat;
-    @Bind(R.id.permit_create_update_items) CheckBox createUpdateItems;
+//    @Bind(R.id.permit_create_update_item_cat) CheckBox createUpdateItemCat;
+//    @Bind(R.id.permit_create_update_items) CheckBox createUpdateItems;
 //    @Bind(R.id.approve_shop_admin_accounts) CheckBox approveShopAdminAccounts;
 //    @Bind(R.id.approve_shops) CheckBox approveShops;
 //    @Bind(R.id.approve_end_user_accounts) CheckBox approveEndUserAccounts;
@@ -122,10 +123,10 @@ public class EditStaffFragment extends Fragment {
     int current_mode = MODE_ADD;
 
 //    DeliveryGuySelf deliveryGuySelf = new DeliveryGuySelf();
-    Staff staff = null;
+    Admin admin = null;
 
 
-    public EditStaffFragment() {
+    public EditAdminFragment() {
 
         DaggerComponentBuilder.getInstance()
                 .getNetComponent().Inject(this);
@@ -141,7 +142,7 @@ public class EditStaffFragment extends Fragment {
         super.onCreateView(inflater, container, savedInstanceState);
 
         setRetainInstance(true);
-        View rootView = inflater.inflate(R.layout.content_edit_staff, container, false);
+        View rootView = inflater.inflate(R.layout.content_edit_admin, container, false);
 
         ButterKnife.bind(this,rootView);
 
@@ -153,11 +154,13 @@ public class EditStaffFragment extends Fragment {
 
             if(current_mode == MODE_UPDATE)
             {
-                staff = UtilityStaff.getStaff(getContext());
+                admin = UtilityLogin.getAdmin(getContext());
+
+//                System.out.println("Current Mode : " + current_mode + " Admin ID" + admin.getAdminID());
             }
 
 
-            if(staff!=null) {
+            if(admin !=null) {
 
                 bindDataToViews();
             }
@@ -177,8 +180,8 @@ public class EditStaffFragment extends Fragment {
         updateIDFieldVisibility();
 
 
-        if(staff!=null) {
-            loadImage(staff.getProfileImageURL());
+        if(admin !=null) {
+            loadImage(admin.getProfileImageURL());
             showLogMessage("Inside OnCreateView : DeliveryGUySelf : Not Null !");
         }
 
@@ -245,7 +248,7 @@ public class EditStaffFragment extends Fragment {
 
     void loadImage(String imagePath) {
 
-        String iamgepath = UtilityGeneral.getServiceURL(getContext()) + "/api/v1/Staff/Image/" + imagePath;
+        String iamgepath = UtilityGeneral.getServiceURL(getContext()) + "/api/v1/Admin/Image/" + imagePath;
 
         Picasso.with(getContext())
                 .load(iamgepath)
@@ -267,7 +270,7 @@ public class EditStaffFragment extends Fragment {
 
         if(current_mode == MODE_ADD)
         {
-            staff = new Staff();
+            admin = new Admin();
             addAccount();
         }
         else if(current_mode == MODE_UPDATE)
@@ -341,16 +344,16 @@ public class EditStaffFragment extends Fragment {
     {
 
 
-        if(staff!=null && staff.getUsername()!=null
+        if(admin !=null && admin.getUsername()!=null
                 &&
-                username.getText().toString().equals(staff.getUsername()))
+                username.getText().toString().equals(admin.getUsername()))
         {
             username.setTextColor(ContextCompat.getColor(getContext(),R.color.gplus_color_1));
             return;
         }
 
 
-        Call<ResponseBody> call = staffService.checkUsernameExist(username.getText().toString());
+        Call<ResponseBody> call = adminService.checkUsernameExist(username.getText().toString());
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -397,7 +400,7 @@ public class EditStaffFragment extends Fragment {
         else
         {
             // post request
-            retrofitPOSTRequest();
+//            retrofitPOSTRequest();
         }
 
     }
@@ -411,7 +414,7 @@ public class EditStaffFragment extends Fragment {
 
 
             // delete previous Image from the Server
-            deleteImage(staff.getProfileImageURL());
+            deleteImage(admin.getProfileImageURL());
 
             /*ImageCalls.getInstance()
                     .deleteImage(
@@ -423,7 +426,7 @@ public class EditStaffFragment extends Fragment {
             if(isImageRemoved)
             {
 
-                staff.setProfileImageURL(null);
+                admin.setProfileImageURL(null);
                 retrofitPUTRequest();
 
             }else
@@ -447,28 +450,30 @@ public class EditStaffFragment extends Fragment {
 
     void bindDataToViews()
     {
-        if(staff!=null) {
+        if(admin !=null) {
 
-            item_id.setText(String.valueOf(staff.getUserID()));
-            name.setText(staff.getStaffName());
-            username.setText(staff.getUsername());
-            password.setText(staff.getPassword());
-            about.setText(staff.getAbout());
-            phone.setText(staff.getPhone());
-            designation.setText(staff.getDesignation());
-            switchEnable.setChecked(staff.getEnabled());
+            item_id.setText(String.valueOf(admin.getAdminID()));
+            name.setText(admin.getAdministratorName());
+            username.setText(admin.getUsername());
+            password.setText(admin.getPassword());
+            about.setText(admin.getAbout());
+            designation.setText(admin.getDesignation());
+            phone.setText(admin.getPhone());
 
 
-            makeAccountPrivate.setChecked(staff.isAccountPrivate());
-            govtIDName.setText(staff.getGovtIDName());
-            govtIDNumber.setText(staff.getGovtIDNumber());
+//            switchEnable.setChecked(admin.getEnabled());
 
-            createUpdateItemCat.setChecked(staff.isCreateUpdateItemCategory());
-            createUpdateItems.setChecked(staff.isCreateUpdateItems());
+            makeAccountPrivate.setChecked(admin.isAccountPrivate());
 
-//            approveShopAdminAccounts.setChecked(staff.isApproveShopAdminAccounts());
-//            approveShops.setChecked(staff.isApproveShops());
-//            approveEndUserAccounts.setChecked(staff.isApproveEndUserAccounts());
+//            govtIDName.setText(admin.getGovtIDName());
+//            govtIDNumber.setText(admin.getGovtIDNumber());
+
+//            createUpdateItemCat.setChecked(admin.isCreateUpdateItemCategory());
+//            createUpdateItems.setChecked(admin.isCreateUpdateItems());
+
+//            approveShopAdminAccounts.setChecked(admin.isApproveShopAdminAccounts());
+//            approveShops.setChecked(admin.isApproveShops());
+//            approveEndUserAccounts.setChecked(admin.isApproveEndUserAccounts());
 
         }
     }
@@ -476,11 +481,11 @@ public class EditStaffFragment extends Fragment {
 
     void getDataFromViews()
     {
-        if(staff==null)
+        if(admin ==null)
         {
             if(current_mode == MODE_ADD)
             {
-                staff = new Staff();
+                admin = new Admin();
             }
             else
             {
@@ -493,25 +498,27 @@ public class EditStaffFragment extends Fragment {
 //            deliveryGuySelf.setShopID(UtilityShopHome.getShop(getContext()).getShopID());
 //        }
 
-        staff.setStaffName(name.getText().toString());
-        staff.setUsername(username.getText().toString());
-        staff.setPassword(password.getText().toString());
-        staff.setAbout(about.getText().toString());
-        staff.setPhone(phone.getText().toString());
-        staff.setDesignation(designation.getText().toString());
+        admin.setAdministratorName(name.getText().toString());
+        admin.setUsername(username.getText().toString());
+        admin.setPassword(password.getText().toString());
+        admin.setAbout(about.getText().toString());
+        admin.setDesignation(designation.getText().toString());
+        admin.setPhone(phone.getText().toString());
 
-        staff.setEnabled(switchEnable.isChecked());
 
-        staff.setAccountPrivate(makeAccountPrivate.isChecked());
-        staff.setGovtIDName(govtIDName.getText().toString());
-        staff.setGovtIDNumber(govtIDNumber.getText().toString());
+//        admin.setEnabled(switchEnable.isChecked());
 
-        staff.setCreateUpdateItemCategory(createUpdateItemCat.isChecked());
-        staff.setCreateUpdateItems(createUpdateItems.isChecked());
+        admin.setAccountPrivate(makeAccountPrivate.isChecked());
 
-//        staff.setApproveShopAdminAccounts(approveShopAdminAccounts.isChecked());
-//        staff.setApproveShops(approveShops.isChecked());
-//        staff.setApproveEndUserAccounts(approveEndUserAccounts.isChecked());
+//        admin.setGovtIDName(govtIDName.getText().toString());
+//        admin.setGovtIDNumber(govtIDNumber.getText().toString());
+
+//        admin.setCreateUpdateItemCategory(createUpdateItemCat.isChecked());
+//        admin.setCreateUpdateItems(createUpdateItems.isChecked());
+
+//        admin.setApproveShopAdminAccounts(approveShopAdminAccounts.isChecked());
+//        admin.setApproveShops(approveShops.isChecked());
+//        admin.setApproveEndUserAccounts(approveEndUserAccounts.isChecked());
     }
 
 
@@ -522,9 +529,9 @@ public class EditStaffFragment extends Fragment {
         getDataFromViews();
 
 
-//        final Staff staff = UtilityStaff.getStaff(getContext());
-        Call<ResponseBody> call = staffService.putStaff(UtilityLogin.getAuthorizationHeaders(
-                                                        getContext()),staff.getUserID(), staff);
+//        final Staff admin = UtilityStaff.getStaff(getContext());
+        Call<ResponseBody> call = adminService.putAdmin(UtilityLogin.getAuthorizationHeaders(
+                                                        getContext()), admin);
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -533,8 +540,8 @@ public class EditStaffFragment extends Fragment {
                 if(response.code()==200)
                 {
                     showToastMessage("Update Successful !");
-
-                    UtilityStaff.saveStaff(staff,getContext());
+                    UtilityLogin.saveAdmin(admin,getContext());
+                    UtilityLogin.saveCredentials(getActivity(),admin.getUsername(),admin.getPassword());
                 }
                 else
                 {
@@ -552,45 +559,45 @@ public class EditStaffFragment extends Fragment {
     }
 
 
-    void retrofitPOSTRequest()
-    {
-        getDataFromViews();
-
-//        final Staff staffTemp = UtilityStaff.getStaff(getContext());
-        Call<Staff> call = staffService.postStaff(UtilityLogin.getAuthorizationHeaders(getContext()),staff);
-
-        call.enqueue(new Callback<Staff>() {
-            @Override
-            public void onResponse(Call<Staff> call, Response<Staff> response) {
-
-                if(response.code()==201)
-                {
-                    showToastMessage("Add successful !");
-
-                    current_mode = MODE_UPDATE;
-                    updateIDFieldVisibility();
-                    staff = response.body();
-                    bindDataToViews();
-
-                    UtilityStaff.saveStaff(staff,getContext());
-
-                }
-                else
-                {
-                    showToastMessage("Add failed !");
-                }
-
-
-            }
-
-            @Override
-            public void onFailure(Call<Staff> call, Throwable t) {
-
-                showToastMessage("Add failed !");
-
-            }
-        });
-    }
+//    void retrofitPOSTRequest()
+//    {
+//        getDataFromViews();
+//
+////        final Staff staffTemp = UtilityStaff.getStaff(getContext());
+//        Call<Staff> call = adminService.putAdmin(UtilityLogin.getAuthorizationHeaders(getContext()), admin);
+//
+//        call.enqueue(new Callback<Staff>() {
+//            @Override
+//            public void onResponse(Call<Staff> call, Response<Staff> response) {
+//
+//                if(response.code()==201)
+//                {
+//                    showToastMessage("Add successful !");
+//
+//                    current_mode = MODE_UPDATE;
+//                    updateIDFieldVisibility();
+//                    admin = response.body();
+//                    bindDataToViews();
+//
+//                    UtilityStaff.saveStaff(admin,getContext());
+//
+//                }
+//                else
+//                {
+//                    showToastMessage("Add failed !");
+//                }
+//
+//
+//            }
+//
+//            @Override
+//            public void onFailure(Call<Staff> call, Throwable t) {
+//
+//                showToastMessage("Add failed !");
+//
+//            }
+//        });
+//    }
 
 
     @Override
@@ -852,7 +859,7 @@ public class EditStaffFragment extends Fragment {
 
 
 
-        Call<Image> imageCall = staffService.uploadImage(UtilityLogin.getAuthorizationHeaders(getContext()),
+        Call<Image> imageCall = adminService.uploadImage(UtilityLogin.getAuthorizationHeaders(getContext()),
                 requestBodyBinary);
 
 
@@ -869,20 +876,20 @@ public class EditStaffFragment extends Fragment {
 //                    loadImage(image.getPath());
 
 
-                    staff.setProfileImageURL(image.getPath());
+                    admin.setProfileImageURL(image.getPath());
 
                 }
                 else if(response.code()==417)
                 {
                     showToastMessage("Cant Upload Image. Image Size should not exceed 2 MB.");
 
-                    staff.setProfileImageURL(null);
+                    admin.setProfileImageURL(null);
 
                 }
                 else
                 {
                     showToastMessage("Image Upload failed !");
-                    staff.setProfileImageURL(null);
+                    admin.setProfileImageURL(null);
 
                 }
 
@@ -892,7 +899,7 @@ public class EditStaffFragment extends Fragment {
                 }
                 else
                 {
-                    retrofitPOSTRequest();
+//                    retrofitPOSTRequest();
                 }
 
 
@@ -902,7 +909,7 @@ public class EditStaffFragment extends Fragment {
             public void onFailure(Call<Image> call, Throwable t) {
 
                 showToastMessage("Image Upload failed !");
-                staff.setProfileImageURL(null);
+                admin.setProfileImageURL(null);
 
                 if(isModeEdit)
                 {
@@ -910,7 +917,7 @@ public class EditStaffFragment extends Fragment {
                 }
                 else
                 {
-                    retrofitPOSTRequest();
+//                    retrofitPOSTRequest();
                 }
             }
         });
@@ -921,7 +928,7 @@ public class EditStaffFragment extends Fragment {
 
     void deleteImage(String filename)
     {
-        Call<ResponseBody> call = staffService.deleteImage(UtilityLogin.getAuthorizationHeaders(getContext()),filename);
+        Call<ResponseBody> call = adminService.deleteImage(UtilityLogin.getAuthorizationHeaders(getContext()),filename);
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override

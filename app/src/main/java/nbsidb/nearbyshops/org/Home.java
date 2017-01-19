@@ -19,7 +19,11 @@ import javax.inject.Inject;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import nbsidb.nearbyshops.org.DetachedTabs.DetachedTabs;
+import nbsidb.nearbyshops.org.EditProfileAdmin.EditAdminFragment;
+import nbsidb.nearbyshops.org.EditProfileAdmin.EditProfileAdmin;
 import nbsidb.nearbyshops.org.ItemsByCategorySimple.ItemCategoriesSimple;
+import nbsidb.nearbyshops.org.Settings.SettingsActivity;
+import nbsidb.nearbyshops.org.Settings.SettingsCustom;
 import nbsidb.nearbyshops.org.StaffAccounts.StaffAccounts;
 
 public class Home extends AppCompatActivity
@@ -100,6 +104,21 @@ public class Home extends AppCompatActivity
     }
 
 
+
+    @OnClick(R.id.settings)
+    void settingsClick()
+    {
+        startActivity(new Intent(this, SettingsCustom.class));
+    }
+
+
+    @OnClick(R.id.edit_profile)
+    void editProfileClick()
+    {
+        Intent intent = new Intent(this, EditProfileAdmin.class);
+        intent.putExtra(EditAdminFragment.EDIT_MODE_INTENT_KEY,EditAdminFragment.MODE_UPDATE);
+        startActivity(intent);
+    }
 
 
 
@@ -189,7 +208,7 @@ public class Home extends AppCompatActivity
 
 
 
-//    @OnClick(R.id.settings)
+//    @OnClick(R.id.fragment_settings)
 //    void settingsClick(View view)
 //    {
 //        Intent intent = new Intent(this, SettingsActivity.class);
