@@ -44,7 +44,7 @@
         But you can have Items placed under a Leaf Node Item Category.
         Leaf Node Item Category is an Item Category which can have Items placed under them but cannot have Sub Item Category / Item Categories under it.</string>
 
-    <string name="title_activity_login">Login : GIDB</string>
+    <string name="title_activity_login">NBS : Items Database</string>
     <string name="title_activity_settings">Settings</string>
 
     <!-- Strings related to Settings -->

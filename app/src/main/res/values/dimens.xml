@@ -3,7 +3,7 @@
     <dimen name="activity_horizontal_margin">10dp</dimen>
     <dimen name="activity_vertical_margin">10dp</dimen>
 
-    <dimen name="image_view_height">200dp</dimen>
+    <dimen name="image_view_height">300dp</dimen>
 
     <dimen name="slidinglayerwidth">20dp</dimen>
     <dimen name="appbar_label_size">15sp</dimen>

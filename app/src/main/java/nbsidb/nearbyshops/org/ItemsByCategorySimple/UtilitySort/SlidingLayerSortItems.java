@@ -1,4 +1,4 @@
-package nbsidb.nearbyshops.org.ItemsByCategorySimple;
+package nbsidb.nearbyshops.org.ItemsByCategorySimple.UtilitySort;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -14,7 +14,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import nbsidb.nearbyshops.org.ItemsByCategorySimple.Interfaces.NotifySort;
-import nbsidb.nearbyshops.org.ItemsByCategorySimple.Utility.UtilitySortItemsByCategory;
+import nbsidb.nearbyshops.org.ItemsByCategorySimple.UtilitySort.UtilitySortItemsByCategory;
 import nbsidb.nearbyshops.org.R;
 
 /**

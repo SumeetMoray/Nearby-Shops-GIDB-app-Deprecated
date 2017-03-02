@@ -423,7 +423,7 @@ public class EditItemCategoryFragment extends Fragment {
                 }
                 else if(response.code()== 403 || response.code() ==401)
                 {
-                    showToastMessage("Failed ! Reason : Not Permitted !");
+                    showToastMessage("Not Permitted ! ");
                 }
                 else
                 {
@@ -831,9 +831,9 @@ public class EditItemCategoryFragment extends Fragment {
                     {
 //                        showToastMessage("Image Delete failed");
                     }
-
-
             }
+
+
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {

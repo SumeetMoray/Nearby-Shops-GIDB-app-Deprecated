@@ -35,7 +35,7 @@ import nbsidb.nearbyshops.org.ItemsByCategorySimple.EditItem.UtilityItem;
 import nbsidb.nearbyshops.org.ItemsByCategorySimple.EditItemCategory.EditItemCategory;
 import nbsidb.nearbyshops.org.ItemsByCategorySimple.EditItemCategory.EditItemCategoryFragment;
 import nbsidb.nearbyshops.org.ItemsByCategorySimple.EditItemCategory.UtilityItemCategory;
-import nbsidb.nearbyshops.org.ItemsByCategorySimple.Utility.HeaderItemsList;
+import nbsidb.nearbyshops.org.ItemsByCategorySimple.UtilitySort.HeaderItemsList;
 import nbsidb.nearbyshops.org.Model.Item;
 import nbsidb.nearbyshops.org.Model.ItemCategory;
 import nbsidb.nearbyshops.org.ModelStats.ItemStats;

@@ -37,8 +37,8 @@ import nbsidb.nearbyshops.org.ItemsByCategorySimple.Interfaces.NotifyFABClick;
 import nbsidb.nearbyshops.org.ItemsByCategorySimple.Interfaces.NotifyHeaderChanged;
 import nbsidb.nearbyshops.org.ItemsByCategorySimple.Interfaces.NotifySort;
 import nbsidb.nearbyshops.org.ItemsByCategorySimple.Interfaces.ToggleFab;
-import nbsidb.nearbyshops.org.ItemsByCategorySimple.Utility.HeaderItemsList;
-import nbsidb.nearbyshops.org.ItemsByCategorySimple.Utility.UtilitySortItemsByCategory;
+import nbsidb.nearbyshops.org.ItemsByCategorySimple.UtilitySort.HeaderItemsList;
+import nbsidb.nearbyshops.org.ItemsByCategorySimple.UtilitySort.UtilitySortItemsByCategory;
 import nbsidb.nearbyshops.org.Model.Item;
 import nbsidb.nearbyshops.org.Model.ItemCategory;
 import nbsidb.nearbyshops.org.ModelEndpoint.ItemCategoryEndPoint;
@@ -698,7 +698,12 @@ public class ItemCategoriesFragmentSimple extends Fragment implements SwipeRefre
                 {
                     showToastMessage("Delete failed !");
 
-                }else
+                }
+                else if(response.code()== 403 || response.code() ==401)
+                {
+                    showToastMessage("Not Permitted !");
+                }
+                else
                 {
                     showToastMessage("Server Error !");
                 }
@@ -740,7 +745,12 @@ public class ItemCategoriesFragmentSimple extends Fragment implements SwipeRefre
                 {
                     showToastMessage("Delete failed !");
 
-                }else
+                }
+                else if(response.code()== 403 || response.code() ==401)
+                {
+                    showToastMessage("Not Permitted !");
+                }
+                else
                 {
                     showToastMessage("Server Error !");
                 }
@@ -1146,7 +1156,12 @@ public class ItemCategoriesFragmentSimple extends Fragment implements SwipeRefre
 
                     makeRefreshNetworkCall();
 
-                }else
+                }
+                else if(response.code()== 403 || response.code() ==401)
+                {
+                    showToastMessage("Not Permitted !");
+                }
+                else
                 {
                     showToastMessage("Failed Code : " + String.valueOf(response.code()));
                 }
@@ -1211,7 +1226,12 @@ public class ItemCategoriesFragmentSimple extends Fragment implements SwipeRefre
 
                     showToastMessage("No item updated !");
 
-                }else
+                }
+                else if(response.code()== 403 || response.code() ==401)
+                {
+                    showToastMessage("Not Permitted !");
+                }
+                else
                 {
                     showToastMessage("Unknown server error or response !");
                 }
@@ -1292,7 +1312,12 @@ public class ItemCategoriesFragmentSimple extends Fragment implements SwipeRefre
 
                     onRefresh();
 
-                }else
+                }
+                else if(response.code()== 403 || response.code() ==401)
+                {
+                    showToastMessage("Not Permitted !");
+                }
+                else
                 {
                     showToastMessage("Change Parent Failed !");
                 }
@@ -1353,7 +1378,12 @@ public class ItemCategoriesFragmentSimple extends Fragment implements SwipeRefre
 
                     showToastMessage("No item updated !");
 
-                }else
+                }
+                else if(response.code()== 403 || response.code() ==401)
+                {
+                    showToastMessage("Not Permitted !");
+                }
+                else
                 {
                     showToastMessage("Unknown server error or response !");
                 }

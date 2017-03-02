@@ -68,8 +68,8 @@ public class StaffDashboard extends AppCompatActivity {
             return;
         }
 
-        if(staff.isCreateUpdateItemCategory()||staff.isCreateUpdateItems())
-        {
+//        if(staff.isCreateUpdateItemCategory()||staff.isCreateUpdateItems())
+//        {
             borderTop.setVisibility(View.VISIBLE);
             headerItems.setVisibility(View.VISIBLE);
 
@@ -78,34 +78,8 @@ public class StaffDashboard extends AppCompatActivity {
 
             detachedItems.setVisibility(View.VISIBLE);
             textDetached.setVisibility(View.VISIBLE);
-        }
-
-
-//        if(staff.isApproveShops()||staff.isApproveShopAdminAccounts()||staff.isApproveEndUserAccounts())
-//        {
-//            borderApprovals.setVisibility(View.VISIBLE);
-//            headerApprovals.setVisibility(View.VISIBLE);
 //        }
 
-
-//        if(staff.isApproveShopAdminAccounts())
-//        {
-//            shopAdminApprovals.setVisibility(View.VISIBLE);
-//            textShopAdminApprovals.setVisibility(View.VISIBLE);
-//        }
-
-//        if(staff.isApproveShops())
-//        {
-//            shopApprovals.setVisibility(View.VISIBLE);
-//            textShopApprovals.setVisibility(View.VISIBLE);
-//        }
-//
-//        if(staff.isApproveEndUserAccounts())
-//        {
-//            endUserApprovals.setVisibility(View.VISIBLE);
-//            textEndUserApprovals.setVisibility(View.VISIBLE);
-//            borderBottom.setVisibility(View.VISIBLE);
-//        }
 
     }
 

@@ -13,25 +13,196 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+    android:padding="10dp"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingTop="@dimen/activity_vertical_margin">
 
     <!--android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"-->
 
+
+
+    <TextView
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginStart="0dp"
+        android:background="#88000000"
+        android:layout_width="match_parent"
+        android:layout_height="1dp" />
+
+
+    <RelativeLayout
+        android:background="@color/white"
+        android:layout_marginTop="0dp"
+        android:layout_marginBottom="0dp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <TextView
+            android:id="@+id/status_indicator_one"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_gravity="end"
+            android:layout_marginEnd="0dp"
+            android:layout_marginRight="0dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/gplus_color_1"
+            android:layout_width="20dp"
+            android:layout_height="20dp" />
+
+
+        <!--
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"
+        android:textColorHighlight="@color/white"
+        android:textColorLink="@color/white"
+
+        android:textColorHint="@color/white"
+        -->
+
+        <android.support.design.widget.TextInputLayout
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:paddingLeft="0dp"
+            android:paddingRight="0dp"
+            android:id="@+id/text_input_service_url"
+            app:layout_scrollFlags="scroll|enterAlways"
+            android:layout_gravity="center_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:inputType="textUri"
+                android:id="@+id/serviceURL"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter Service URL"/>
+
+        </android.support.design.widget.TextInputLayout>
+
+
+
+        <!--<TextView-->
+        <!--android:layout_marginTop="10dp"-->
+        <!--android:layout_marginLeft="10dp"-->
+        <!--android:layout_marginRight="10dp"-->
+        <!--android:layout_marginEnd="10dp"-->
+        <!--android:layout_marginStart="10dp"-->
+        <!--android:id="@+id/border_text_input"-->
+        <!--android:layout_below="@id/text_input_service_url"-->
+        <!--android:background="#88000000"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="1dp" />-->
+
+
+        <!--android:layout_below="@id/border_text_input"-->
+        <LinearLayout
+            android:layout_below="@id/text_input_service_url"
+            android:layout_marginTop="5dp"
+            app:layout_scrollFlags="scroll|enterAlways"
+            android:layout_marginBottom="0dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/discover_services_button"
+                android:layout_marginBottom="10dp"
+                android:layout_weight="1"
+                android:textColor="@color/white"
+                android:layout_marginStart="0dp"
+                android:layout_marginLeft="0dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginEnd="10dp"
+                android:background="@color/buttonColor"
+                android:padding="10dp"
+                android:paddingRight="1dp"
+                android:paddingLeft="10dp"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
+                android:text="Discover Services"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/paste_url_button"
+                android:layout_marginBottom="10dp"
+                android:textColor="@color/white"
+                android:layout_marginRight="0dp"
+                android:layout_marginEnd="0dp"
+                android:background="@color/cyan900"
+                android:padding="10dp"
+                android:paddingRight="20dp"
+                android:paddingLeft="20dp"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
+                android:text="Paste Service URL"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <!--</android.support.v7.widget.CardView>-->
+
+
+    <TextView
+        android:background="#88000000"
+        android:layout_width="match_parent"
+        android:layout_height="1dp" />
+
+    <TextView
+        android:layout_marginTop="5dp"
+        android:padding="10dp"
+        android:text="Login"
+        android:textSize="20sp"
+        android:textColor="@color/white"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginStart="0dp"
+        android:background="@color/gplus_color_2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+
+    <TextView
+        android:layout_marginTop="5dp"
+        android:background="#88000000"
+        android:layout_width="match_parent"
+        android:layout_height="1dp" />
+
+
     <ProgressBar
+        android:visibility="invisible"
         android:id="@+id/progress_bar"
         style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:indeterminate="true"
-        android:indeterminateTint="@color/buttonColorDark"
-        android:visibility="invisible"/>
+        android:indeterminateTint="@color/buttonColorDark" />
+
+
+
+    <!--<ProgressBar-->
+        <!--android:id="@+id/progress_bar"-->
+        <!--style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:indeterminate="true"-->
+        <!--android:indeterminateTint="@color/buttonColorDark"-->
+        <!--android:visibility="invisible"/>-->
 
 
     <android.support.design.widget.TextInputLayout
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
+        android:paddingLeft="0dp"
+        android:paddingRight="0dp"
         android:layout_marginTop="5dp"
         android:layout_gravity="center_vertical"
         android:layout_width="match_parent"
@@ -48,15 +219,16 @@
 
 
     <android.support.design.widget.TextInputLayout
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
+        android:paddingLeft="0dp"
+        android:paddingRight="0dp"
+        app:passwordToggleEnabled="true"
         android:layout_marginTop="10dp"
         android:layout_gravity="center_vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <EditText
-            android:inputType="textVisiblePassword"
+            android:inputType="textPassword"
             android:id="@+id/password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -65,29 +237,29 @@
     </android.support.design.widget.TextInputLayout>
 
     <LinearLayout
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
         android:gravity="end"
-        android:weightSum="2"
+        android:weightSum="1"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <!--<Button-->
+            <!--android:id="@+id/signUpButton"-->
+            <!--android:layout_marginLeft="0dp"-->
+            <!--android:layout_marginStart="0dp"-->
+            <!--android:layout_gravity="end"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_weight="1"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:background="@color/light_grey"-->
+            <!--android:textColor="@color/white"/>-->
+
+
         <Button
-            android:id="@+id/signUpButton"
             android:layout_marginLeft="0dp"
             android:layout_marginStart="0dp"
-            android:layout_gravity="end"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:background="@color/light_grey"
-            android:textColor="@color/white"/>
-
-
-        <Button
-            android:layout_marginLeft="5dp"
-            android:layout_marginStart="5dp"
             android:id="@+id/loginButton"
             android:layout_width="0dp"
             android:layout_weight="1"
@@ -102,10 +274,10 @@
 
 
     <TextView
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
         android:textColor="@color/white"
-        android:background="@color/gplus_color_2"
+        android:background="@color/cyan900"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
         android:padding="5dp"
@@ -116,8 +288,8 @@
 
 
     <LinearLayout
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">

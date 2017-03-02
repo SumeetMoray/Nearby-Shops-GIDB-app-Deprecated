@@ -22,6 +22,7 @@ import nbsidb.nearbyshops.org.ItemsByCategorySimple.Interfaces.NotifyFABClick;
 import nbsidb.nearbyshops.org.ItemsByCategorySimple.Interfaces.NotifyHeaderChanged;
 import nbsidb.nearbyshops.org.ItemsByCategorySimple.Interfaces.NotifySort;
 import nbsidb.nearbyshops.org.ItemsByCategorySimple.Interfaces.ToggleFab;
+import nbsidb.nearbyshops.org.ItemsByCategorySimple.UtilitySort.SlidingLayerSortItems;
 import nbsidb.nearbyshops.org.R;
 
 

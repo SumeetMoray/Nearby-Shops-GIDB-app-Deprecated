@@ -3,6 +3,7 @@ package nbsidb.nearbyshops.org.ItemsByCategorySimple.EditItem;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -12,6 +13,10 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.PermissionChecker;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,6 +35,7 @@ import com.yalantis.ucrop.UCropActivity;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.util.ArrayList;
 
 import javax.inject.Inject;
 
@@ -37,10 +43,16 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import nbsidb.nearbyshops.org.DaggerComponentBuilder;
+import nbsidb.nearbyshops.org.ItemsByCategorySimple.EditItemImage.EditItemImage;
+import nbsidb.nearbyshops.org.ItemsByCategorySimple.EditItemImage.EditItemImageFragment;
+import nbsidb.nearbyshops.org.ItemsByCategorySimple.EditItemImage.UtilityItemImage;
 import nbsidb.nearbyshops.org.Model.Image;
 import nbsidb.nearbyshops.org.Model.Item;
 import nbsidb.nearbyshops.org.Model.ItemCategory;
+import nbsidb.nearbyshops.org.Model.ItemImage;
+import nbsidb.nearbyshops.org.ModelEndpoint.ItemImageEndPoint;
 import nbsidb.nearbyshops.org.R;
+import nbsidb.nearbyshops.org.RetrofitRESTContract.ItemImageService;
 import nbsidb.nearbyshops.org.RetrofitRESTContract.ItemService;
 import nbsidb.nearbyshops.org.Utility.UtilityGeneral;
 import nbsidb.nearbyshops.org.Utility.UtilityLogin;
@@ -52,9 +64,10 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static android.app.Activity.RESULT_OK;
+import static android.content.Context.RESTRICTIONS_SERVICE;
 
 
-public class EditItemFragment extends Fragment {
+public class EditItemFragment extends Fragment implements AdapterItemImages.notificationsFromAdapter {
 
     public static int PICK_IMAGE_REQUEST = 21;
     // Upload the image after picked up
@@ -74,6 +87,9 @@ public class EditItemFragment extends Fragment {
     @Inject
     ItemService itemService;
 
+    @Inject
+    ItemImageService itemImageService;
+
 
     // flag for knowing whether the image is changed or not
     boolean isImageChanged = false;
@@ -85,8 +101,6 @@ public class EditItemFragment extends Fragment {
     ImageView resultView;
 
 
-//    @Bind(R.id.shop_open) CheckBox shopOpen;
-//    @Bind(R.id.shop_id) EditText shopID;
 
     @Bind(R.id.itemID) EditText itemID;
     @Bind(R.id.itemName) EditText itemName;
@@ -94,43 +108,6 @@ public class EditItemFragment extends Fragment {
     @Bind(R.id.itemDescriptionLong) EditText itemDescriptionLong;
     @Bind(R.id.quantityUnit) EditText quantityUnit;
 
-
-//    @Bind(R.id.enter_shop_id) EditText shopIDEnter;
-//    @Bind(R.id.shopName) EditText shopName;
-
-//    @Bind(R.id.shopAddress) EditText shopAddress;
-//    @Bind(R.id.shopCity) EditText city;
-//    @Bind(R.id.shopPincode) EditText pincode;
-//    @Bind(R.id.shopLandmark) EditText landmark;
-
-//    @Bind(R.id.customerHelplineNumber) EditText customerHelplineNumber;
-//    @Bind(R.id.deliveryHelplineNumber) EditText deliveryHelplineNumber;
-
-//    @Bind(R.id.shopShortDescription) EditText shopDescriptionShort;
-//    @Bind(R.id.shopLongDescription) EditText shopDescriptionLong;
-
-//    @Bind(R.id.latitude) EditText latitude;
-//    @Bind(R.id.longitude) EditText longitude;
-//    @Bind(R.id.pick_location_button) TextView pickLocationButton;
-//    @Bind(R.id.rangeOfDelivery) EditText rangeOfDelivery;
-
-//    @Bind(R.id.deliveryCharges) EditText deliveryCharge;
-//    @Bind(R.id.billAmountForFreeDelivery) EditText billAmountForFreeDelivery;
-
-//    @Bind(R.id.pick_from_shop_available) CheckBox pickFromShopAvailable;
-//    @Bind(R.id.home_delivery_available) CheckBox homeDeliveryAvailable;
-
-
-
-//    @Bind(R.id.item_id) EditText item_id;
-//    @Bind(R.id.name) EditText name;
-//    @Bind(R.id.username) EditText username;
-//    @Bind(R.id.password) EditText password;
-//    @Bind(R.id.about) EditText about;
-
-//    @Bind(R.id.phone_number) EditText phone;
-//    @Bind(R.id.designation) EditText designation;
-//    @Bind(R.id.switch_enable) Switch aSwitch;
 
     @Bind(R.id.saveButton) Button buttonUpdateItem;
 
@@ -163,7 +140,6 @@ public class EditItemFragment extends Fragment {
 
         setRetainInstance(true);
         View rootView = inflater.inflate(R.layout.content_edit_item_fragment, container, false);
-
         ButterKnife.bind(this,rootView);
 
         if(savedInstanceState==null)
@@ -211,8 +187,104 @@ public class EditItemFragment extends Fragment {
 
         showLogMessage("Inside On Create View !");
 
+        setupRecyclerView();
+
         return rootView;
     }
+
+
+    ArrayList<ItemImage> dataset = new ArrayList<>();
+    @Bind(R.id.recyclerview_item_images) RecyclerView itemImagesList;
+    AdapterItemImages adapterItemImages;
+    GridLayoutManager layoutManager;
+
+
+    void setupRecyclerView() {
+
+        adapterItemImages = new AdapterItemImages(dataset,getActivity(),this);
+        itemImagesList.setAdapter(adapterItemImages);
+        layoutManager = new GridLayoutManager(getActivity(), 1, LinearLayoutManager.HORIZONTAL, false);
+        itemImagesList.setLayoutManager(layoutManager);
+
+        makeNetworkCallItemImages(true);
+    }
+
+
+
+    void makeNetworkCallItemImages(final boolean clearDataset)
+    {
+        if(current_mode==MODE_UPDATE)
+        {
+
+            Call<ItemImageEndPoint> call = itemImageService.getItemImages(
+                    item.getItemID(),ItemImage.IMAGE_ORDER,null,null,null
+            );
+
+
+            call.enqueue(new Callback<ItemImageEndPoint>() {
+                @Override
+                public void onResponse(Call<ItemImageEndPoint> call, Response<ItemImageEndPoint> response) {
+
+                    if(isDestroyed)
+                    {
+                        return;
+                    }
+
+                    if(response.body()!=null)
+                    {
+                        if(response.body().getResults()!=null)
+                        {
+                            if(clearDataset)
+                            {
+                                dataset.clear();
+                            }
+
+                            dataset.addAll(response.body().getResults());
+                            adapterItemImages.notifyDataSetChanged();
+
+
+//                            showToastMessage("Dataset Changed : Item ID : " + String.valueOf(item.getItemID()) +
+//                            "\nDataset Count" + String.valueOf(response.body().getResults().size())
+//                            );
+
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ItemImageEndPoint> call, Throwable t) {
+
+
+                    if(isDestroyed)
+                    {
+                        return;
+                    }
+
+
+                    showToastMessage("Loading Images Failed !");
+                }
+            });
+
+        }
+    }
+
+    boolean isDestroyed = false;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        isDestroyed = false;
+    }
+
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        isDestroyed = true;
+    }
+
+
 
     void updateIDFieldVisibility()
     {
@@ -372,6 +444,7 @@ public class EditItemFragment extends Fragment {
 
             quantityUnit.setText(item.getQuantityUnit());
             itemDescriptionLong.setText(item.getItemDescriptionLong());
+
         }
     }
 
@@ -432,7 +505,7 @@ public class EditItemFragment extends Fragment {
                 }
                 else if(response.code()== 403 || response.code() ==401)
                 {
-                    showToastMessage("Failed ! Reason : Not Permitted !");
+                    showToastMessage("Not Permitted !");
                 }
                 else
                 {
@@ -443,6 +516,7 @@ public class EditItemFragment extends Fragment {
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
 
+                showToastMessage("Update failed !");
             }
         });
 
@@ -473,6 +547,10 @@ public class EditItemFragment extends Fragment {
 
                     UtilityItem.saveItem(item,getContext());
 
+                }
+                else if(response.code()== 403 || response.code() ==401)
+                {
+                    showToastMessage("Not Permitted !");
                 }
                 else
                 {
@@ -852,5 +930,111 @@ public class EditItemFragment extends Fragment {
         });
     }
 
+
+
+    @Override
+    public void addItemImage() {
+
+        Intent intent = new Intent(getActivity(), EditItemImage.class);
+        intent.putExtra(EditItemImageFragment.EDIT_MODE_INTENT_KEY,EditItemImageFragment.MODE_ADD);
+        intent.putExtra(EditItemImageFragment.ITEM_ID_INTENT_KEY,item.getItemID());
+        startActivity(intent);
+
+    }
+
+
+    @Override
+    public void editItemImage(ItemImage itemImage, int position) {
+
+        Intent intent = new Intent(getActivity(), EditItemImage.class);
+
+        intent.putExtra(EditItemImageFragment.EDIT_MODE_INTENT_KEY,EditItemImageFragment.MODE_UPDATE);
+        intent.putExtra(EditItemImageFragment.ITEM_ID_INTENT_KEY,item.getItemID());
+        UtilityItemImage.saveItemImage(itemImage,getActivity());
+
+        startActivity(intent);
+    }
+
+
+    @OnClick(R.id.sync_refresh)
+    void syncRefreshClick()
+    {
+        makeNetworkCallItemImages(true);
+    }
+
+
+    @Override
+    public void removeItemImage(final ItemImage itemImage, final int position) {
+
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+        builder.setTitle("Confirm Delete Item Image !")
+                .setMessage("Are you sure you want to delete this Item Image ?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+
+                        makeRequestDeleteItemImage(itemImage, position);
+
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+
+                        showToastMessage("Cancelled !");
+                    }
+                })
+                .show();
+    }
+
+
+
+
+
+
+    void makeRequestDeleteItemImage(ItemImage itemImage, final int position)
+    {
+        Call<ResponseBody> call = itemImageService.deleteItemImageData(
+                UtilityLogin.getAuthorizationHeaders(getActivity()),
+                itemImage.getImageID()
+        );
+
+
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+
+                if(response.code()==200)
+                {
+                    showToastMessage("Removed !");
+
+                    dataset.remove(position);
+                    adapterItemImages.notifyItemRemoved(position);
+
+                }
+                else if(response.code()==401 || response.code()==403)
+                {
+                    showToastMessage("Not Permitted !");
+                }
+                else
+                {
+                    showToastMessage("Failed Code : " + String.valueOf(response.code()));
+                }
+
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+                showToastMessage("Failed to Delete !");
+            }
+        });
+
+    }
 
 }

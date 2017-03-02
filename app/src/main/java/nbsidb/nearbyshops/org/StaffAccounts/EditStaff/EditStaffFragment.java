@@ -102,11 +102,23 @@ public class EditStaffFragment extends Fragment {
     @Bind(R.id.govt_id_name) EditText govtIDName;
     @Bind(R.id.govt_id_number) EditText govtIDNumber;
 
-    @Bind(R.id.permit_create_update_item_cat) CheckBox createUpdateItemCat;
-    @Bind(R.id.permit_create_update_items) CheckBox createUpdateItems;
-//    @Bind(R.id.approve_shop_admin_accounts) CheckBox approveShopAdminAccounts;
-//    @Bind(R.id.approve_shops) CheckBox approveShops;
-//    @Bind(R.id.approve_end_user_accounts) CheckBox approveEndUserAccounts;
+//    @Bind(R.id.permit_create_update_item_cat) CheckBox createUpdateItemCat;
+//    @Bind(R.id.permit_create_update_items) CheckBox createUpdateItems;
+
+    @Bind(R.id.permit_create_item_cat) CheckBox permitCreateItemCat;
+    @Bind(R.id.permit_update_item_cat) CheckBox permitUpdateItemCat;
+    @Bind(R.id.permit_update_only_item_cat) CheckBox permitUpdateOnlyItemCat;
+    @Bind(R.id.permit_delete_item_cat) CheckBox permitDeleteItemCat;
+    @Bind(R.id.permit_delete_only_item_cat) CheckBox permitDeleteOnlyItemCat;
+
+
+    @Bind(R.id.permit_create_items) CheckBox permitCreateItems;
+    @Bind(R.id.permit_update_items) CheckBox permitUpdateItems;
+    @Bind(R.id.permit_update_only_item) CheckBox permitUpdateOnlyItem;
+    @Bind(R.id.permit_delete_items) CheckBox permitDeleteItem;
+    @Bind(R.id.permit_delete_only_item) CheckBox permitDeleteOnlyItem;
+
+
 
 
     @Bind(R.id.saveButton)
@@ -463,12 +475,20 @@ public class EditStaffFragment extends Fragment {
             govtIDName.setText(staff.getGovtIDName());
             govtIDNumber.setText(staff.getGovtIDNumber());
 
-            createUpdateItemCat.setChecked(staff.isCreateUpdateItemCategory());
-            createUpdateItems.setChecked(staff.isCreateUpdateItems());
+//            createUpdateItemCat.setChecked(staff.isCreateUpdateItemCategory());
+//            createUpdateItems.setChecked(staff.isCreateUpdateItems());
 
-//            approveShopAdminAccounts.setChecked(staff.isApproveShopAdminAccounts());
-//            approveShops.setChecked(staff.isApproveShops());
-//            approveEndUserAccounts.setChecked(staff.isApproveEndUserAccounts());
+            permitCreateItemCat.setChecked(staff.isPermitCreateItemCategories());
+            permitUpdateItemCat.setChecked(staff.isPermitUpdateItemCategories());
+            permitUpdateOnlyItemCat.setChecked(staff.isPermitUpdateOnlyItemCategoriesAddedBySelf());
+            permitDeleteItemCat.setChecked(staff.isPermitDeleteItemCategories());
+            permitDeleteOnlyItemCat.setChecked(staff.isPermitDeleteOnlyItemCategoriesAddedBySelf());
+
+            permitCreateItems.setChecked(staff.isPermitCreateItems());
+            permitUpdateItems.setChecked(staff.isPermitUpdateItems());
+            permitUpdateOnlyItem.setChecked(staff.isPermitUpdateOnlyItemsAddedBySelf());
+            permitDeleteItem.setChecked(staff.isPermitDeleteItems());
+            permitDeleteOnlyItem.setChecked(staff.isPermitDeleteOnlyItemsAddedBySelf());
 
         }
     }
@@ -506,12 +526,22 @@ public class EditStaffFragment extends Fragment {
         staff.setGovtIDName(govtIDName.getText().toString());
         staff.setGovtIDNumber(govtIDNumber.getText().toString());
 
-        staff.setCreateUpdateItemCategory(createUpdateItemCat.isChecked());
-        staff.setCreateUpdateItems(createUpdateItems.isChecked());
+//        staff.setCreateUpdateItemCategory(createUpdateItemCat.isChecked());
+//        staff.setCreateUpdateItems(createUpdateItems.isChecked());
 
-//        staff.setApproveShopAdminAccounts(approveShopAdminAccounts.isChecked());
-//        staff.setApproveShops(approveShops.isChecked());
-//        staff.setApproveEndUserAccounts(approveEndUserAccounts.isChecked());
+
+        staff.setPermitCreateItemCategories(permitCreateItemCat.isChecked());
+        staff.setPermitUpdateItemCategories(permitUpdateItemCat.isChecked());
+        staff.setPermitUpdateOnlyItemCategoriesAddedBySelf(permitUpdateOnlyItemCat.isChecked());
+        staff.setPermitDeleteItemCategories(permitDeleteItemCat.isChecked());
+        staff.setPermitDeleteOnlyItemCategoriesAddedBySelf(permitDeleteOnlyItemCat.isChecked());
+
+        staff.setPermitCreateItems(permitCreateItems.isChecked());
+        staff.setPermitUpdateItems(permitUpdateItems.isChecked());
+        staff.setPermitUpdateOnlyItemsAddedBySelf(permitUpdateOnlyItem.isChecked());
+        staff.setPermitDeleteItems(permitDeleteItem.isChecked());
+        staff.setPermitDeleteOnlyItemsAddedBySelf(permitDeleteOnlyItem.isChecked());
+
     }
 
 

@@ -8,7 +8,7 @@
     <application
         android:name=".MyApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/icon_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
@@ -58,6 +58,18 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Home" />
         </activity>
+
+        <activity
+            android:name=".ItemsByCategorySimple.EditItemImage.EditItemImage"
+            android:label="Edit Item Image"
+            android:parentActivityName=".Home"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Home" />
+        </activity>
+
+
         <activity
             android:name=".ItemsByCategorySimple.EditItemCategory.EditItemCategory"
             android:label="Edit Item Category"
@@ -105,7 +117,7 @@
         </activity>
         <activity
             android:name=".StaffHome.StaffDashboard"
-            android:label="Edit Staff"
+            android:label="Staff Dashboard"
             android:parentActivityName=".StaffHome.StaffDashboard"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
@@ -114,7 +126,7 @@
         </activity>
         <activity
             android:name=".StaffHome.StaffHome"
-            android:label="Edit Staff"
+            android:label="Staff Home"
             android:parentActivityName=".StaffHome.StaffHome"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data

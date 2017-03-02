@@ -40,7 +40,7 @@ import nbsidb.nearbyshops.org.ItemsByCategorySimple.EditItem.UtilityItem;
 import nbsidb.nearbyshops.org.ItemsByCategorySimple.EditItemCategory.EditItemCategory;
 import nbsidb.nearbyshops.org.ItemsByCategorySimple.EditItemCategory.EditItemCategoryFragment;
 import nbsidb.nearbyshops.org.ItemsByCategorySimple.EditItemCategory.UtilityItemCategory;
-import nbsidb.nearbyshops.org.ItemsByCategorySimple.Utility.HeaderItemsList;
+import nbsidb.nearbyshops.org.ItemsByCategorySimple.UtilitySort.HeaderItemsList;
 import nbsidb.nearbyshops.org.Model.Item;
 import nbsidb.nearbyshops.org.Model.ItemCategory;
 import nbsidb.nearbyshops.org.ModelStats.ItemStats;
@@ -425,7 +425,7 @@ public class AdapterSimple extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
 
         String imagePath = UtilityGeneral.getServiceURL(context)
-                + "/api/v1/Item/Image/three_hundred_" + item.getItemImageURL() + ".jpg";
+                + "/api/v1/Item/Image/five_hundred_" + item.getItemImageURL() + ".jpg";
 
 
         Drawable drawable = VectorDrawableCompat

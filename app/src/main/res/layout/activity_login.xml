@@ -20,68 +20,69 @@
             android:background="?attr/colorPrimary"
             app:popupTheme="@style/AppTheme.PopupOverlay" />
 
-        <android.support.design.widget.TextInputLayout
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
+        <!--<android.support.design.widget.TextInputLayout-->
+            <!--android:paddingTop="10dp"-->
+            <!--android:paddingBottom="10dp"-->
+            <!--android:paddingLeft="20dp"-->
+            <!--android:paddingRight="20dp"-->
 
-            android:layout_gravity="center_vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            <!--android:layout_gravity="center_vertical"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content">-->
 
-            <EditText
+            <!--<EditText-->
 
-                android:id="@+id/serviceURLEditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Enter Service URL"/>
+                <!--android:id="@+id/serviceURLEditText"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:hint="Enter Service URL"/>-->
 
-        </android.support.design.widget.TextInputLayout>
-
-
-        <LinearLayout
-            android:layout_marginBottom="10dp"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+        <!--</android.support.design.widget.TextInputLayout>-->
 
 
-        <TextView
-            android:gravity="center"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:background="@color/colorPrimaryDark"
-            android:layout_gravity="left"
-            android:paddingRight="20dp"
-            android:paddingLeft="20dp"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp"
+        <!--<LinearLayout-->
+            <!--android:visibility="gone"-->
+            <!--android:layout_marginBottom="10dp"-->
+            <!--android:orientation="horizontal"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content">-->
 
-            android:text="Discover\nServices"
-            android:textSize="@dimen/appbar_label_size"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent" />
 
-            <LinearLayout
-                android:layout_weight="1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"></LinearLayout>
+        <!--<TextView-->
+            <!--android:gravity="center"-->
+            <!--android:layout_marginLeft="20dp"-->
+            <!--android:layout_marginRight="20dp"-->
+            <!--android:background="@color/colorPrimaryDark"-->
+            <!--android:layout_gravity="left"-->
+            <!--android:paddingRight="20dp"-->
+            <!--android:paddingLeft="20dp"-->
+            <!--android:paddingBottom="10dp"-->
+            <!--android:paddingTop="10dp"-->
 
-        <TextView
-            android:layout_marginRight="20dp"
+            <!--android:text="Discover\nServices"-->
+            <!--android:textSize="@dimen/appbar_label_size"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="match_parent" />-->
 
-            android:background="@color/colorPrimaryDark"
-            android:layout_gravity="right"
-            android:paddingRight="20dp"
-            android:paddingLeft="20dp"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp"
-            android:text="Paste\nService URL"
-            android:textSize="@dimen/appbar_label_size"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        </LinearLayout>
+            <!--<LinearLayout-->
+                <!--android:layout_weight="1"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"></LinearLayout>-->
+
+        <!--<TextView-->
+            <!--android:layout_marginRight="20dp"-->
+
+            <!--android:background="@color/colorPrimaryDark"-->
+            <!--android:layout_gravity="right"-->
+            <!--android:paddingRight="20dp"-->
+            <!--android:paddingLeft="20dp"-->
+            <!--android:paddingBottom="10dp"-->
+            <!--android:paddingTop="10dp"-->
+            <!--android:text="Paste\nService URL"-->
+            <!--android:textSize="@dimen/appbar_label_size"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content" />-->
+        <!--</LinearLayout>-->
 
     </android.support.design.widget.AppBarLayout>
 

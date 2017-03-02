@@ -1,10 +1,9 @@
-package nbsidb.nearbyshops.org.ItemsByCategorySimple.Utility;
+package nbsidb.nearbyshops.org.ItemsByCategorySimple.UtilitySort;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 
 
-import nbsidb.nearbyshops.org.ItemsByCategorySimple.SlidingLayerSortItems;
 import nbsidb.nearbyshops.org.R;
 
 import static android.content.Context.MODE_PRIVATE;

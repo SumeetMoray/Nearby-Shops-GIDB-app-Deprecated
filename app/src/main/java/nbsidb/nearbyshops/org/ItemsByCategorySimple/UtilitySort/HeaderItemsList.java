@@ -1,4 +1,4 @@
-package nbsidb.nearbyshops.org.ItemsByCategorySimple.Utility;
+package nbsidb.nearbyshops.org.ItemsByCategorySimple.UtilitySort;
 
 /**
  * Created by sumeet on 4/12/16.

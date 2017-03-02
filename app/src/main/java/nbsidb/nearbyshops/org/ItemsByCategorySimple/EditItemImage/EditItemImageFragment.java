@@ -1,4 +1,4 @@
-package nbsidb.nearbyshops.org.StaffHome.EditStaffSelf;
+package nbsidb.nearbyshops.org.ItemsByCategorySimple.EditItemImage;
 
 
 import android.Manifest;
@@ -12,27 +12,24 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.PermissionChecker;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.jakewharton.rxbinding.widget.RxTextView;
 import com.squareup.picasso.Picasso;
 import com.yalantis.ucrop.UCrop;
 import com.yalantis.ucrop.UCropActivity;
 
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
@@ -41,10 +38,10 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import nbsidb.nearbyshops.org.DaggerComponentBuilder;
 import nbsidb.nearbyshops.org.Model.Image;
-import nbsidb.nearbyshops.org.ModelRoles.Staff;
+import nbsidb.nearbyshops.org.Model.Item;
+import nbsidb.nearbyshops.org.Model.ItemImage;
 import nbsidb.nearbyshops.org.R;
-import nbsidb.nearbyshops.org.RetrofitRESTContract.StaffService;
-import nbsidb.nearbyshops.org.StaffAccounts.UtilityStaff;
+import nbsidb.nearbyshops.org.RetrofitRESTContract.ItemImageService;
 import nbsidb.nearbyshops.org.Utility.UtilityGeneral;
 import nbsidb.nearbyshops.org.Utility.UtilityLogin;
 import okhttp3.MediaType;
@@ -53,28 +50,21 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
 
 import static android.app.Activity.RESULT_OK;
 
 
-public class EditStaffSelfFragment extends Fragment {
+public class EditItemImageFragment extends Fragment{
 
     public static int PICK_IMAGE_REQUEST = 21;
     // Upload the image after picked up
     private static final int REQUEST_CODE_READ_EXTERNAL_STORAGE = 56;
 
 
-//    Validator validator;
-
-
-//    @Inject
-//    DeliveryGuySelfService deliveryService;
+    public static final String ITEM_ID_INTENT_KEY = "item_id_intent_key";
 
     @Inject
-    StaffService staffService;
+    ItemImageService itemImageService;
 
 
     // flag for knowing whether the image is changed or not
@@ -83,38 +73,18 @@ public class EditStaffSelfFragment extends Fragment {
 
 
     // bind views
-    @Bind(R.id.uploadImage)
-    ImageView resultView;
+    @Bind(R.id.uploadImage) ImageView resultView;
 
 
-    @Bind(R.id.item_id) EditText item_id;
-    @Bind(R.id.name) EditText name;
-    @Bind(R.id.username) EditText username;
-    @Bind(R.id.password) EditText password;
-    @Bind(R.id.about) EditText about;
+    @Bind(R.id.imageID) EditText imageID;
+    @Bind(R.id.captionTitle) EditText captionTitle;
+    @Bind(R.id.caption) EditText caption;
+    @Bind(R.id.image_copyrights_info) EditText imageCopyrightsInfo;
+    @Bind(R.id.imageOrder) EditText imageOrder;
 
-    @Bind(R.id.phone_number) EditText phone;
-    @Bind(R.id.designation) EditText designation;
-//    @Bind(R.id.switch_enable) Switch switchEnable;
-
-    @Bind(R.id.make_account_private) CheckBox makeAccountPrivate;
-
-    @Bind(R.id.govt_id_name) EditText govtIDName;
-    @Bind(R.id.govt_id_number) EditText govtIDNumber;
-
-//    @Bind(R.id.permit_create_update_item_cat) CheckBox createUpdateItemCat;
-//    @Bind(R.id.permit_create_update_items) CheckBox createUpdateItems;
-//
-//    @Bind(R.id.approve_shop_admin_accounts) CheckBox approveShopAdminAccounts;
-//    @Bind(R.id.approve_shops) CheckBox approveShops;
-//    @Bind(R.id.approve_end_user_accounts) CheckBox approveEndUserAccounts;
+    @Bind(R.id.saveButton) Button buttonUpdateItem;
 
 
-    @Bind(R.id.saveButton)
-    Button buttonUpdateItem;
-
-
-//    public static final String STAFF_INTENT_KEY = "staff_intent_key";
     public static final String EDIT_MODE_INTENT_KEY = "edit_mode";
 
     public static final int MODE_UPDATE = 52;
@@ -122,18 +92,19 @@ public class EditStaffSelfFragment extends Fragment {
 
     int current_mode = MODE_ADD;
 
-//    DeliveryGuySelf deliveryGuySelf = new DeliveryGuySelf();
-    Staff staff = null;
+    boolean isDestroyed = false;
 
 
-    public EditStaffSelfFragment() {
+//    Item item = new Item();
+    ItemImage itemImage = new ItemImage();
+
+    public EditItemImageFragment() {
 
         DaggerComponentBuilder.getInstance()
                 .getNetComponent().Inject(this);
     }
 
 
-    Subscription editTextSub;
 
 
     @Nullable
@@ -142,26 +113,42 @@ public class EditStaffSelfFragment extends Fragment {
         super.onCreateView(inflater, container, savedInstanceState);
 
         setRetainInstance(true);
-        View rootView = inflater.inflate(R.layout.content_edit_staff_self, container, false);
+        View rootView = inflater.inflate(R.layout.content_edit_item_image_fragment, container, false);
 
         ButterKnife.bind(this,rootView);
 
         if(savedInstanceState==null)
         {
-//            shopAdmin = getActivity().getIntent().getParcelableExtra(SHOP_ADMIN_INTENT_KEY);
 
             current_mode = getActivity().getIntent().getIntExtra(EDIT_MODE_INTENT_KEY,MODE_ADD);
 
             if(current_mode == MODE_UPDATE)
             {
-                staff = UtilityLogin.getStaff(getContext());
+                itemImage = UtilityItemImage.getItemImage(getContext());
+
+                if(itemImage !=null) {
+                    bindDataToViews();
+                }
+
+            }
+            else if (current_mode == MODE_ADD)
+            {
+
+//                if(getActivity().getActionBar()!=null)
+//                {
+//                    getActivity().getActionBar().setTitle("Add Item Image");
+//                }
+
+
+                if(((AppCompatActivity)getActivity()).getSupportActionBar()!=null)
+                {
+                    ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Add Item Image");
+                }
+
+//                item.setItemCategoryID(itemCategory.getItemCategoryID());
+//                System.out.println("Item Category ID : " + item.getItemCategoryID());
             }
 
-
-            if(staff!=null) {
-
-                bindDataToViews();
-            }
 
 
             showLogMessage("Inside OnCreateView - Saved Instance State !");
@@ -169,69 +156,44 @@ public class EditStaffSelfFragment extends Fragment {
 
 
 
-//        if(validator==null)
-//        {
-//            validator = new Validator(this);
-//            validator.setValidationListener(this);
-//        }
 
         updateIDFieldVisibility();
 
 
-        if(staff!=null) {
-            loadImage(staff.getProfileImageURL());
-            showLogMessage("Inside OnCreateView : DeliveryGUySelf : Not Null !");
+        if(itemImage !=null) {
+            loadImage(itemImage.getImageFilename());
         }
 
 
         showLogMessage("Inside On Create View !");
 
-
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .unsubscribeOn(AndroidSchedulers.mainThread())
-
-//        EditText user = (EditText) rootView.findViewById(R.id.username);
-
-        editTextSub = RxTextView
-                .textChanges(username)
-                .debounce(700, TimeUnit.MILLISECONDS)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<CharSequence>() {
-                    @Override
-                    public void call(CharSequence value) {
-                        // do some work with new text
-                        usernameCheck();
-
-                    }
-                }, new Action1<Throwable>() {
-                    @Override
-                    public void call(Throwable throwable) {
-
-                        System.out.println(throwable.toString());
-
-                    }
-                });
-
-
-
         return rootView;
     }
+
+
 
     void updateIDFieldVisibility()
     {
 
         if(current_mode==MODE_ADD)
         {
-            buttonUpdateItem.setText("Create Account");
-            item_id.setVisibility(View.GONE);
+            buttonUpdateItem.setText("Add Item Image");
+            imageID.setVisibility(View.GONE);
         }
         else if(current_mode== MODE_UPDATE)
         {
-            item_id.setVisibility(View.VISIBLE);
+            imageID.setVisibility(View.VISIBLE);
             buttonUpdateItem.setText("Save");
+
+
+            if(((AppCompatActivity)getActivity()).getSupportActionBar()!=null)
+            {
+                ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Edit Item Image");
+            }
         }
     }
+
+
 
 
     public static final String TAG_LOG = "TAG_LOG";
@@ -244,12 +206,19 @@ public class EditStaffSelfFragment extends Fragment {
 
 
 
-    void loadImage(String imagePath) {
 
-        String iamgepath = UtilityGeneral.getServiceURL(getContext()) + "/api/v1/Staff/Image/" + imagePath;
+    void loadImage(String filename) {
+
+//        String iamgepath = UtilityGeneral.getServiceURL(getContext()) + "/api/v1/ItemImage/five_hundred_" + imagePath + ".jpg";
+
+
+        String imagePath = UtilityGeneral.getServiceURL(getActivity()) + "/api/v1/ItemImage/Image/five_hundred_"
+                + filename + ".jpg";
+
+        System.out.println(imagePath);
 
         Picasso.with(getContext())
-                .load(iamgepath)
+                .load(imagePath)
                 .into(resultView);
     }
 
@@ -268,7 +237,7 @@ public class EditStaffSelfFragment extends Fragment {
 
         if(current_mode == MODE_ADD)
         {
-            staff = new Staff();
+            itemImage = new ItemImage();
             addAccount();
         }
         else if(current_mode == MODE_UPDATE)
@@ -282,98 +251,16 @@ public class EditStaffSelfFragment extends Fragment {
     {
         boolean isValid = true;
 
-
-        if(phone.getText().toString().length()==0)
+        if(captionTitle.getText().toString().length()==0)
         {
-            phone.setError("Please enter Phone Number");
-            phone.requestFocus();
+            captionTitle.setError("Item Name cannot be empty !");
+            captionTitle.requestFocus();
             isValid= false;
         }
 
-
-        if(password.getText().toString().length()==0)
-        {
-            password.requestFocus();
-            password.setError("Password cannot be empty");
-            isValid = false;
-        }
-
-
-        if(username.getText().toString().length()==0)
-        {
-            username.requestFocus();
-            username.setError("Username cannot be empty");
-            isValid= false;
-        }
-
-
-        if(name.getText().toString().length()==0)
-        {
-
-//            Drawable drawable = ContextCompat.getDrawable(getContext(),R.drawable.ic_close_black_24dp);
-            name.requestFocus();
-            name.setError("Name cannot be empty");
-            isValid = false;
-        }
 
 
         return isValid;
-    }
-
-
-    @Override
-    public void onStop() {
-        super.onStop();
-
-        if(editTextSub!=null && !editTextSub.isUnsubscribed())
-        {
-            editTextSub.unsubscribe();
-        }
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-
-    }
-
-//    @OnTextChanged(R.id.username)
-    void usernameCheck()
-    {
-
-
-        if(staff!=null && staff.getUsername()!=null
-                &&
-                username.getText().toString().equals(staff.getUsername()))
-        {
-            username.setTextColor(ContextCompat.getColor(getContext(),R.color.gplus_color_1));
-            return;
-        }
-
-
-        Call<ResponseBody> call = staffService.checkUsernameExist(username.getText().toString());
-
-        call.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-
-                if(response.code()==200)
-                {
-                    //username already exists
-                    username.setTextColor(ContextCompat.getColor(getContext(),R.color.gplus_color_4));
-                    username.setError("Username already exist !");
-                }
-                else if(response.code() == 204)
-                {
-                    username.setTextColor(ContextCompat.getColor(getContext(),R.color.gplus_color_1));
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-
-            }
-        });
     }
 
 
@@ -412,7 +299,7 @@ public class EditStaffSelfFragment extends Fragment {
 
 
             // delete previous Image from the Server
-            deleteImage(staff.getProfileImageURL());
+            deleteImage(itemImage.getImageFilename());
 
             /*ImageCalls.getInstance()
                     .deleteImage(
@@ -424,7 +311,7 @@ public class EditStaffSelfFragment extends Fragment {
             if(isImageRemoved)
             {
 
-                staff.setProfileImageURL(null);
+                itemImage.setImageFilename(null);
                 retrofitPUTRequest();
 
             }else
@@ -448,40 +335,28 @@ public class EditStaffSelfFragment extends Fragment {
 
     void bindDataToViews()
     {
-        if(staff!=null) {
+        if(itemImage !=null) {
 
-            item_id.setText(String.valueOf(staff.getUserID()));
-            name.setText(staff.getStaffName());
-            username.setText(staff.getUsername());
-            password.setText(staff.getPassword());
-            about.setText(staff.getAbout());
-            phone.setText(staff.getPhone());
-            designation.setText(staff.getDesignation());
-//            switchEnable.setChecked(staff.getEnabled());
-
-
-            makeAccountPrivate.setChecked(staff.isAccountPrivate());
-            govtIDName.setText(staff.getGovtIDName());
-            govtIDNumber.setText(staff.getGovtIDNumber());
-
-//            createUpdateItemCat.setChecked(staff.isCreateUpdateItemCategory());
-//            createUpdateItems.setChecked(staff.isCreateUpdateItems());
-
-//            approveShopAdminAccounts.setChecked(staff.isApproveShopAdminAccounts());
-//            approveShops.setChecked(staff.isApproveShops());
-//            approveEndUserAccounts.setChecked(staff.isApproveEndUserAccounts());
+            imageID.setText(String.valueOf(itemImage.getImageID()));
+            captionTitle.setText(itemImage.getCaptionTitle());
+            caption.setText(itemImage.getCaption());
+            imageCopyrightsInfo.setText(itemImage.getImageCopyrights());
+            imageOrder.setText(String.valueOf(itemImage.getImageOrder()));
 
         }
     }
 
 
+
+
+
     void getDataFromViews()
     {
-        if(staff==null)
+        if(itemImage ==null)
         {
             if(current_mode == MODE_ADD)
             {
-                staff = new Staff();
+//                itemImage = new ItemImage();
             }
             else
             {
@@ -489,33 +364,35 @@ public class EditStaffSelfFragment extends Fragment {
             }
         }
 
-//        if(current_mode == MODE_ADD)
-//        {
-//            deliveryGuySelf.setShopID(UtilityShopHome.getShop(getContext()).getShopID());
-//        }
 
-        staff.setStaffName(name.getText().toString());
-        staff.setUsername(username.getText().toString());
-        staff.setPassword(password.getText().toString());
-        staff.setAbout(about.getText().toString());
-        staff.setPhone(phone.getText().toString());
-        staff.setDesignation(designation.getText().toString());
+        if(!imageID.getText().toString().equals(""))
+        {
+            itemImage.setImageID(Integer.parseInt(imageID.getText().toString()));
+        }
 
-//        staff.setEnabled(switchEnable.isChecked());
+        itemImage.setCaptionTitle(captionTitle.getText().toString());
+        itemImage.setCaption(caption.getText().toString());
+        itemImage.setImageCopyrights(imageCopyrightsInfo.getText().toString());
 
-        staff.setAccountPrivate(makeAccountPrivate.isChecked());
-        staff.setGovtIDName(govtIDName.getText().toString());
-        staff.setGovtIDNumber(govtIDNumber.getText().toString());
-
-//        staff.setCreateUpdateItemCategory(createUpdateItemCat.isChecked());
-//        staff.setCreateUpdateItems(createUpdateItems.isChecked());
-
-//        staff.setApproveShopAdminAccounts(approveShopAdminAccounts.isChecked());
-//        staff.setApproveShops(approveShops.isChecked());
-//        staff.setApproveEndUserAccounts(approveEndUserAccounts.isChecked());
+        if(!imageOrder.getText().toString().equals(""))
+        {
+            itemImage.setImageOrder(Integer.parseInt(imageOrder.getText().toString()));
+        }
     }
 
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        isDestroyed = false;
+    }
+
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        isDestroyed = true;
+    }
 
     public void retrofitPUTRequest()
     {
@@ -523,53 +400,76 @@ public class EditStaffSelfFragment extends Fragment {
         getDataFromViews();
 
 
-//        final Staff staff = UtilityStaff.getStaff(getContext());
-        Call<ResponseBody> call = staffService.updateBySelfStaff(
+        Call<ResponseBody> call = itemImageService.updateItemImage(
                 UtilityLogin.getAuthorizationHeaders(getContext()),
-                        staff.getUserID(),
-                        staff
-                );
+                itemImage,itemImage.getImageID()
+        );
 
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
 
+                if(isDestroyed)
+                {
+                    return;
+                }
+
+
                 if(response.code()==200)
                 {
                     showToastMessage("Update Successful !");
-
-//                    UtilityStaff.saveStaff(staff,getContext());
-
-                    UtilityLogin.saveStaff(staff,getActivity());
-
+                    UtilityItemImage.saveItemImage(itemImage,getContext());
+                }
+                else if(response.code()== 403 || response.code() ==401)
+                {
+                    showToastMessage("Not Permitted !");
                 }
                 else
                 {
-                    showToastMessage("Update Failed Code : " + String.valueOf(response.code()));
+                    showToastMessage("Update Failed Code : " + response.code());
                 }
-
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
 
-                showToastMessage("Update Failed !");
+
+                if(isDestroyed)
+                {
+                    return;
+                }
+
+
+
+                showToastMessage("Update failed !");
             }
         });
+
     }
+
+
+
 
 
     void retrofitPOSTRequest()
     {
         getDataFromViews();
+        itemImage.setItemID(getActivity().getIntent().getIntExtra(ITEM_ID_INTENT_KEY,0));
 
-//        final Staff staffTemp = UtilityStaff.getStaff(getContext());
-        Call<Staff> call = staffService.postStaff(UtilityLogin.getAuthorizationHeaders(getContext()),staff);
+        Call<ItemImage> call = itemImageService.saveItemImage(UtilityLogin.getAuthorizationHeaders(getContext()), itemImage);
 
-        call.enqueue(new Callback<Staff>() {
+        call.enqueue(new Callback<ItemImage>() {
             @Override
-            public void onResponse(Call<Staff> call, Response<Staff> response) {
+            public void onResponse(Call<ItemImage> call, Response<ItemImage> response) {
+
+
+                if(isDestroyed)
+                {
+                    return;
+                }
+
+
 
                 if(response.code()==201)
                 {
@@ -577,28 +477,41 @@ public class EditStaffSelfFragment extends Fragment {
 
                     current_mode = MODE_UPDATE;
                     updateIDFieldVisibility();
-                    staff = response.body();
+                    itemImage = response.body();
                     bindDataToViews();
 
-                    UtilityStaff.saveStaff(staff,getContext());
+                    UtilityItemImage.saveItemImage(itemImage,getContext());
 
+                }
+                else if(response.code()== 403 || response.code() ==401)
+                {
+                    showToastMessage("Not Permitted !");
                 }
                 else
                 {
-                    showToastMessage("Add failed !");
+                    showToastMessage("Add failed Code : " + response.code());
                 }
-
 
             }
 
             @Override
-            public void onFailure(Call<Staff> call, Throwable t) {
+            public void onFailure(Call<ItemImage> call, Throwable t) {
+
+
+                if(isDestroyed)
+                {
+                    return;
+                }
+
+
 
                 showToastMessage("Add failed !");
-
             }
         });
+
     }
+
+
 
 
     @Override
@@ -620,7 +533,7 @@ public class EditStaffSelfFragment extends Fragment {
 
     void showToastMessage(String message)
     {
-        Toast.makeText(getContext(),message, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(),message,Toast.LENGTH_SHORT).show();
     }
 
 
@@ -785,7 +698,7 @@ public class EditStaffSelfFragment extends Fragment {
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
-//                    showToastMessage("Permission Granted !");
+                    showToastMessage("Permission Granted !");
                     pickShopImage();
                     // permission was granted, yay! Do the
                     // contacts-related task you need to do.
@@ -793,7 +706,7 @@ public class EditStaffSelfFragment extends Fragment {
                 } else {
 
 
-                    showToastMessage("Permission Denied for Reading External Storage ! ");
+                    showToastMessage("Permission Denied for Read External Storage . ");
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
                 }
@@ -860,13 +773,21 @@ public class EditStaffSelfFragment extends Fragment {
 
 
 
-        Call<Image> imageCall = staffService.uploadImage(UtilityLogin.getAuthorizationHeaders(getContext()),
+        Call<Image> imageCall = itemImageService.uploadItemImage(UtilityLogin.getAuthorizationHeaders(getContext()),
                 requestBodyBinary);
 
 
         imageCall.enqueue(new Callback<Image>() {
             @Override
             public void onResponse(Call<Image> call, Response<Image> response) {
+
+
+                if(isDestroyed)
+                {
+                    return;
+                }
+
+
 
                 if(response.code()==201)
                 {
@@ -877,20 +798,20 @@ public class EditStaffSelfFragment extends Fragment {
 //                    loadImage(image.getPath());
 
 
-                    staff.setProfileImageURL(image.getPath());
+                    itemImage.setImageFilename(image.getPath());
 
                 }
                 else if(response.code()==417)
                 {
                     showToastMessage("Cant Upload Image. Image Size should not exceed 2 MB.");
 
-                    staff.setProfileImageURL(null);
+                    itemImage.setImageFilename(null);
 
                 }
                 else
                 {
                     showToastMessage("Image Upload failed !");
-                    staff.setProfileImageURL(null);
+                    itemImage.setImageFilename(null);
 
                 }
 
@@ -909,8 +830,17 @@ public class EditStaffSelfFragment extends Fragment {
             @Override
             public void onFailure(Call<Image> call, Throwable t) {
 
+
+                if(isDestroyed)
+                {
+                    return;
+                }
+
+
+
                 showToastMessage("Image Upload failed !");
-                staff.setProfileImageURL(null);
+                itemImage.setImageFilename(null);
+
 
                 if(isModeEdit)
                 {
@@ -929,14 +859,26 @@ public class EditStaffSelfFragment extends Fragment {
 
     void deleteImage(String filename)
     {
-        Call<ResponseBody> call = staffService.deleteImage(UtilityLogin.getAuthorizationHeaders(getContext()),filename);
+        Call<ResponseBody> call = itemImageService.deleteItemImage(
+                UtilityLogin.getAuthorizationHeaders(getContext()),
+                filename);
+
+
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
 
 
-                    if(response.code()==200)
+                if(isDestroyed)
+                {
+                    return;
+                }
+
+
+
+
+                if(response.code()==200)
                     {
                         showToastMessage("Image Removed !");
                     }
@@ -950,6 +892,14 @@ public class EditStaffSelfFragment extends Fragment {
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+
+                if(isDestroyed)
+                {
+                    return;
+                }
+
+
 
 //                showToastMessage("Image Delete failed");
             }

@@ -2,6 +2,7 @@ package nbsidb.nearbyshops.org;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -17,6 +18,8 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 
+
+import org.apache.commons.validator.routines.UrlValidator;
 
 import javax.inject.Inject;
 
@@ -34,36 +37,24 @@ import nbsidb.nearbyshops.org.Utility.UtilityLogin;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class LoginScreen extends AppCompatActivity implements View.OnClickListener {
 
-    @Bind(R.id.serviceURLEditText)
-    EditText serviceUrlEditText;
+//    @Bind(R.id.serviceURLEditText) EditText serviceUrlEditText;
+    @Bind(R.id.distributorIDEdittext) EditText username;
+    @Bind(R.id.loginButton) Button loginButton;
+    @Bind(R.id.password) EditText password;
+//    @Bind(R.id.signUpButton) Button signUpButton;
+    @Bind(R.id.role_admin) TextView roleAdmin;
+    @Bind(R.id.role_staff) TextView roleStaff;
 
-    @Bind(R.id.distributorIDEdittext)
-    EditText username;
-
-    @Bind(R.id.loginButton)
-    Button loginButton;
-
-    @Bind(R.id.password)
-    EditText password;
-
-    @Bind(R.id.signUpButton)
-    Button signUpButton;
-
-    @Bind(R.id.role_admin)
-    TextView roleAdmin;
-
-    @Bind(R.id.role_staff)
-    TextView roleStaff;
+    @Inject Gson gson;
 
 
-    @Inject
-    AdminServiceSimple adminService;
-
-    @Inject
-    StaffService staffService;
+//    @Inject AdminServiceSimple adminService;
+//    @Inject StaffService staffService;
 
 
     public LoginScreen() {
@@ -93,31 +84,34 @@ public class LoginScreen extends AppCompatActivity implements View.OnClickListen
         //serviceUrlEditText = (EditText) findViewById(R.id.serviceURLEditText);
         //username = (EditText) findViewById(R.id.distributorIDEdittext);
 
-        serviceUrlEditText.setText(UtilityGeneral.getServiceURL(getApplicationContext()));
+//        serviceUrlEditText.setText(UtilityGeneral.getServiceURL(getApplicationContext()));
         username.setText(UtilityLogin.getUsername(this));
         password.setText(UtilityLogin.getPassword(this));
         setRoleButtons();
 
+//
+//        serviceUrlEditText.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//
+//                UtilityGeneral.saveServiceURL(s.toString(),LoginScreen.this);
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//
+//                UtilityGeneral.saveServiceURL(s.toString(),LoginScreen.this);
+//
+//            }
+//        });
 
-        serviceUrlEditText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                UtilityGeneral.saveServiceURL(s.toString(),LoginScreen.this);
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-                UtilityGeneral.saveServiceURL(s.toString(),LoginScreen.this);
-
-            }
-        });
+        setupServiceURLEditText();
 
     }
 
@@ -169,7 +163,14 @@ public class LoginScreen extends AppCompatActivity implements View.OnClickListen
 
         setProgressBar(true);
 
+//        GsonBuilder gsonBuilder = new GsonBuilder();
 
+        Retrofit retrofit = new Retrofit.Builder()
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .baseUrl(UtilityGeneral.getServiceURL(MyApplication.getAppContext()))
+                .build();
+
+        StaffService staffService = retrofit.create(StaffService.class);
         Call<Staff> staffCall = staffService.getLogin(UtilityLogin.baseEncoding(username,password));
 
         staffCall.enqueue(new Callback<Staff>() {
@@ -183,7 +184,7 @@ public class LoginScreen extends AppCompatActivity implements View.OnClickListen
 
                     UtilityLogin.saveStaff(staff,LoginScreen.this);
                     startActivity(new Intent(LoginScreen.this,StaffHome.class));
-                    showSnackBar("Launching Staff Home !");
+//                    showSnackBar("Launching Staff Home !");
 
                 }
 
@@ -199,13 +200,14 @@ public class LoginScreen extends AppCompatActivity implements View.OnClickListen
             public void onFailure(Call<Staff> call, Throwable t) {
 
                 Log.d("login",String.valueOf(t.toString()));
-                showSnackBar("LoginScreen failed. Please try again !");
+                showSnackBar("Failed. Please try again !");
                 setProgressBar(false);
             }
 
         });
-
     }
+
+
 
 
     void networkCallLoginAdmin()
@@ -217,7 +219,16 @@ public class LoginScreen extends AppCompatActivity implements View.OnClickListen
 
         setProgressBar(true);
 
-        Call<Admin> call = adminService.getAdmin(UtilityLogin.baseEncoding(username,password));
+//        GsonBuilder gsonBuilder = new GsonBuilder();
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .baseUrl(UtilityGeneral.getServiceURL(MyApplication.getAppContext()))
+                .build();
+
+
+        AdminServiceSimple adminServiceSimple = retrofit.create(AdminServiceSimple.class);
+        Call<Admin> call = adminServiceSimple.getAdmin(UtilityLogin.baseEncoding(username,password));
 
         call.enqueue(new Callback<Admin>() {
             @Override
@@ -225,7 +236,7 @@ public class LoginScreen extends AppCompatActivity implements View.OnClickListen
 
                         if(response.code()==200 && response.body() !=null)
                         {
-                            showSnackBar("Successful !");
+//                            showSnackBar("Successful !");
                             UtilityLogin.saveAdmin(response.body(),LoginScreen.this);
                             startActivity(new Intent(LoginScreen.this,Home.class));
                         }
@@ -401,6 +412,64 @@ public class LoginScreen extends AppCompatActivity implements View.OnClickListen
         }
 
     }
+
+
+
+
+    // Setup Status Light
+
+    @Bind(R.id.text_input_service_url) TextInputLayout textInputServiceURL;
+    @Bind(R.id.serviceURL) EditText serviceURL;
+
+    UrlValidator urlValidator;
+
+    void setupServiceURLEditText()
+    {
+        String[] schemes = {"http", "https"};
+
+        urlValidator = new UrlValidator(schemes);
+
+        serviceURL.setText(UtilityGeneral.getServiceURL(this));
+
+        serviceURL.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+                if (urlValidator.isValid(s.toString())) {
+                    UtilityGeneral.saveServiceURL(s.toString(),LoginScreen.this);
+                    textInputServiceURL.setError(null);
+                    textInputServiceURL.setErrorEnabled(false);
+//                    updateStatusLight();
+                }
+                else
+                {
+//                    serviceURL.setError("URL Invalid");
+                    textInputServiceURL.setErrorEnabled(true);
+                    textInputServiceURL.setError("Invalid URL");
+
+//                    UtilityServiceConfig.saveServiceLightStatus(LoginScreen.this,STATUS_LIGHT_RED);
+//                    setStatusLight();
+                }
+
+            }
+        });
+
+
+    }
+
+
+
+
 
 
 }

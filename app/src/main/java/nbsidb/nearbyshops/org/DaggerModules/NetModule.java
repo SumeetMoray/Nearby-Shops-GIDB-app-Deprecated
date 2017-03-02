@@ -18,6 +18,7 @@ import nbsidb.nearbyshops.org.MyApplication;
 import nbsidb.nearbyshops.org.RetrofitRESTContract.AdminService;
 import nbsidb.nearbyshops.org.RetrofitRESTContract.AdminServiceSimple;
 import nbsidb.nearbyshops.org.RetrofitRESTContract.ItemCategoryService;
+import nbsidb.nearbyshops.org.RetrofitRESTContract.ItemImageService;
 import nbsidb.nearbyshops.org.RetrofitRESTContract.ItemService;
 import nbsidb.nearbyshops.org.RetrofitRESTContract.StaffService;
 import nbsidb.nearbyshops.org.RetrofitRESTContractGIDB.ItemCategoryServiceGIDB;
@@ -75,7 +76,9 @@ public class NetModule {
         GsonBuilder gsonBuilder = new GsonBuilder();
         //gsonBuilder.setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES);
 
-        return gsonBuilder.create();
+        return gsonBuilder
+                .setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
+                .create();
     }
 
     @Provides
@@ -156,7 +159,6 @@ public class NetModule {
 
 
     @Provides
-    @Singleton
     ItemCategoryService provideItemCategoryService(@Named("normal")Retrofit retrofit)
     {
 
@@ -170,6 +172,15 @@ public class NetModule {
 
         return retrofit.create(ItemService.class);
     }
+
+
+    @Provides
+    ItemImageService provideItemImageService(@Named("normal")Retrofit retrofit)
+    {
+
+        return retrofit.create(ItemImageService.class);
+    }
+
 
 
     @Provides

@@ -25,12 +25,11 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import nbsidb.nearbyshops.org.DaggerComponentBuilder;
 import nbsidb.nearbyshops.org.ItemsByCategorySimple.Interfaces.NotifyBackPressed;
-import nbsidb.nearbyshops.org.ItemsByCategorySimple.Interfaces.NotifyFABClick;
 import nbsidb.nearbyshops.org.ItemsByCategorySimple.Interfaces.NotifyHeaderChanged;
 import nbsidb.nearbyshops.org.ItemsByCategorySimple.Interfaces.NotifySort;
 import nbsidb.nearbyshops.org.ItemsByCategorySimple.Interfaces.ToggleFab;
-import nbsidb.nearbyshops.org.ItemsByCategorySimple.Utility.HeaderItemsList;
-import nbsidb.nearbyshops.org.ItemsByCategorySimple.Utility.UtilitySortItemsByCategory;
+import nbsidb.nearbyshops.org.ItemsByCategorySimple.UtilitySort.HeaderItemsList;
+import nbsidb.nearbyshops.org.ItemsByCategorySimple.UtilitySort.UtilitySortItemsByCategory;
 import nbsidb.nearbyshops.org.Model.Item;
 import nbsidb.nearbyshops.org.Model.ItemCategory;
 import nbsidb.nearbyshops.org.ModelEndpoint.ItemCategoryEndPoint;
@@ -736,6 +735,11 @@ public class FragmentAddFromGlobal extends Fragment implements SwipeRefreshLayou
         }
 
 
+        if(tempList.size()==0)
+        {
+            return;
+        }
+
         Call<ResponseBody> call = itemCatService.addItemCatFromGlobal(UtilityLogin.getAuthorizationHeaders(getActivity()), tempList);
 
 
@@ -756,6 +760,10 @@ public class FragmentAddFromGlobal extends Fragment implements SwipeRefreshLayou
                 else if(response.code()==304)
                 {
                     showToastMessage("No item categories updated !");
+                }
+                else if(response.code()== 403 || response.code() ==401)
+                {
+                    showToastMessage("Not Permitted to Add Item Categories !");
                 }
                 else
                 {
@@ -811,6 +819,10 @@ public class FragmentAddFromGlobal extends Fragment implements SwipeRefreshLayou
                 else if(response.code()==304)
                 {
                     showToastMessage("No item updated !");
+                }
+                else if(response.code()== 403 || response.code() ==401)
+                {
+                    showToastMessage("Not Permitted to add Items !");
                 }
                 else
                 {
