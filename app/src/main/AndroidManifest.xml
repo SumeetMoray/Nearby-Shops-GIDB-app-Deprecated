@@ -58,7 +58,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Home" />
         </activity>
-
         <activity
             android:name=".ItemsByCategorySimple.EditItemImage.EditItemImage"
             android:label="Edit Item Image"
@@ -68,8 +67,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Home" />
         </activity>
-
-
         <activity
             android:name=".ItemsByCategorySimple.EditItemCategory.EditItemCategory"
             android:label="Edit Item Category"
@@ -150,10 +147,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="nbsidb.nearbyshops.org.Home" />
         </activity>
-
-        <activity android:name=".Settings.SettingsCustom"></activity>
-
-
+        <activity android:name=".Settings.SettingsCustom" />
         <activity
             android:name=".EditProfileAdmin.EditProfileAdmin"
             android:label="Edit Admin"
@@ -163,6 +157,21 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Home" />
         </activity>
+        <activity
+            android:name=".ItemSpecName.ItemSpecNameActivity"
+            android:label="@string/title_activity_item_specification_name"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+
+        <activity
+            android:name=".ItemSpecName.EditItemSpecName.EditItemSpecName"
+            android:label="Edit Item Specification Name"
+            android:parentActivityName=".Home"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Home" />
+        </activity>
+
 
     </application>
 

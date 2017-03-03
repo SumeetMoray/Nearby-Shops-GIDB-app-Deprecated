@@ -120,11 +120,13 @@
     <string name="pref_title_vibrate">Vibrate</string>
 
 
-
-
     <!--Custom Preferences-->
 
     <string name="default_service_url">http://nbsidb.nearbyshops.org</string>
+    <string name="title_activity_item_specification_name">Item Specification Name</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>

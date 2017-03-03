@@ -51,6 +51,10 @@ public class FragmentStaffAccounts extends Fragment implements Adapter.NotifyCon
     boolean isDestroyed;
 
 
+
+
+
+
 //    private static final String ARG_ACCOUNTS_MODE = "arg_accounts_mode";
 //    public static final String MODE_ACCOUNTS_ENABLED = "accounts_enabled";
 //    public static final String MODE_ACCOUNTS_DISABLED = "accounts_disabled";
@@ -306,6 +310,7 @@ public class FragmentStaffAccounts extends Fragment implements Adapter.NotifyCon
 
     @Override
     public void notifyListItemClick(Staff staff) {
+
 
     }
 

@@ -21,6 +21,7 @@ import butterknife.OnClick;
 import nbsidb.nearbyshops.org.DetachedTabs.DetachedTabs;
 import nbsidb.nearbyshops.org.EditProfileAdmin.EditAdminFragment;
 import nbsidb.nearbyshops.org.EditProfileAdmin.EditProfileAdmin;
+import nbsidb.nearbyshops.org.ItemSpecName.ItemSpecNameActivity;
 import nbsidb.nearbyshops.org.ItemsByCategorySimple.ItemCategoriesSimple;
 import nbsidb.nearbyshops.org.Settings.SettingsActivity;
 import nbsidb.nearbyshops.org.Settings.SettingsCustom;
@@ -251,6 +252,16 @@ public class Home extends AppCompatActivity
 //        startActivity(intent);
 //    }
 //
+
+
+    @OnClick(R.id.item_specifications)
+    void itemSpecNameClick()
+    {
+        Intent intent = new Intent(this, ItemSpecNameActivity.class);
+        startActivity(intent);
+    }
+
+
 
     @Override
     protected void onDestroy() {

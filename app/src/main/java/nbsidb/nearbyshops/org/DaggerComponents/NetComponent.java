@@ -13,6 +13,8 @@ import nbsidb.nearbyshops.org.DetachedTabs.ItemCategories.DetachedItemCatFragmen
 import nbsidb.nearbyshops.org.DetachedTabs.Items.DetachedItemAdapter;
 import nbsidb.nearbyshops.org.DetachedTabs.Items.DetachedItemFragment;
 import nbsidb.nearbyshops.org.EditProfileAdmin.EditAdminFragment;
+import nbsidb.nearbyshops.org.ItemSpecName.EditItemSpecName.EditItemSpecNameFragment;
+import nbsidb.nearbyshops.org.ItemSpecName.ItemSpecNameFragment;
 import nbsidb.nearbyshops.org.ItemsByCategorySimple.AdapterSimple;
 import nbsidb.nearbyshops.org.ItemsByCategorySimple.EditItem.EditItemFragment;
 import nbsidb.nearbyshops.org.ItemsByCategorySimple.EditItemCategory.EditItemCategoryFragment;
@@ -69,6 +71,10 @@ public interface NetComponent {
     void Inject(EditAdminFragment editAdminFragment);
 
     void Inject(EditItemImageFragment editItemImageFragment);
+
+    void Inject(ItemSpecNameFragment itemSpecNameFragment);
+
+    void Inject(EditItemSpecNameFragment editItemSpecNameFragment);
 
 
 //    void Inject(LoginDialog loginDialog);

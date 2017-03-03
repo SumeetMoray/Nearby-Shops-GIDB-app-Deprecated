@@ -21,7 +21,7 @@ import retrofit2.http.Query;
  * Created by sumeet on 3/3/17.
  */
 
-public interface ItemSpecService {
+public interface ItemSpecNameService {
 
 
     @POST ("/api/v1/ItemSpecificationName")
