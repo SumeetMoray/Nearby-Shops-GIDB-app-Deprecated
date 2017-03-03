@@ -17,7 +17,7 @@ import butterknife.OnClick;
 import nbsidb.nearbyshops.org.DaggerComponentBuilder;
 import nbsidb.nearbyshops.org.ModelRoles.Staff;
 import nbsidb.nearbyshops.org.R;
-import nbsidb.nearbyshops.org.RetrofitRESTContract.StaffService;
+import nbsidb.nearbyshops.org.RetrofitRestContractRoles.StaffService;
 import nbsidb.nearbyshops.org.StaffHome.EditStaffSelf.EditStaffSelf;
 import nbsidb.nearbyshops.org.StaffHome.EditStaffSelf.EditStaffSelfFragment;
 import nbsidb.nearbyshops.org.Utility.UtilityLogin;

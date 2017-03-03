@@ -18,17 +18,17 @@
         app:showAsAction="never" />
 
 
-    <item
-        android:id="@+id/action_detach"
-        android:orderInCategory="101"
-        android:title="Detach"
-        app:showAsAction="never" />
+    <!--<item-->
+        <!--android:id="@+id/action_detach"-->
+        <!--android:orderInCategory="101"-->
+        <!--android:title="Detach"-->
+        <!--app:showAsAction="never" />-->
 
 
-    <item
-        android:id="@+id/action_change_parent"
-        android:orderInCategory="101"
-        android:title="Change Parent"
-        app:showAsAction="never" />
+    <!--<item-->
+        <!--android:id="@+id/action_change_parent"-->
+        <!--android:orderInCategory="101"-->
+        <!--android:title="Change Parent"-->
+        <!--app:showAsAction="never" />-->
 
 </menu>

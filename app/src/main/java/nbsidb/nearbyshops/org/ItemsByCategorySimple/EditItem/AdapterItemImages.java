@@ -87,11 +87,12 @@ public class AdapterItemImages extends RecyclerView.Adapter<RecyclerView.ViewHol
         {
             ViewHolderItemImage holder = (ViewHolderItemImage) holderGiven;
 
-            holder.copyrights.setText(dataset.get(position).getImageCopyrights());
+
+            holder.copyrights.setText(dataset.get(position-1).getImageCopyrights());
 
 
             String imagePath = UtilityGeneral.getServiceURL(context) + "/api/v1/ItemImage/Image/five_hundred_"
-                    + dataset.get(position).getImageFilename() + ".jpg";
+                    + dataset.get(position-1).getImageFilename() + ".jpg";
 
             Drawable placeholder = VectorDrawableCompat
                     .create(context.getResources(),
@@ -111,7 +112,7 @@ public class AdapterItemImages extends RecyclerView.Adapter<RecyclerView.ViewHol
     @Override
     public int getItemViewType(int position) {
 
-        if(position==dataset.size())
+        if(position==0)
         {
             return VIEW_TYPE_ADD_IMAGE;
         }
@@ -191,14 +192,14 @@ public class AdapterItemImages extends RecyclerView.Adapter<RecyclerView.ViewHol
                 case R.id.action_remove:
 
 //                    showToastMessage("Remove");
-                    notificationReceiver.removeItemImage(dataset.get(getLayoutPosition()),getLayoutPosition());
+                    notificationReceiver.removeItemImage(dataset.get(getLayoutPosition()-1),getLayoutPosition()-1);
 
                     break;
 
                 case R.id.action_edit:
 
 //                    showToastMessage("Edit");
-                    notificationReceiver.editItemImage(dataset.get(getLayoutPosition()),getLayoutPosition());
+                    notificationReceiver.editItemImage(dataset.get(getLayoutPosition()-1),getLayoutPosition()-1);
 
                     break;
 

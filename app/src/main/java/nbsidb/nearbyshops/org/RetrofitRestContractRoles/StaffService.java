@@ -1,4 +1,4 @@
-package nbsidb.nearbyshops.org.RetrofitRESTContract;
+package nbsidb.nearbyshops.org.RetrofitRestContractRoles;
 import java.util.List;
 
 import nbsidb.nearbyshops.org.Model.Image;

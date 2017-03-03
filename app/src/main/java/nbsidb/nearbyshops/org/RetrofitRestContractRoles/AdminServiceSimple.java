@@ -1,4 +1,4 @@
-package nbsidb.nearbyshops.org.RetrofitRESTContract;
+package nbsidb.nearbyshops.org.RetrofitRestContractRoles;
 
 import nbsidb.nearbyshops.org.ModelRoles.Admin;
 import okhttp3.ResponseBody;

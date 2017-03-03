@@ -22,7 +22,7 @@ import nbsidb.nearbyshops.org.DaggerComponentBuilder;
 import nbsidb.nearbyshops.org.Interfaces.NotifyTitleChanged;
 import nbsidb.nearbyshops.org.ModelRoles.Staff;
 import nbsidb.nearbyshops.org.R;
-import nbsidb.nearbyshops.org.RetrofitRESTContract.StaffService;
+import nbsidb.nearbyshops.org.RetrofitRestContractRoles.StaffService;
 import nbsidb.nearbyshops.org.StaffAccounts.EditStaff.EditStaff;
 import nbsidb.nearbyshops.org.StaffAccounts.EditStaff.EditStaffFragment;
 import nbsidb.nearbyshops.org.Utility.UtilityLogin;
