@@ -21,6 +21,7 @@ import butterknife.OnClick;
 import nbsidb.nearbyshops.org.DetachedTabs.DetachedTabs;
 import nbsidb.nearbyshops.org.EditProfileAdmin.EditAdminFragment;
 import nbsidb.nearbyshops.org.EditProfileAdmin.EditProfileAdmin;
+import nbsidb.nearbyshops.org.FilterItemsBySpecifications.FilterItemsActivity;
 import nbsidb.nearbyshops.org.ItemSpecName.ItemSpecNameActivity;
 import nbsidb.nearbyshops.org.ItemsByCategorySimple.ItemCategoriesSimple;
 import nbsidb.nearbyshops.org.Settings.SettingsActivity;
@@ -109,7 +110,10 @@ public class Home extends AppCompatActivity
     @OnClick(R.id.settings)
     void settingsClick()
     {
-        startActivity(new Intent(this, SettingsCustom.class));
+//        startActivity(new Intent(this, SettingsCustom.class));
+
+        startActivity(new Intent(this, FilterItemsActivity.class));
+
     }
 
 

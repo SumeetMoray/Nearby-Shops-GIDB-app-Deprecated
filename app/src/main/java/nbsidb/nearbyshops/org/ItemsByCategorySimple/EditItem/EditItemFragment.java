@@ -43,6 +43,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import nbsidb.nearbyshops.org.DaggerComponentBuilder;
+import nbsidb.nearbyshops.org.FilterItemsBySpecifications.FilterItemsActivity;
+import nbsidb.nearbyshops.org.FilterItemsBySpecifications.FilterItemsFragment;
 import nbsidb.nearbyshops.org.ItemsByCategorySimple.EditItemImage.EditItemImage;
 import nbsidb.nearbyshops.org.ItemsByCategorySimple.EditItemImage.EditItemImageFragment;
 import nbsidb.nearbyshops.org.ItemsByCategorySimple.EditItemImage.UtilityItemImage;
@@ -193,6 +195,17 @@ public class EditItemFragment extends Fragment implements AdapterItemImages.noti
     }
 
 
+    @OnClick(R.id.item_specifications)
+    void addItemSpecifications()
+    {
+        Intent intent = new Intent(getActivity(), FilterItemsActivity.class);
+        intent.putExtra(FilterItemsFragment.ITEM_ID_INTENT_KEY,item.getItemID());
+        startActivity(intent);
+    }
+
+
+
+
     ArrayList<ItemImage> dataset = new ArrayList<>();
     @Bind(R.id.recyclerview_item_images) RecyclerView itemImagesList;
     AdapterItemImages adapterItemImages;
@@ -283,6 +296,8 @@ public class EditItemFragment extends Fragment implements AdapterItemImages.noti
         super.onDestroyView();
         isDestroyed = true;
     }
+
+
 
 
 

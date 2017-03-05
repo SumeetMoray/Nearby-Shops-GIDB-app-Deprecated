@@ -15,7 +15,9 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import nbsidb.nearbyshops.org.MyApplication;
+import nbsidb.nearbyshops.org.RetrofitRESTContract.ItemSpecItemService;
 import nbsidb.nearbyshops.org.RetrofitRESTContract.ItemSpecNameService;
+import nbsidb.nearbyshops.org.RetrofitRESTContract.ItemSpecValueService;
 import nbsidb.nearbyshops.org.RetrofitRestContractRoles.AdminService;
 import nbsidb.nearbyshops.org.RetrofitRestContractRoles.AdminServiceSimple;
 import nbsidb.nearbyshops.org.RetrofitRESTContract.ItemCategoryService;
@@ -184,10 +186,27 @@ public class NetModule {
 
 
     @Provides
+    ItemSpecItemService provideItemSpecItemService(@Named("normal")Retrofit retrofit)
+    {
+        return retrofit.create(ItemSpecItemService.class);
+    }
+
+
+
+    @Provides
     ItemSpecNameService provideItemSpecNameService(@Named("normal")Retrofit retrofit)
     {
         return retrofit.create(ItemSpecNameService.class);
     }
+
+
+
+    @Provides
+    ItemSpecValueService provideItemSpecValueService(@Named("normal")Retrofit retrofit)
+    {
+        return retrofit.create(ItemSpecValueService.class);
+    }
+
 
 
 

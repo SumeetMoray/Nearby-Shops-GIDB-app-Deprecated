@@ -1,4 +1,4 @@
-package nbsidb.nearbyshops.org.ItemSpecName;
+package nbsidb.nearbyshops.org.ItemSpecValue;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
@@ -20,46 +20,45 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import nbsidb.nearbyshops.org.Model.ItemImage;
-import nbsidb.nearbyshops.org.ModelItemSpecification.ItemSpecificationItem;
-import nbsidb.nearbyshops.org.ModelItemSpecification.ItemSpecificationName;
+import nbsidb.nearbyshops.org.ModelItemSpecification.ItemSpecificationValue;
 import nbsidb.nearbyshops.org.R;
 import nbsidb.nearbyshops.org.Utility.UtilityGeneral;
 
 /**
  * Created by sumeet on 13/6/16.
  */
-class AdapterItemSpecName extends RecyclerView.Adapter<AdapterItemSpecName.ViewHolder>{
+class AdapterItemSpecValue extends RecyclerView.Adapter<AdapterItemSpecValue.ViewHolder>{
 
-    private List<ItemSpecificationName> dataset = null;
+    private List<ItemSpecificationValue> dataset = null;
     private NotificationsFromAdapter notifyFragment;
     private Context context;
 
-    AdapterItemSpecName(List<ItemSpecificationName> dataset, NotificationsFromAdapter notifyFragment, Context context) {
+    AdapterItemSpecValue(List<ItemSpecificationValue> dataset, NotificationsFromAdapter notifyFragment, Context context) {
         this.dataset = dataset;
         this.notifyFragment = notifyFragment;
         this.context = context;
     }
 
     @Override
-    public AdapterItemSpecName.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public AdapterItemSpecValue.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.list_item_item_spec_name,parent,false);
+                .inflate(R.layout.list_item_item_spec_value,parent,false);
 
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(AdapterItemSpecName.ViewHolder holder, int position) {
+    public void onBindViewHolder(AdapterItemSpecValue.ViewHolder holder, int position) {
 
-        ItemSpecificationName itemSpecName = dataset.get(position);
+        ItemSpecificationValue itemSpecificationValue = dataset.get(position);
 
-        holder.titleItemSpec.setText(itemSpecName.getTitle());
-        holder.description.setText(itemSpecName.getDescription());
+        holder.titleItemSpec.setText(itemSpecificationValue.getTitle());
+        holder.description.setText(itemSpecificationValue.getDescription());
+        holder.itemCount.setText("Item Count : " + String.valueOf(itemSpecificationValue.getRt_item_count()));
 
         Drawable drawable = ContextCompat.getDrawable(context,R.drawable.ic_nature_people_white_48px);
-        String imagePath = UtilityGeneral.getServiceURL(context) + "/api/v1/ItemSpecificationName/Image/" + "three_hundred_"+ itemSpecName.getImageFilename() + ".jpg";
+        String imagePath = UtilityGeneral.getServiceURL(context) + "/api/v1/ItemSpecificationValue/Image/" + "three_hundred_"+ itemSpecificationValue.getImageFilename() + ".jpg";
 
         Picasso.with(context)
                 .load(imagePath)
@@ -79,19 +78,17 @@ class AdapterItemSpecName extends RecyclerView.Adapter<AdapterItemSpecName.ViewH
 
 
 
-    class ViewHolder extends RecyclerView.ViewHolder implements PopupMenu.OnMenuItemClickListener, View.OnClickListener {
+    class ViewHolder extends RecyclerView.ViewHolder implements PopupMenu.OnMenuItemClickListener {
 
 
         @Bind(R.id.title_item_spec) TextView titleItemSpec;
         @Bind(R.id.image_item_spec) ImageView imageItemSpec;
         @Bind(R.id.description) TextView description;
-
+        @Bind(R.id.item_count) TextView itemCount;
 
         public ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this,itemView);
-
-            itemView.setOnClickListener(this);
         }
 
 
@@ -137,11 +134,7 @@ class AdapterItemSpecName extends RecyclerView.Adapter<AdapterItemSpecName.ViewH
         }
 
 
-        @Override
-        public void onClick(View v) {
 
-            notifyFragment.listItemClick(dataset.get(getLayoutPosition()),getLayoutPosition());
-        }
     }
 
 
@@ -151,9 +144,8 @@ class AdapterItemSpecName extends RecyclerView.Adapter<AdapterItemSpecName.ViewH
     interface NotificationsFromAdapter{
 
         void addItemImage();
-        void editItemSpecName(ItemSpecificationName itemSpecName, int position);
-        void removeItemSpecName(ItemSpecificationName itemSpecName, int position);
-        void listItemClick(ItemSpecificationName itemSpecName,int position);
+        void editItemSpecName(ItemSpecificationValue itemSpecValue, int position);
+        void removeItemSpecName(ItemSpecificationValue itemSpecValue, int position);
     }
 
 }

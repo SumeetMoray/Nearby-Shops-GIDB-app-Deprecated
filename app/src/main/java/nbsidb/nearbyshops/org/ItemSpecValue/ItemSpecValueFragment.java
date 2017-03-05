@@ -1,11 +1,10 @@
-package nbsidb.nearbyshops.org.ItemSpecName;
+package nbsidb.nearbyshops.org.ItemSpecValue;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
@@ -22,15 +21,13 @@ import javax.inject.Inject;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import nbsidb.nearbyshops.org.DaggerComponentBuilder;
-import nbsidb.nearbyshops.org.ItemSpecName.EditItemSpecName.EditItemSpecName;
-import nbsidb.nearbyshops.org.ItemSpecName.EditItemSpecName.EditItemSpecNameFragment;
-import nbsidb.nearbyshops.org.ItemSpecName.EditItemSpecName.UtilityItemSpecName;
-import nbsidb.nearbyshops.org.ItemSpecValue.ItemSpecValueActivity;
-import nbsidb.nearbyshops.org.ItemSpecValue.ItemSpecValueFragment;
-import nbsidb.nearbyshops.org.ModelItemSpecification.EndPoints.ItemSpecNameEndPoint;
-import nbsidb.nearbyshops.org.ModelItemSpecification.ItemSpecificationName;
+import nbsidb.nearbyshops.org.ItemSpecValue.EditItemSpecValue.EditItemSpecValue;
+import nbsidb.nearbyshops.org.ItemSpecValue.EditItemSpecValue.EditItemSpecValueFragment;
+import nbsidb.nearbyshops.org.ItemSpecValue.EditItemSpecValue.UtilityItemSpecValue;
+import nbsidb.nearbyshops.org.ModelItemSpecification.EndPoints.ItemSpecValueEndPoint;
+import nbsidb.nearbyshops.org.ModelItemSpecification.ItemSpecificationValue;
 import nbsidb.nearbyshops.org.R;
-import nbsidb.nearbyshops.org.RetrofitRESTContract.ItemSpecNameService;
+import nbsidb.nearbyshops.org.RetrofitRESTContract.ItemSpecValueService;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -39,21 +36,24 @@ import retrofit2.Response;
  * Created by sumeet on 3/3/17.
  */
 
-public class ItemSpecNameFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, AdapterItemSpecName.NotificationsFromAdapter {
+public class ItemSpecValueFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, AdapterItemSpecValue.NotificationsFromAdapter {
 
 
-    @Inject ItemSpecNameService itemSpecNameService;
+    @Inject
+    ItemSpecValueService itemSpecValueService;
 
     @Bind(R.id.recycler_view) RecyclerView recyclerView;
-    AdapterItemSpecName adapter;
-    public List<ItemSpecificationName> dataset = new ArrayList<>();
+    AdapterItemSpecValue adapter;
+
+    public List<ItemSpecificationValue> dataset = new ArrayList<>();
+
     GridLayoutManager layoutManager;
-
-
     @Bind(R.id.swipeContainer) SwipeRefreshLayout swipeContainer;
 
-
     boolean isDestroyed;
+
+    public static final String ITEM_SPEC_NAME_INTENT_KEY = "ITEM_SPEC_NAME_INTENT_KEY";
+    int itemSpecNameID = -1;
 
 
     private int limit = 10;
@@ -61,7 +61,7 @@ public class ItemSpecNameFragment extends Fragment implements SwipeRefreshLayout
     int item_count = 0;
 
 
-    public ItemSpecNameFragment() {
+    public ItemSpecValueFragment() {
         DaggerComponentBuilder.getInstance()
                 .getNetComponent()
                 .Inject(this);
@@ -75,7 +75,7 @@ public class ItemSpecNameFragment extends Fragment implements SwipeRefreshLayout
         super.onCreateView(inflater, container, savedInstanceState);
 
         setRetainInstance(true);
-        View rootView = inflater.inflate(R.layout.content_item_specification_name, container, false);
+        View rootView = inflater.inflate(R.layout.content_item_specification_value, container, false);
         ButterKnife.bind(rootView);
 
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
@@ -103,7 +103,7 @@ public class ItemSpecNameFragment extends Fragment implements SwipeRefreshLayout
     void setupRecyclerView()
     {
 
-        adapter = new AdapterItemSpecName(dataset,this,getActivity());
+        adapter = new AdapterItemSpecValue(dataset,this,getActivity());
 
         recyclerView.setAdapter(adapter);
 
@@ -188,15 +188,16 @@ public class ItemSpecNameFragment extends Fragment implements SwipeRefreshLayout
             offset = 0;
         }
 
+        itemSpecNameID = getActivity().getIntent().getIntExtra(ITEM_SPEC_NAME_INTENT_KEY,0);
 
-        Call<ItemSpecNameEndPoint> call = itemSpecNameService.getItemSpecName(
-          null,null,limit,offset,getRowCount
+        Call<ItemSpecValueEndPoint> call = itemSpecValueService.getItemSpecName(
+          itemSpecNameID,null,null,limit,offset,getRowCount
         );
 
 
-        call.enqueue(new Callback<ItemSpecNameEndPoint>() {
+        call.enqueue(new Callback<ItemSpecValueEndPoint>() {
             @Override
-            public void onResponse(Call<ItemSpecNameEndPoint> call, Response<ItemSpecNameEndPoint> response) {
+            public void onResponse(Call<ItemSpecValueEndPoint> call, Response<ItemSpecValueEndPoint> response) {
 
                 if(isDestroyed)
                 {
@@ -234,7 +235,7 @@ public class ItemSpecNameFragment extends Fragment implements SwipeRefreshLayout
 
 
             @Override
-            public void onFailure(Call<ItemSpecNameEndPoint> call, Throwable t) {
+            public void onFailure(Call<ItemSpecValueEndPoint> call, Throwable t) {
 
                 if(isDestroyed)
                 {
@@ -304,28 +305,22 @@ public class ItemSpecNameFragment extends Fragment implements SwipeRefreshLayout
     }
 
     @Override
-    public void editItemSpecName(ItemSpecificationName itemSpecName, int position) {
+    public void editItemSpecName(ItemSpecificationValue itemSpecName, int position) {
 
 //        showToastMessage("Edit Click");
 
-        Intent intent = new Intent(getActivity(), EditItemSpecName.class);
-        intent.putExtra(EditItemSpecNameFragment.EDIT_MODE_INTENT_KEY,EditItemSpecNameFragment.MODE_UPDATE);
-        UtilityItemSpecName.saveItemSpecName(itemSpecName,getActivity());
+        Intent intent = new Intent(getActivity(), EditItemSpecValue.class);
+        intent.putExtra(EditItemSpecValueFragment.EDIT_MODE_INTENT_KEY, EditItemSpecValueFragment.MODE_UPDATE);
+//        intent.putExtra(EditItemSpecValueFragment.ITEM_SPEC_NAME_INTENT_KEY,itemSpecName.getId());
+        UtilityItemSpecValue.saveItemSpecValue(itemSpecName,getActivity());
         startActivity(intent);
+
+
     }
 
     @Override
-    public void removeItemSpecName(ItemSpecificationName itemSpecName, int position) {
+    public void removeItemSpecName(ItemSpecificationValue itemSpecName, int position) {
 
         showToastMessage("Remove Click");
-    }
-
-    @Override
-    public void listItemClick(ItemSpecificationName itemSpecName, int position) {
-
-        Intent intent = new Intent(getActivity(), ItemSpecValueActivity.class);
-//        intent.putExtra(EditItemSpecNameFragment.EDIT_MODE_INTENT_KEY,EditItemSpecNameFragment.MODE_ADD);
-        intent.putExtra(ItemSpecValueFragment.ITEM_SPEC_NAME_INTENT_KEY,itemSpecName.getId());
-        startActivity(intent);
     }
 }

@@ -160,8 +160,7 @@
         <activity
             android:name=".ItemSpecName.ItemSpecNameActivity"
             android:label="@string/title_activity_item_specification_name"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ItemSpecName.EditItemSpecName.EditItemSpecName"
             android:label="Edit Item Specification Name"
@@ -171,8 +170,28 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Home" />
         </activity>
-
-
+        <activity
+            android:name=".ItemSpecValue.ItemSpecValueActivity"
+            android:label="Item Specification Values"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ItemSpecValue.EditItemSpecValue.EditItemSpecValue"
+            android:label="Edit Item Specification Value"
+            android:parentActivityName=".Home"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Home" />
+        </activity>
+        <activity
+            android:name=".FilterItemsBySpecifications.FilterItemsActivity"
+            android:label="@string/title_activity_filter_items"
+            android:parentActivityName=".Home"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="nbsidb.nearbyshops.org.Home" />
+        </activity>
     </application>
 
 </manifest>

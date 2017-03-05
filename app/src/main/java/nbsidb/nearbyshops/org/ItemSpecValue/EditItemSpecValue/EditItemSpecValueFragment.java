@@ -1,4 +1,4 @@
-package nbsidb.nearbyshops.org.ItemSpecName.EditItemSpecName;
+package nbsidb.nearbyshops.org.ItemSpecValue.EditItemSpecValue;
 
 
 import android.Manifest;
@@ -38,12 +38,11 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import nbsidb.nearbyshops.org.DaggerComponentBuilder;
 import nbsidb.nearbyshops.org.Model.Image;
-import nbsidb.nearbyshops.org.Model.ItemImage;
-import nbsidb.nearbyshops.org.ModelItemSpecification.EndPoints.ItemSpecNameEndPoint;
 import nbsidb.nearbyshops.org.ModelItemSpecification.ItemSpecificationName;
+import nbsidb.nearbyshops.org.ModelItemSpecification.ItemSpecificationValue;
 import nbsidb.nearbyshops.org.R;
-import nbsidb.nearbyshops.org.RetrofitRESTContract.ItemImageService;
 import nbsidb.nearbyshops.org.RetrofitRESTContract.ItemSpecNameService;
+import nbsidb.nearbyshops.org.RetrofitRESTContract.ItemSpecValueService;
 import nbsidb.nearbyshops.org.Utility.UtilityGeneral;
 import nbsidb.nearbyshops.org.Utility.UtilityLogin;
 import okhttp3.MediaType;
@@ -56,7 +55,7 @@ import retrofit2.Response;
 import static android.app.Activity.RESULT_OK;
 
 
-public class EditItemSpecNameFragment extends Fragment{
+public class EditItemSpecValueFragment extends Fragment{
 
     public static int PICK_IMAGE_REQUEST = 21;
     // Upload the image after picked up
@@ -66,7 +65,7 @@ public class EditItemSpecNameFragment extends Fragment{
 //    public static final String ITEM_ID_INTENT_KEY = "item_id_intent_key";
 
     @Inject
-    ItemSpecNameService itemSpecNameService;
+    ItemSpecValueService itemSpecNameService;
 
 
     // flag for knowing whether the image is changed or not
@@ -91,15 +90,18 @@ public class EditItemSpecNameFragment extends Fragment{
     public static final int MODE_UPDATE = 52;
     public static final int MODE_ADD = 51;
 
+    public static final String ITEM_SPEC_NAME_INTENT_KEY = "ITEM_SPEC_NAME_INTENT_KEY";
+
+
     int current_mode = MODE_ADD;
 
     boolean isDestroyed = false;
 
 
-    ItemSpecificationName itemSpecName = new ItemSpecificationName();
+    ItemSpecificationValue itemSpecName = new ItemSpecificationValue();
 
 
-    public EditItemSpecNameFragment() {
+    public EditItemSpecValueFragment() {
 
         DaggerComponentBuilder.getInstance()
                 .getNetComponent().Inject(this);
@@ -114,7 +116,7 @@ public class EditItemSpecNameFragment extends Fragment{
         super.onCreateView(inflater, container, savedInstanceState);
 
         setRetainInstance(true);
-        View rootView = inflater.inflate(R.layout.content_edit_item_spec_name_fragment, container, false);
+        View rootView = inflater.inflate(R.layout.content_edit_item_spec_value_fragment, container, false);
 
         ButterKnife.bind(this,rootView);
 
@@ -125,7 +127,7 @@ public class EditItemSpecNameFragment extends Fragment{
 
             if(current_mode == MODE_UPDATE)
             {
-                itemSpecName = UtilityItemSpecName.getItemSpecName(getContext());
+                itemSpecName = UtilityItemSpecValue.getItemSpecName(getContext());
 
                 if(itemSpecName !=null) {
                     bindDataToViews();
@@ -143,7 +145,7 @@ public class EditItemSpecNameFragment extends Fragment{
 
                 if(((AppCompatActivity)getActivity()).getSupportActionBar()!=null)
                 {
-                    ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Add Item Specification");
+                    ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Add Item Specification Value");
                 }
 
 //                item.setItemCategoryID(itemCategory.getItemCategoryID());
@@ -189,7 +191,7 @@ public class EditItemSpecNameFragment extends Fragment{
 
             if(((AppCompatActivity)getActivity()).getSupportActionBar()!=null)
             {
-                ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Edit Item Specification");
+                ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Edit Item Specification Value");
             }
         }
     }
@@ -213,7 +215,7 @@ public class EditItemSpecNameFragment extends Fragment{
 //        String iamgepath = UtilityGeneral.getServiceURL(getContext()) + "/api/v1/ItemImage/five_hundred_" + imagePath + ".jpg";
 
 
-        String imagePath = UtilityGeneral.getServiceURL(getActivity()) + "/api/v1/ItemSpecificationName/Image/five_hundred_"
+        String imagePath = UtilityGeneral.getServiceURL(getActivity()) + "/api/v1/ItemSpecificationValue/Image/five_hundred_"
                 + filename + ".jpg";
 
         System.out.println(imagePath);
@@ -238,7 +240,7 @@ public class EditItemSpecNameFragment extends Fragment{
 
         if(current_mode == MODE_ADD)
         {
-            itemSpecName = new ItemSpecificationName();
+            itemSpecName = new ItemSpecificationValue();
             addAccount();
         }
         else if(current_mode == MODE_UPDATE)
@@ -408,7 +410,7 @@ public class EditItemSpecNameFragment extends Fragment{
                 if(response.code()==200)
                 {
                     showToastMessage("Update Successful !");
-                    UtilityItemSpecName.saveItemSpecName(itemSpecName,getContext());
+                    UtilityItemSpecValue.saveItemSpecValue(itemSpecName,getContext());
                 }
                 else if(response.code()== 403 || response.code() ==401)
                 {
@@ -446,11 +448,14 @@ public class EditItemSpecNameFragment extends Fragment{
         getDataFromViews();
 //        itemSpecName.setId(getActivity().getIntent().getIntExtra(ITEM_ID_INTENT_KEY,0));
 
-        Call<ItemSpecificationName> call = itemSpecNameService.saveItemSpecName(UtilityLogin.getAuthorizationHeaders(getContext()), itemSpecName);
+        itemSpecName.setItemSpecNameID(getActivity().getIntent().getIntExtra(ITEM_SPEC_NAME_INTENT_KEY,0));
 
-        call.enqueue(new Callback<ItemSpecificationName>() {
+
+        Call<ItemSpecificationValue> call = itemSpecNameService.saveItemSpecValue(UtilityLogin.getAuthorizationHeaders(getContext()), itemSpecName);
+
+        call.enqueue(new Callback<ItemSpecificationValue>() {
             @Override
-            public void onResponse(Call<ItemSpecificationName> call, Response<ItemSpecificationName> response) {
+            public void onResponse(Call<ItemSpecificationValue> call, Response<ItemSpecificationValue> response) {
 
 
                 if(isDestroyed)
@@ -469,7 +474,7 @@ public class EditItemSpecNameFragment extends Fragment{
                     itemSpecName = response.body();
                     bindDataToViews();
 
-                    UtilityItemSpecName.saveItemSpecName(itemSpecName,getContext());
+                    UtilityItemSpecValue.saveItemSpecValue(itemSpecName,getContext());
 
                 }
                 else if(response.code()== 403 || response.code() ==401)
@@ -484,7 +489,7 @@ public class EditItemSpecNameFragment extends Fragment{
             }
 
             @Override
-            public void onFailure(Call<ItemSpecificationName> call, Throwable t) {
+            public void onFailure(Call<ItemSpecificationValue> call, Throwable t) {
 
 
                 if(isDestroyed)
@@ -762,7 +767,7 @@ public class EditItemSpecNameFragment extends Fragment{
 
 
 
-        Call<Image> imageCall = itemSpecNameService.uploadItemImage(UtilityLogin.getAuthorizationHeaders(getContext()),
+        Call<Image> imageCall = itemSpecNameService.uploadImage(UtilityLogin.getAuthorizationHeaders(getContext()),
                 requestBodyBinary);
 
 
@@ -848,7 +853,7 @@ public class EditItemSpecNameFragment extends Fragment{
 
     void deleteImage(String filename)
     {
-        Call<ResponseBody> call = itemSpecNameService.deleteItemImage(
+        Call<ResponseBody> call = itemSpecNameService.deleteImage(
                 UtilityLogin.getAuthorizationHeaders(getContext()),
                 filename);
 

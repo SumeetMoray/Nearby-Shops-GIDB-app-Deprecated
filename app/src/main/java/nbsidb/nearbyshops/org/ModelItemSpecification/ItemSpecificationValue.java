@@ -51,12 +51,21 @@ public class ItemSpecificationValue {
     private int gidbID;
     private String gidbServiceURL;
     private Timestamp timestampCreated;
+    private int rt_item_count;
 
 
 
 
     // getter and setters
 
+
+    public int getRt_item_count() {
+        return rt_item_count;
+    }
+
+    public void setRt_item_count(int rt_item_count) {
+        this.rt_item_count = rt_item_count;
+    }
 
     public int getItemSpecNameID() {
         return itemSpecNameID;
