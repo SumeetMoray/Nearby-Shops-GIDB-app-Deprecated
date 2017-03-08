@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -21,6 +22,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import nbsidb.nearbyshops.org.ItemSpecName.ItemSpecNameFragment;
 import nbsidb.nearbyshops.org.ModelItemSpecification.ItemSpecificationName;
 import nbsidb.nearbyshops.org.R;
 import nbsidb.nearbyshops.org.Utility.UtilityGeneral;
@@ -29,57 +31,108 @@ import retrofit2.http.Body;
 /**
  * Created by sumeet on 13/6/16.
  */
-class AdapterItemSpecName extends RecyclerView.Adapter<AdapterItemSpecName.ViewHolder>{
+class AdapterItemSpecName extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
     private List<ItemSpecificationName> dataset = null;
     private NotificationsFromAdapterName notifyFragment;
     private Context context;
+    private Fragment fragment;
 
     private int selectedPosition = -1;
+
+
+    private final static int VIEW_TYPE_PROGRESS_BAR = 2;
+    private final static int VIEW_TYPE_NAME = 1;
 
 
 
 
     AdapterItemSpecName(List<ItemSpecificationName> dataset,
                         NotificationsFromAdapterName notifyFragment,
-                        Context context)
+                        Context context,
+                        Fragment fragment)
     {
         this.dataset = dataset;
         this.notifyFragment = notifyFragment;
         this.context = context;
-
-
+        this.fragment = fragment;
     }
 
     @Override
-    public AdapterItemSpecName.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.list_item_filter_names,parent,false);
+        View view = null;
 
-        return new ViewHolder(view);
+        if(viewType == VIEW_TYPE_NAME)
+        {
+            view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.list_item_filter_names,parent,false);
+
+            return new ViewHolder(view);
+        }
+        else if(viewType == VIEW_TYPE_PROGRESS_BAR)
+        {
+
+            view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.list_item_progress_bar,parent,false);
+
+            return new AdapterItemSpecName.LoadingViewHolder(view);
+
+        }
+
+        return null;
     }
 
     @Override
-    public void onBindViewHolder(AdapterItemSpecName.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holderGiven, int position) {
 
-        ItemSpecificationName itemSpecName = dataset.get(position);
+        if(holderGiven instanceof ViewHolder)
+        {
+            ViewHolder holder = (ViewHolder) holderGiven;
 
-        holder.titleName.setText(itemSpecName.getTitle());
+            ItemSpecificationName itemSpecName = dataset.get(position);
+
+            holder.titleName.setText(itemSpecName.getTitle());
 //        holder.titleItemSpec.setText(itemSpecName.getTitle());
 //        holder.description.setText(itemSpecName.getDescription());
 
 
-        if(position == selectedPosition)
-        {
-            holder.titleName.setBackgroundColor(ContextCompat.getColor(context,R.color.blueGrey800));
-        }
-        else
-        {
-            holder.titleName.setBackgroundColor(ContextCompat.getColor(context,R.color.phonographyBlue));
+            if(position == selectedPosition)
+            {
+                holder.titleName.setBackgroundColor(ContextCompat.getColor(context,R.color.blueGrey800));
+            }
+            else
+            {
+                holder.titleName.setBackgroundColor(ContextCompat.getColor(context,R.color.buttonColorDark));
+            }
+
         }
 
+        else if(holderGiven instanceof AdapterItemSpecName.LoadingViewHolder)
+        {
 
+            AdapterItemSpecName.LoadingViewHolder viewHolder = (AdapterItemSpecName.LoadingViewHolder) holderGiven;
+
+            int itemCount = 0;
+
+            if(fragment instanceof FilterItemsFragment)
+            {
+                itemCount = ((FilterItemsFragment) fragment).item_count_name;
+            }
+
+
+            if(position == 0 || position == itemCount)
+            {
+                viewHolder.progressBar.setVisibility(View.GONE);
+            }
+            else
+            {
+                viewHolder.progressBar.setVisibility(View.VISIBLE);
+                viewHolder.progressBar.setIndeterminate(true);
+
+            }
+
+        }
 
 
     }
@@ -88,9 +141,23 @@ class AdapterItemSpecName extends RecyclerView.Adapter<AdapterItemSpecName.ViewH
 
     @Override
     public int getItemCount() {
-        return dataset.size();
+        return (dataset.size()+1);
     }
 
+
+    @Override
+    public int getItemViewType(int position) {
+        super.getItemViewType(position);
+
+        if(position==dataset.size())
+        {
+            return VIEW_TYPE_PROGRESS_BAR;
+        }
+        else
+        {
+            return VIEW_TYPE_NAME;
+        }
+    }
 
 
 
@@ -165,11 +232,23 @@ class AdapterItemSpecName extends RecyclerView.Adapter<AdapterItemSpecName.ViewH
 
             notifyItemChanged(previousPosition);
             notifyItemChanged(selectedPosition);
-
-
+            
         }
     }
 
+
+
+
+    public class LoadingViewHolder extends  RecyclerView.ViewHolder{
+
+        @Bind(R.id.progress_bar)
+        ProgressBar progressBar;
+
+        public LoadingViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this,itemView);
+        }
+    }
 
 
 

@@ -2,6 +2,7 @@ package nbsidb.nearbyshops.org.ItemSpecName;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -29,42 +31,97 @@ import nbsidb.nearbyshops.org.Utility.UtilityGeneral;
 /**
  * Created by sumeet on 13/6/16.
  */
-class AdapterItemSpecName extends RecyclerView.Adapter<AdapterItemSpecName.ViewHolder>{
+class AdapterItemSpecName extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
     private List<ItemSpecificationName> dataset = null;
     private NotificationsFromAdapter notifyFragment;
     private Context context;
+    private Fragment fragment;
 
-    AdapterItemSpecName(List<ItemSpecificationName> dataset, NotificationsFromAdapter notifyFragment, Context context) {
+    private final static int VIEW_TYPE_PROGRESS_BAR = 2;
+    private final static int VIEW_TYPE_NAME = 1;
+
+    AdapterItemSpecName(List<ItemSpecificationName> dataset, NotificationsFromAdapter notifyFragment, Context context, Fragment fragment) {
         this.dataset = dataset;
         this.notifyFragment = notifyFragment;
         this.context = context;
+        this.fragment = fragment;
     }
 
     @Override
-    public AdapterItemSpecName.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.list_item_item_spec_name,parent,false);
 
-        return new ViewHolder(view);
+        View view = null;
+
+        if(viewType==VIEW_TYPE_NAME)
+        {
+
+            view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.list_item_item_spec_name,parent,false);
+
+            return new ViewHolderItemSpecName(view);
+        }
+        else if (viewType == VIEW_TYPE_PROGRESS_BAR)
+        {
+
+            view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.list_item_progress_bar,parent,false);
+
+            return new LoadingViewHolder(view);
+        }
+
+
+        return null;
     }
 
+
     @Override
-    public void onBindViewHolder(AdapterItemSpecName.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holderGiven, int position) {
 
-        ItemSpecificationName itemSpecName = dataset.get(position);
+        if(holderGiven instanceof ViewHolderItemSpecName)
+        {
+            ViewHolderItemSpecName holder = (ViewHolderItemSpecName) holderGiven;
 
-        holder.titleItemSpec.setText(itemSpecName.getTitle());
-        holder.description.setText(itemSpecName.getDescription());
+            ItemSpecificationName itemSpecName = dataset.get(position);
 
-        Drawable drawable = ContextCompat.getDrawable(context,R.drawable.ic_nature_people_white_48px);
-        String imagePath = UtilityGeneral.getServiceURL(context) + "/api/v1/ItemSpecificationName/Image/" + "three_hundred_"+ itemSpecName.getImageFilename() + ".jpg";
+            holder.titleItemSpec.setText(itemSpecName.getTitle());
+            holder.description.setText(itemSpecName.getDescription());
 
-        Picasso.with(context)
-                .load(imagePath)
-                .placeholder(drawable)
-                .into(holder.imageItemSpec);
+            Drawable drawable = ContextCompat.getDrawable(context,R.drawable.ic_nature_people_white_48px);
+            String imagePath = UtilityGeneral.getServiceURL(context) + "/api/v1/ItemSpecificationName/Image/" + "three_hundred_"+ itemSpecName.getImageFilename() + ".jpg";
+
+            Picasso.with(context)
+                    .load(imagePath)
+                    .placeholder(drawable)
+                    .into(holder.imageItemSpec);
+        }
+        else if(holderGiven instanceof LoadingViewHolder)
+        {
+
+            AdapterItemSpecName.LoadingViewHolder viewHolder = (LoadingViewHolder) holderGiven;
+
+            int itemCount = 0;
+
+            if(fragment instanceof  ItemSpecNameFragment)
+            {
+                itemCount = ((ItemSpecNameFragment) fragment).item_count;
+            }
+
+
+            if(position == 0 || position == itemCount)
+            {
+                viewHolder.progressBar.setVisibility(View.GONE);
+            }
+            else
+            {
+                viewHolder.progressBar.setVisibility(View.VISIBLE);
+                viewHolder.progressBar.setIndeterminate(true);
+
+            }
+
+        }
+
 
     }
 
@@ -72,14 +129,25 @@ class AdapterItemSpecName extends RecyclerView.Adapter<AdapterItemSpecName.ViewH
 
     @Override
     public int getItemCount() {
-        return dataset.size();
+        return (dataset.size()+1);
     }
 
 
+    @Override
+    public int getItemViewType(int position) {
+        super.getItemViewType(position);
 
+        if(position==dataset.size())
+        {
+            return VIEW_TYPE_PROGRESS_BAR;
+        }
+        else
+        {
+            return VIEW_TYPE_NAME;
+        }
+    }
 
-
-    class ViewHolder extends RecyclerView.ViewHolder implements PopupMenu.OnMenuItemClickListener, View.OnClickListener {
+    class ViewHolderItemSpecName extends RecyclerView.ViewHolder implements PopupMenu.OnMenuItemClickListener, View.OnClickListener {
 
 
         @Bind(R.id.title_item_spec) TextView titleItemSpec;
@@ -87,7 +155,7 @@ class AdapterItemSpecName extends RecyclerView.Adapter<AdapterItemSpecName.ViewH
         @Bind(R.id.description) TextView description;
 
 
-        public ViewHolder(View itemView) {
+        public ViewHolderItemSpecName(View itemView) {
             super(itemView);
             ButterKnife.bind(this,itemView);
 
@@ -141,6 +209,19 @@ class AdapterItemSpecName extends RecyclerView.Adapter<AdapterItemSpecName.ViewH
         public void onClick(View v) {
 
             notifyFragment.listItemClick(dataset.get(getLayoutPosition()),getLayoutPosition());
+        }
+    }
+
+
+
+    public class LoadingViewHolder extends  RecyclerView.ViewHolder{
+
+        @Bind(R.id.progress_bar)
+        ProgressBar progressBar;
+
+        public LoadingViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this,itemView);
         }
     }
 

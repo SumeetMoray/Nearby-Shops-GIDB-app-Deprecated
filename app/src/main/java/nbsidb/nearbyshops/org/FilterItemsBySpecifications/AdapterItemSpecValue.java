@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -23,6 +24,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
+import nbsidb.nearbyshops.org.ItemSpecValue.ItemSpecValueFragment;
 import nbsidb.nearbyshops.org.ModelItemSpecification.ItemSpecificationName;
 import nbsidb.nearbyshops.org.ModelItemSpecification.ItemSpecificationValue;
 import nbsidb.nearbyshops.org.R;
@@ -31,13 +33,18 @@ import nbsidb.nearbyshops.org.Utility.UtilityGeneral;
 /**
  * Created by sumeet on 13/6/16.
  */
-class AdapterItemSpecValue extends RecyclerView.Adapter<AdapterItemSpecValue.ViewHolder>{
+class AdapterItemSpecValue extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
     private List<ItemSpecificationValue> dataset = null;
     private NotificationsFromAdapter notifyFragment;
     private Context context;
 
     private Fragment fragment;
+
+
+    private final static int VIEW_TYPE_PROGRESS_BAR = 2;
+    private final static int VIEW_TYPE_VALUE = 1;
+
 
     AdapterItemSpecValue(List<ItemSpecificationValue> dataset,
                          NotificationsFromAdapter notifyFragment, Context context,
@@ -51,35 +58,85 @@ class AdapterItemSpecValue extends RecyclerView.Adapter<AdapterItemSpecValue.Vie
     }
 
     @Override
-    public AdapterItemSpecValue.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.list_item_filter_values,parent,false);
+        View view = null;
 
-        return new ViewHolder(view);
+
+        if(viewType == VIEW_TYPE_VALUE)
+        {
+            view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.list_item_filter_values,parent,false);
+
+            return new ViewHolder(view);
+        }
+        else if(viewType == VIEW_TYPE_PROGRESS_BAR)
+        {
+
+            view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.list_item_progress_bar,parent,false);
+
+            return new LoadingViewHolder(view);
+        }
+
+        return null;
     }
 
     @Override
-    public void onBindViewHolder(AdapterItemSpecValue.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holderGiven, int position) {
 
-        ItemSpecificationValue itemSpecificationValue = dataset.get(position);
-
-        holder.results.setText("(" + String.valueOf(itemSpecificationValue.getRt_item_count()) + " results)");
-        holder.title.setText(itemSpecificationValue.getTitle());
-
-
-        if(fragment instanceof FilterItemsFragment)
+        if(holderGiven instanceof AdapterItemSpecValue.ViewHolder)
         {
-            if(((FilterItemsFragment) fragment).checkboxesList.contains(itemSpecificationValue.getId()))
+
+            ViewHolder holder = (ViewHolder) holderGiven;
+
+            ItemSpecificationValue itemSpecificationValue = dataset.get(position);
+
+            holder.results.setText("(" + String.valueOf(itemSpecificationValue.getRt_item_count()) + " results)");
+            holder.title.setText(itemSpecificationValue.getTitle());
+
+
+            if(fragment instanceof FilterItemsFragment)
             {
-                holder.checkBoxValues.setChecked(true);
+                if(((FilterItemsFragment) fragment).checkboxesList.contains(itemSpecificationValue.getId()))
+                {
+                    holder.checkBoxValues.setChecked(true);
+                }
+                else
+                {
+                    holder.checkBoxValues.setChecked(false);
+                }
+
+            }
+
+
+        }
+        else if(holderGiven instanceof LoadingViewHolder)
+        {
+
+            LoadingViewHolder viewHolder = (LoadingViewHolder) holderGiven;
+
+            int itemCount = 0;
+
+            if(fragment instanceof FilterItemsFragment)
+            {
+                itemCount = ((FilterItemsFragment) fragment).item_count_values;
+            }
+
+
+            if(position == 0 || position == itemCount)
+            {
+                viewHolder.progressBar.setVisibility(View.GONE);
             }
             else
             {
-                holder.checkBoxValues.setChecked(false);
-            }
+                viewHolder.progressBar.setVisibility(View.VISIBLE);
+                viewHolder.progressBar.setIndeterminate(true);
 
+            }
         }
+
+
 
     }
 
@@ -87,8 +144,41 @@ class AdapterItemSpecValue extends RecyclerView.Adapter<AdapterItemSpecValue.Vie
 
     @Override
     public int getItemCount() {
-        return dataset.size();
+        return (dataset.size()+1);
     }
+
+
+
+    @Override
+    public int getItemViewType(int position) {
+        super.getItemViewType(position);
+
+        if(position==dataset.size())
+        {
+            return VIEW_TYPE_PROGRESS_BAR;
+        }
+        else
+        {
+            return VIEW_TYPE_VALUE;
+        }
+    }
+
+
+
+    public class LoadingViewHolder extends  RecyclerView.ViewHolder{
+
+        @Bind(R.id.progress_bar)
+        ProgressBar progressBar;
+
+        public LoadingViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this,itemView);
+        }
+    }
+
+
+
+
 
 
 

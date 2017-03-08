@@ -27,6 +27,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 import com.squareup.picasso.Picasso;
 import com.yalantis.ucrop.UCrop;
 import com.yalantis.ucrop.UCropActivity;
@@ -36,6 +38,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -53,9 +56,12 @@ import nbsidb.nearbyshops.org.Model.Item;
 import nbsidb.nearbyshops.org.Model.ItemCategory;
 import nbsidb.nearbyshops.org.Model.ItemImage;
 import nbsidb.nearbyshops.org.ModelEndpoint.ItemImageEndPoint;
+import nbsidb.nearbyshops.org.ModelItemSpecification.ItemSpecificationItem;
+import nbsidb.nearbyshops.org.ModelItemSpecification.ItemSpecificationName;
 import nbsidb.nearbyshops.org.R;
 import nbsidb.nearbyshops.org.RetrofitRESTContract.ItemImageService;
 import nbsidb.nearbyshops.org.RetrofitRESTContract.ItemService;
+import nbsidb.nearbyshops.org.RetrofitRESTContract.ItemSpecNameService;
 import nbsidb.nearbyshops.org.Utility.UtilityGeneral;
 import nbsidb.nearbyshops.org.Utility.UtilityLogin;
 import okhttp3.MediaType;
@@ -69,7 +75,7 @@ import static android.app.Activity.RESULT_OK;
 import static android.content.Context.RESTRICTIONS_SERVICE;
 
 
-public class EditItemFragment extends Fragment implements AdapterItemImages.notificationsFromAdapter {
+public class EditItemFragment extends Fragment implements AdapterItemImages.notificationsFromAdapter, AdapterItemSpecifications.NotifyItemSpecs {
 
     public static int PICK_IMAGE_REQUEST = 21;
     // Upload the image after picked up
@@ -92,6 +98,9 @@ public class EditItemFragment extends Fragment implements AdapterItemImages.noti
     @Inject
     ItemImageService itemImageService;
 
+    @Inject
+    ItemSpecNameService itemSpecNameService;
+
 
     // flag for knowing whether the image is changed or not
     boolean isImageChanged = false;
@@ -109,7 +118,13 @@ public class EditItemFragment extends Fragment implements AdapterItemImages.noti
     @Bind(R.id.itemDescription) EditText itemDescription;
     @Bind(R.id.itemDescriptionLong) EditText itemDescriptionLong;
     @Bind(R.id.quantityUnit) EditText quantityUnit;
+    @Bind(R.id.barcode_image) ImageView barcodeSign;
 
+
+    @Bind(R.id.image_copyrights) TextView imageCopyrights;
+    @Bind(R.id.list_price) EditText listPrice;
+//    String barcode;
+//    String barcodeFormat;
 
     @Bind(R.id.saveButton) Button buttonUpdateItem;
 
@@ -190,18 +205,22 @@ public class EditItemFragment extends Fragment implements AdapterItemImages.noti
         showLogMessage("Inside On Create View !");
 
         setupRecyclerView();
+        setupRecyclerViewSpecs();
+
+
+        // bind barcodes
+//        barcodeResults.setText("Barcode : " + item.getBarcode() + "\nFormat : " + item.getBarcodeFormat());
+
+        if(item.getBarcode()!=null && item.getBarcodeFormat()!=null)
+        {
+            barcodeResults.setText("Barcode : " + item.getBarcode() + "\nFormat : " + item.getBarcodeFormat());
+        }
+
 
         return rootView;
     }
 
 
-    @OnClick(R.id.item_specifications)
-    void addItemSpecifications()
-    {
-        Intent intent = new Intent(getActivity(), FilterItemsActivity.class);
-        intent.putExtra(FilterItemsFragment.ITEM_ID_INTENT_KEY,item.getItemID());
-        startActivity(intent);
-    }
 
 
 
@@ -220,6 +239,74 @@ public class EditItemFragment extends Fragment implements AdapterItemImages.noti
         itemImagesList.setLayoutManager(layoutManager);
 
         makeNetworkCallItemImages(true);
+    }
+
+
+
+    ArrayList<ItemSpecificationName> datasetSpecs = new ArrayList<>();
+    @Bind(R.id.recyclerview_item_specifications) RecyclerView itemSpecsList;
+    AdapterItemSpecifications adapterItemSpecs;
+    GridLayoutManager layoutManagerItemSpecs;
+
+
+    void setupRecyclerViewSpecs()
+    {
+        adapterItemSpecs = new AdapterItemSpecifications(datasetSpecs,getActivity(),this);
+        itemSpecsList.setAdapter(adapterItemSpecs);
+        layoutManagerItemSpecs = new GridLayoutManager(getActivity(), 1, LinearLayoutManager.VERTICAL, false);
+        itemSpecsList.setLayoutManager(layoutManagerItemSpecs);
+
+        makeNetworkCallSpecs(true);
+
+    }
+
+
+    void makeNetworkCallSpecs(final boolean clearDataset)
+    {
+        Call<List<ItemSpecificationName>> call = itemSpecNameService.getItemSpecName(
+          item.getItemID(),null
+        );
+
+
+        call.enqueue(new Callback<List<ItemSpecificationName>>() {
+            @Override
+            public void onResponse(Call<List<ItemSpecificationName>> call, Response<List<ItemSpecificationName>> response) {
+
+                if(response.code()==200)
+                {
+                    if(clearDataset)
+                    {
+                        datasetSpecs.clear();
+                    }
+
+                    datasetSpecs.addAll(response.body());
+
+                    adapterItemSpecs.notifyDataSetChanged();
+                }
+                else if(response.code() == 401 || response.code() == 403)
+                {
+                    showToastMessage("Not Permitted");
+                }
+                else
+                {
+                    showToastMessage("Failed to load specs : code " + String.valueOf(response.code()));
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<List<ItemSpecificationName>> call, Throwable t) {
+
+                showToastMessage("Failed !");
+            }
+        });
+    }
+
+
+    @OnClick(R.id.sync_refresh_item_spec)
+    void syncRefreshItemSpecs()
+    {
+        makeNetworkCallSpecs(true);
     }
 
 
@@ -460,6 +547,23 @@ public class EditItemFragment extends Fragment implements AdapterItemImages.noti
             quantityUnit.setText(item.getQuantityUnit());
             itemDescriptionLong.setText(item.getItemDescriptionLong());
 
+//            item.setBarcode(barcode);
+//            item.setBarcodeFormat(barcodeFormat);
+
+
+
+
+
+            listPrice.setText(String.valueOf(item.getListPrice()));
+
+            imageCopyrights.setText(item.getImageCopyrights());
+
+            if(item.getBarcode()!=null && item.getBarcodeFormat()!=null)
+            {
+                barcodeResults.setText("Barcode : " + item.getBarcode() + "\nFormat : " + item.getBarcodeFormat());
+            }
+
+
         }
     }
 
@@ -493,6 +597,15 @@ public class EditItemFragment extends Fragment implements AdapterItemImages.noti
         item.setItemDescriptionLong(itemDescriptionLong.getText().toString());
         item.setQuantityUnit(quantityUnit.getText().toString());
 
+
+        if(!listPrice.getText().toString().equals(""))
+        {
+            item.setListPrice(Float.parseFloat(listPrice.getText().toString()));
+        }
+
+        item.setImageCopyrights(imageCopyrights.getText().toString());
+//        item.setBarcode();
+//        item.setBarcodeFormat(barcodeFormat);
     }
 
 
@@ -699,9 +812,8 @@ public class EditItemFragment extends Fragment implements AdapterItemImages.noti
             }
 
         }
-
-
-        if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP) {
+        else if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP)
+        {
 
             resultView.setImageURI(null);
             resultView.setImageURI(UCrop.getOutput(result));
@@ -715,8 +827,42 @@ public class EditItemFragment extends Fragment implements AdapterItemImages.noti
             final Throwable cropError = UCrop.getError(result);
 
         }
+        else
+        {
+            IntentResult resultLocal = IntentIntegrator.parseActivityResult(requestCode, resultCode, result);
+            if(result != null) {
+                if(resultLocal.getContents() == null) {
+                    Toast.makeText(getActivity(), "Cancelled", Toast.LENGTH_LONG).show();
+
+                } else {
+
+                    Toast.makeText(getActivity(), "Scanned: " + resultLocal.getContents(), Toast.LENGTH_LONG).show();
+                    String resultsText = "Barcode : " + resultLocal.getContents();
+                    resultsText = resultsText + "\nFormat : " + resultLocal.getFormatName();
+
+//                    barcodeResults.setText(resultLocal.getContents());
+//                    barcodeResults.setText(resultLocal.getFormatName());
+
+                    item.setBarcode(resultLocal.getContents());
+                    item.setBarcodeFormat(resultLocal.getFormatName());
+
+                    barcodeResults.setText(resultsText);
+
+                }
+            } else {
+                super.onActivityResult(requestCode, resultCode, result);
+            }
+
+        }
+
+
+
+
+
     }
 
+
+    @Bind(R.id.barcode_results) TextView barcodeResults;
 
 
     // upload image after being picked up
@@ -1052,4 +1198,47 @@ public class EditItemFragment extends Fragment implements AdapterItemImages.noti
 
     }
 
+
+
+
+    @Override
+    public void addItemSpec() {
+
+//        @OnClick(R.id.item_specifications)
+//        void addItemSpecifications()
+//        {
+            Intent intent = new Intent(getActivity(), FilterItemsActivity.class);
+            intent.putExtra(FilterItemsFragment.ITEM_ID_INTENT_KEY,item.getItemID());
+            startActivity(intent);
+//        }
+    }
+
+
+
+
+    @OnClick(R.id.barcode_image)
+    void setupBarcodes()
+    {
+//        IntentIntegrator integrator = new IntentIntegrator(getActivity());
+//        integrator.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
+//        integrator.setPrompt("Scan a barcode");
+//        integrator.setCameraId(0);  // Use a specific camera of the device
+//        integrator.setBeepEnabled(false);
+//        integrator.setBarcodeImageEnabled(true);
+//        integrator.initiateScan();
+
+
+        IntentIntegrator.forSupportFragment(this)
+                .setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES)
+                .setPrompt("Scan a barcode")
+                .setCameraId(0)
+                .setBeepEnabled(false)
+                .setBarcodeImageEnabled(true)
+                .initiateScan();
+
+    }
+
+
+
 }
+

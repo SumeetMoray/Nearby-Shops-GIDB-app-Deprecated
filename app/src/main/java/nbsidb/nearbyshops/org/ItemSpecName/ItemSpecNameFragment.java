@@ -1,10 +1,12 @@
 package nbsidb.nearbyshops.org.ItemSpecName;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -31,6 +33,8 @@ import nbsidb.nearbyshops.org.ModelItemSpecification.EndPoints.ItemSpecNameEndPo
 import nbsidb.nearbyshops.org.ModelItemSpecification.ItemSpecificationName;
 import nbsidb.nearbyshops.org.R;
 import nbsidb.nearbyshops.org.RetrofitRESTContract.ItemSpecNameService;
+import nbsidb.nearbyshops.org.Utility.UtilityLogin;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -45,8 +49,11 @@ public class ItemSpecNameFragment extends Fragment implements SwipeRefreshLayout
     @Inject ItemSpecNameService itemSpecNameService;
 
     @Bind(R.id.recycler_view) RecyclerView recyclerView;
+
     AdapterItemSpecName adapter;
+
     public List<ItemSpecificationName> dataset = new ArrayList<>();
+
     GridLayoutManager layoutManager;
 
 
@@ -103,7 +110,7 @@ public class ItemSpecNameFragment extends Fragment implements SwipeRefreshLayout
     void setupRecyclerView()
     {
 
-        adapter = new AdapterItemSpecName(dataset,this,getActivity());
+        adapter = new AdapterItemSpecName(dataset,this,getActivity(),this);
 
         recyclerView.setAdapter(adapter);
 
@@ -133,10 +140,10 @@ public class ItemSpecNameFragment extends Fragment implements SwipeRefreshLayout
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
 
-                if(layoutManager.findLastVisibleItemPosition()==dataset.size()-1)
+                if(layoutManager.findLastVisibleItemPosition()==dataset.size())
                 {
 
-                    if(offset + limit > layoutManager.findLastVisibleItemPosition()+1)
+                    if(offset + limit > layoutManager.findLastVisibleItemPosition())
                     {
                         return;
                     }
@@ -190,7 +197,7 @@ public class ItemSpecNameFragment extends Fragment implements SwipeRefreshLayout
 
 
         Call<ItemSpecNameEndPoint> call = itemSpecNameService.getItemSpecName(
-          null,null,limit,offset,getRowCount
+          null,ItemSpecificationName.TITLE,limit,offset,getRowCount
         );
 
 
@@ -288,13 +295,14 @@ public class ItemSpecNameFragment extends Fragment implements SwipeRefreshLayout
     @Override
     public void onRefresh() {
 
-        boolean resetGetRowCount = false;
-        if(item_count == 0)
-        {
-            resetGetRowCount=true;
-        }
+//        boolean resetGetRowCount = false;
 
-        makeNetworkCall(true,true,resetGetRowCount);
+//        if(item_count == 0)
+//        {
+//            resetGetRowCount=true;
+//        }
+
+        makeNetworkCall(true,true,true);
     }
 
 
@@ -314,11 +322,86 @@ public class ItemSpecNameFragment extends Fragment implements SwipeRefreshLayout
         startActivity(intent);
     }
 
+
+
     @Override
-    public void removeItemSpecName(ItemSpecificationName itemSpecName, int position) {
+    public void removeItemSpecName(final ItemSpecificationName itemSpecName, final int position) {
 
         showToastMessage("Remove Click");
+
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+        builder.setTitle("Confirm Delete Item Image !")
+                .setMessage("Are you sure you want to delete this Item Image ?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+
+//                        makeRequestDeleteItemImage(itemImage, position);
+                        makeRequestDeleteItemSpecName(itemSpecName,position);
+
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+
+                        showToastMessage("Cancelled !");
+                    }
+                })
+                .show();
     }
+
+
+    void makeRequestDeleteItemSpecName(ItemSpecificationName itemSpecName, final int position)
+    {
+
+        Call<ResponseBody> call = itemSpecNameService.deleteItemSpecName(
+                UtilityLogin.getAuthorizationHeaders(getActivity()),itemSpecName.getId()
+        );
+
+
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+
+                if(response.code()==200)
+                {
+                    showToastMessage("Removed !");
+
+                    dataset.remove(position);
+                    item_count = item_count-1;
+                    adapter.notifyItemRemoved(position);
+
+
+                }
+                else if(response.code()==401 || response.code() == 403)
+                {
+                    showToastMessage("Not Permitted !");
+                }
+                else
+                {
+                    showToastMessage("Failed Code : " + String.valueOf(response.code()));
+                }
+
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+                showToastMessage("Failed !");
+            }
+        });
+
+
+    }
+
+
+
 
     @Override
     public void listItemClick(ItemSpecificationName itemSpecName, int position) {

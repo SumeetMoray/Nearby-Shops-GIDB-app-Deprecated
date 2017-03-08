@@ -103,7 +103,7 @@ public class ItemSpecValueFragment extends Fragment implements SwipeRefreshLayou
     void setupRecyclerView()
     {
 
-        adapter = new AdapterItemSpecValue(dataset,this,getActivity());
+        adapter = new AdapterItemSpecValue(dataset,this,getActivity(),this);
 
         recyclerView.setAdapter(adapter);
 
@@ -133,10 +133,10 @@ public class ItemSpecValueFragment extends Fragment implements SwipeRefreshLayou
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
 
-                if(layoutManager.findLastVisibleItemPosition()==dataset.size()-1)
+                if(layoutManager.findLastVisibleItemPosition()==dataset.size())
                 {
 
-                    if(offset + limit > layoutManager.findLastVisibleItemPosition()+1)
+                    if(offset + limit > layoutManager.findLastVisibleItemPosition())
                     {
                         return;
                     }

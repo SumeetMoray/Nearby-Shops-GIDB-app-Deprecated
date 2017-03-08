@@ -79,7 +79,7 @@ public class FilterItemsFragment extends Fragment implements AdapterItemSpecName
     int item_count_name = 0;
 
 
-    private int limit_values = 10;
+    private int limit_values = 50;
     int offset_values = 0;
     int item_count_values = 0;
 
@@ -134,7 +134,7 @@ public class FilterItemsFragment extends Fragment implements AdapterItemSpecName
     void setupRecyclerViewName()
     {
 
-        adapterName = new AdapterItemSpecName(datasetName,this,getActivity());
+        adapterName = new AdapterItemSpecName(datasetName,this,getActivity(),this);
 
         recyclerViewName.setAdapter(adapterName);
 
@@ -155,10 +155,10 @@ public class FilterItemsFragment extends Fragment implements AdapterItemSpecName
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
 
-                if(layoutManagerName.findLastVisibleItemPosition()==datasetName.size()-1)
+                if(layoutManagerName.findLastVisibleItemPosition()==datasetName.size())
                 {
 
-                    if(offset_name + limit_name > layoutManagerName.findLastVisibleItemPosition()+1)
+                    if(offset_name + limit_name > layoutManagerName.findLastVisibleItemPosition())
                     {
                         return;
                     }
@@ -213,10 +213,10 @@ public class FilterItemsFragment extends Fragment implements AdapterItemSpecName
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
 
-                if(layoutManagerValues.findLastVisibleItemPosition()==datasetValues.size()-1)
+                if(layoutManagerValues.findLastVisibleItemPosition()==datasetValues.size())
                 {
 
-                    if(offset_values + limit_values > layoutManagerValues.findLastVisibleItemPosition()+1)
+                    if(offset_values + limit_values > layoutManagerValues.findLastVisibleItemPosition())
                     {
                         return;
                     }
@@ -325,12 +325,15 @@ public class FilterItemsFragment extends Fragment implements AdapterItemSpecName
     {
 
         boolean resetGetRowCountValue = false;
-        if(item_count_values == 0)
-        {
-            resetGetRowCountValue=true;
-        }
 
-        makeNetworkCallValues(true,true,resetGetRowCountValue);
+//        if(item_count_values == 0)
+//        {
+//            resetGetRowCountValue=true;
+//        }
+
+        resetGetRowCountValue=true;
+
+        makeNetworkCallValues(true,true, true);
     }
 
 
@@ -504,7 +507,7 @@ public class FilterItemsFragment extends Fragment implements AdapterItemSpecName
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if(response.code()==200)
                 {
-                    showToastMessage("Delete Successful !");
+                    showToastMessage("Removed !");
                 }
             }
 
@@ -539,7 +542,7 @@ public class FilterItemsFragment extends Fragment implements AdapterItemSpecName
 
                 if(response.code()==201)
                 {
-                    showToastMessage("Insert Successful !");
+                    showToastMessage("Added !");
                 }
 
             }

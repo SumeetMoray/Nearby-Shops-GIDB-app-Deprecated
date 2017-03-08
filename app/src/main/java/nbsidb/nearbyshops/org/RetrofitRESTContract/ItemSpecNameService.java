@@ -1,5 +1,7 @@
 package nbsidb.nearbyshops.org.RetrofitRESTContract;
 
+import java.util.List;
+
 import javax.annotation.security.RolesAllowed;
 
 import nbsidb.nearbyshops.org.Model.Image;
@@ -52,6 +54,16 @@ public interface ItemSpecNameService {
             @Query("SortBy") String sortBy,
             @Query("Limit")Integer limit, @Query("Offset")Integer offset,
             @Query("GetRowCount")Boolean getRowCount);
+
+
+
+
+    @GET ("/api/v1/ItemSpecificationName")
+    Call<List<ItemSpecificationName>> getItemSpecName(
+            @Query("ItemID") Integer itemID,
+            @Query("ItemCatID") Integer itemCatID);
+
+
 
 
 
