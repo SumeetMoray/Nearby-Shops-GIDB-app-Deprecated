@@ -665,7 +665,7 @@ public class EditItemImageFragment extends Fragment{
 
         options.setToolbarColor(ContextCompat.getColor(getContext(),R.color.blueGrey800));
         options.setStatusBarColor(ContextCompat.getColor(getContext(),R.color.colorPrimary));
-        options.setAllowedGestures(UCropActivity.ALL, UCropActivity.ALL, UCropActivity.ALL);
+        options.setAllowedGestures(UCropActivity.SCALE, UCropActivity.ALL, UCropActivity.SCALE);
 
 
         // this function takes the file from the source URI and saves in into the destination URI location.

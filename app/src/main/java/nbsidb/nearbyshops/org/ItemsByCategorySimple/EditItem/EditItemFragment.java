@@ -416,7 +416,7 @@ public class EditItemFragment extends Fragment implements AdapterItemImages.noti
 
     void loadImage(String imagePath) {
 
-        String iamgepath = UtilityGeneral.getServiceURL(getContext()) + "/api/v1/Item/Image/" + imagePath;
+        String iamgepath = UtilityGeneral.getServiceURL(getContext()) + "/api/v1/Item/Image/five_hundred_" + imagePath + ".jpg";
 
         System.out.println(iamgepath);
 
@@ -882,7 +882,7 @@ public class EditItemFragment extends Fragment implements AdapterItemImages.noti
 
         options.setToolbarColor(ContextCompat.getColor(getContext(),R.color.blueGrey800));
         options.setStatusBarColor(ContextCompat.getColor(getContext(),R.color.colorPrimary));
-        options.setAllowedGestures(UCropActivity.ALL, UCropActivity.ALL, UCropActivity.ALL);
+        options.setAllowedGestures(UCropActivity.SCALE, UCropActivity.ALL, UCropActivity.SCALE);
 
 
         // this function takes the file from the source URI and saves in into the destination URI location.
@@ -927,6 +927,7 @@ public class EditItemFragment extends Fragment implements AdapterItemImages.noti
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
                 }
+
                 return;
             }
 
@@ -1174,7 +1175,7 @@ public class EditItemFragment extends Fragment implements AdapterItemImages.noti
                     showToastMessage("Removed !");
 
                     dataset.remove(position);
-                    adapterItemImages.notifyItemRemoved(position);
+                    adapterItemImages.notifyItemRemoved(position+1);
 
                 }
                 else if(response.code()==401 || response.code()==403)

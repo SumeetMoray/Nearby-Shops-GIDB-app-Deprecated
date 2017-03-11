@@ -34,7 +34,7 @@
 
     <ImageView
         android:id="@+id/more_options"
-        android:padding="5dp"
+        android:padding="7dp"
         android:layout_marginRight="5dp"
         android:layout_marginEnd="5dp"
         android:layout_alignParentEnd="true"
